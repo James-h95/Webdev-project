@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Share+Tech+Mono&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@100..700&display=swap');
 
 html {
     height: 100%;
@@ -14,11 +15,18 @@ body {
 }
 
 .nav-link{
-    font-size: 18px;
+    font-size: 20px;
+    font-family: monospace;
+    font-weight: 500;
+    color: #c2c2c2 !important;
+}
+
+.nav-link:hover{
+    color: white !important;
 }
 
 .carousel-item {
-    height: 500px;
+    height: 650px;
 }
 
 .carousel-item div {
@@ -33,22 +41,6 @@ body {
     font-style: normal;
     color:white;
     text-shadow: 0 0 40px white;
-}
-
-#x_slide1{
-    width:60px;
-    position: absolute;
-    top: 10%;
-    right: 85%;
-    transform: rotate(340deg);
-}
-
-#o_slide1{
-    width: 80px;
-    position: absolute;
-    top: 15%;
-    right: 75%;
-    transform: rotate(20deg);
 }
 
 #slide1 h2{
