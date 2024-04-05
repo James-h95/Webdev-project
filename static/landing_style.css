@@ -8,9 +8,9 @@ body {
     background: rgb(48,23,79);
     background: radial-gradient(circle, rgba(48,23,79,1) 0%, rgba(10,1,20,1) 100%);
     /*background: radial-gradient(circle, rgb(52, 42, 123) 0%, rgba(10,1,20,1) 100%) ;*/
-    height: 100%;
-    max-height: 100%;
-    background-repeat: no-repeat;
+    /*height: 100%;*/
+    /*max-height: 100%;*/
+    /*background-repeat: no-repeat;*/
     font-size: 1rem;
     color: #c2c2c2;
     /*display:flex;
@@ -26,6 +26,20 @@ body {
 
 .navbar{
   backdrop-filter: blur(10px);
+}
+
+/* Sticky class added by JS when scrolling*/
+.sticky{
+  position: sticky;
+  top:0;
+  z-index: 1000;
+  width: 100%;
+  box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.5); 
+  
+  /*The x-offset, which represents the horizontal shadow position
+  The y-offset, which represents the shadow’s position vertically
+  The blur radius affects the sharpness of the shadow; higher values mean lighter shadows, and vice versa
+  The fourth value defines the spread*/
 }
 
 .nav-link{
@@ -64,36 +78,6 @@ h2{
     color:lightslategray;
 }
 
-/*#slide1 button{
-    border-radius: 20%;
-}*/
-
-/*
-#slide1 button{
-    border: 2px solid rgba(239, 199, 22, 0.808);
-    outline: 2px solid rgba(239, 199, 22, 0.808);
-    outline-offset: -2px;
-    transition: outline-offset 200ms ease;
-    font-size: 1.5rem;
-    background: transparent;
-    color: rgba(239, 199, 22, 0.808);
-    border-radius: 15px;
-    padding: 5px 15px;
-  }
-
-  #slide1 button:hover{
-    outline-offset: 3px;
-  }
-*/
-
-
-/*
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
-  }*/
 
   button {
     position: relative;

@@ -11,11 +11,12 @@ def home_page():
 # Flask APP initialisation. Our Python package
 @app.route('/shop')
 def shop_page():
-    #items=[{'id':1,'name':'Cool badge','price':60},
-          # {'id':2,'name':'Rare badge','price':150},
-           #{'id':3,'name':'Premium badge','price':300}
-           #]
-    return render_template('shop.html',items=items)
+    """items=[{'id':1,'name':'Cool badge','price':60},
+        {'id':2,'name':'Rare badge','price':150},
+        {'id':3,'name':'Premium badge','price':300}
+        ]"""
+        
+    return render_template('shop.html',item_name='Phone')
 
 
 
