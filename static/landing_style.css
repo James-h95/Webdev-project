@@ -79,7 +79,7 @@ h2{
 }
 
 
-  button {
+  .play_button {
     position: relative;
     overflow: hidden;
     /*background: #42455a;*/
@@ -99,10 +99,10 @@ h2{
     /*text-shadow: 0 0 40px white;*/
   
   }
-  button:active{
+  .play_button:active{
     transform: scale(0.95);
   }
-  button::before{
+  .play_button::before{
     content: '';
     position: absolute;
     inset: -1px 30px;
@@ -114,11 +114,11 @@ h2{
     box-shadow: 0 0 29px white;
   }
 
-  button:hover::before{
+  .play_button:hover::before{
     inset: -1px;
   }
 
-  button::after{
+  .play_button::after{
     content: '';
     position: absolute;
     inset: 3px;
