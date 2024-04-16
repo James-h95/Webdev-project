@@ -6,7 +6,7 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/landing')
 def landing_page():
-    return render_template('landing.html')
+    return render_template('base.html')
 
 # Flask APP initialisation. Our Python package
 @app.route('/shop')
