@@ -4,23 +4,26 @@ from flask import Flask, render_template
 app = Flask(__name__)
 
 @app.route('/')
-@app.route('/home')
-def home_page():
+@app.route('/landing')
+def landing_page():
     return render_template('landing.html')
 
 # Flask APP initialisation. Our Python package
 @app.route('/shop')
 def shop_page():
-    """items=[{'id':1,'name':'Cool badge','price':60},
-        {'id':2,'name':'Rare badge','price':150},
-        {'id':3,'name':'Premium badge','price':300}
-        ]"""
+    # Example dictionaries to use
+    items=[{'id':1,'name':'Simple badge','price':60, 'rarity':"Common"},
+        {'id':2,'name':'Black Judo belt','price':150, 'rarity':"Rare"},
+        {'id':3,'name':'Shiny star','price':300, 'rarity':"Legendary"}
+        ]
         
-    return render_template('shop.html',item_name='Phone')
+    return render_template('shop.html',items=items)
+
+@app.route('/home')
+def home_page():
+    return render_template('home.html')
 
 
-
-# Work on Flask to make the chat
 @app.route('/chat')
 def play_page():
     return render_template('chat.html')

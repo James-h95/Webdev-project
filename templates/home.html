@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% block title %}
+    Home page
+{% endblock %}
+
+{% block content %}
+     <!-- FRONT SECTION-->
+     <div class="text-center callToAction">
+        <h1>Tic Tac Twist</h1>
+        <h2>THE ULTIMATE TIC-TAC-TOE EXPERIENCE IN ONE SITE</h2>
+
+        <button class = "play_button" class="mt-5">
+            <span>Play now!</span>
+        </button>
+    </div>
+
+    <!-- GAME INFO SECTION-->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class = "col-sm-6 col-md-6 col-xs-12"> 
+                <img id="img1" src="https://png.pngtree.com/thumb_back/fw800/background/20221008/pngtree-bright-purple-square-mosaic-for-textural-background-glass-violet-digital-photo-image_39571226.jpg">
+            </div>
+            <div class="col-sm-6 col-md-6 col-xs-12 mt-5 info">
+                <h1 class="text-center">Connect</h1>
+                <h2 class="text-center">Make friends, challenge them to games, and begin climbing the ranks!</h2>
+            </div>
+        </div>
+
+        <div class="row row2 justify-content-center">
+            <div class = "col-sm-6 col-md-6 col-xs-12 mt-5 info"> 
+                <h1 class="text-center">Earn</h1>
+                <h2 class="text-center">The more you play, the more opportunities you have to collect coins and customise your avatar and gameplay.</h2>
+            </div>
+            <div class="col-xs-4 ml-5 mt-5 justify-content-center">
+                <img id="img1" src="https://png.pngtree.com/thumb_back/fw800/background/20221008/pngtree-bright-purple-square-mosaic-for-textural-background-glass-violet-digital-photo-image_39571226.jpg">
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="text-center">
+        © 2024 TicTacTwist.com, or its affiliates. All rights reserved. 
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <style>
+        .callToAction h1{
+            font-size: 8vw;
+            font-family: "Kanit", sans-serif;
+            font-weight: 500;
+            font-style: normal;
+            /*color:goldenrod;*/
+            color: aliceblue;
+            text-shadow: 0 0 40px white;
+            margin-top: 150px;
+        }
+
+        .play_button {
+            position: relative;
+            overflow: hidden;
+            /*background: #42455a;*/
+            background: rgb(43, 21, 71);
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            font-family: "Kanit",sans-serif;
+            border: none;
+            font-size: 1.1rem;
+            color: #ffffffdd;
+            /*color: aliceblue;*/
+            font-weight: 390;
+            cursor: pointer;
+            z-index: 1;
+            font-size: 23px;
+            /*text-shadow: 0 0 40px white;*/
+        
+        }
+        .play_button:active{
+            transform: scale(0.95);
+        }
+        .play_button::before{
+            content: '';
+            position: absolute;
+            inset: -1px 30px;
+            /*background: goldenrod;*/
+            background: whitesmoke;
+            transition: 500ms;
+            animation: rotate 4s linear infinite;
+            z-index: -1;
+            box-shadow: 0 0 29px white;
+        }
+
+        .play_button:hover::before{
+            inset: -1px;
+        }
+
+        .play_button::after{
+            content: '';
+            position: absolute;
+            inset: 3px;
+            border-radius: 50%;
+            /*background: #3c3c3f;*/
+            background: rgb(56, 40, 76);
+            z-index: -1;
+            
+        }
+        @keyframes rotate {
+            0%{
+            transform: rotate(0deg);
+            }
+            100%{
+            transform: rotate(360deg);
+            }
+        }
+
+        .container{
+        margin-top:300px;
+        }
+
+        #img1 {
+        border-radius:50%;
+        width: 30vw;
+        }
+
+        .row2{
+        margin-top:200px;
+        }
+
+        .info h1{
+            font-size: 6vw;
+            font-family: "Kanit", sans-serif;
+            font-weight: 500;
+            font-style: normal;
+            /*color:goldenrod;*/
+            color: aliceblue;
+            text-shadow: 0 0 40px white;
+        }
+
+        .info h2{
+        font-size: 2.5vw;
+        color: #b2a9b8;
+        }
+    </style>
+{% endblock %}

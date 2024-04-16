@@ -52,7 +52,7 @@ body {
 .nav-link:hover{
     color: whitesmoke;
 }
-
+/*
 .carousel-item {
     height: 650px;
 }
@@ -60,7 +60,7 @@ body {
 .carousel-item div {
     height: 100%;
     margin-top: 7em;
-}
+}*/
 
 .callToAction h1{
     font-size: 8vw;
