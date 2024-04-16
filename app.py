@@ -4,9 +4,9 @@ from flask import Flask, render_template
 app = Flask(__name__)
 
 @app.route('/')
-@app.route('/landing')
+@app.route('/home')
 def landing_page():
-    return render_template('base.html')
+    return render_template('home.html')
 
 # Flask APP initialisation. Our Python package
 @app.route('/shop')
@@ -19,9 +19,6 @@ def shop_page():
         
     return render_template('shop.html',items=items)
 
-@app.route('/home')
-def home_page():
-    return render_template('home.html')
 
 
 @app.route('/chat')
