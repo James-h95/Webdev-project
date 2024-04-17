@@ -1,19 +1,17 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Share+Tech+Mono&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@100..700&display=swap');
 
 
-html {
-    height: 100%;
-}
-
 body {
     background: rgb(48,23,79);
     background: radial-gradient(circle, rgba(48,23,79,1) 0%, rgba(10,1,20,1) 100%);
     /*background: radial-gradient(circle, rgb(52, 42, 123) 0%, rgba(10,1,20,1) 100%) ;*/
-    height: 100%;
-    background-repeat: no-repeat;
+    /*height: 100%;*/
+    /*max-height: 100%;*/
+    /*background-repeat: no-repeat;*/
     font-size: 1rem;
     color: #c2c2c2;
     /*display:flex;
@@ -27,6 +25,24 @@ body {
     justify-content: center;
   }*/
 
+.navbar{
+  backdrop-filter: blur(10px);
+}
+
+/* Sticky class added by JS when scrolling*/
+.sticky{
+  position: sticky;
+  top:0;
+  z-index: 1000;
+  width: 100%;
+  box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.5); 
+  
+  /*The x-offset, which represents the horizontal shadow position
+  The y-offset, which represents the shadow’s position vertically
+  The blur radius affects the sharpness of the shadow; higher values mean lighter shadows, and vice versa
+  The fourth value defines the spread*/
+}
+
 .nav-link{
     font-size: 1.14rem;
     /*font-family:  monospace;*/
@@ -37,7 +53,7 @@ body {
 .nav-link:hover{
     color: whitesmoke;
 }
-
+/*
 .carousel-item {
     height: 650px;
 }
@@ -45,61 +61,32 @@ body {
 .carousel-item div {
     height: 100%;
     margin-top: 7em;
-}
+}*/
 
-h1{
-    font-size: 60px;
+.callToAction h1{
+    font-size: 8vw;
     font-family: "Kanit", sans-serif;
     font-weight: 500;
     font-style: normal;
     /*color:goldenrod;*/
     color: aliceblue;
     text-shadow: 0 0 40px white;
+    margin-top: 200px;
 }
 
 h2{
-    font-size:20px;
+    font-size:2vw;
     color:lightslategray;
 }
 
-/*#slide1 button{
-    border-radius: 20%;
-}*/
 
-/*
-#slide1 button{
-    border: 2px solid rgba(239, 199, 22, 0.808);
-    outline: 2px solid rgba(239, 199, 22, 0.808);
-    outline-offset: -2px;
-    transition: outline-offset 200ms ease;
-    font-size: 1.5rem;
-    background: transparent;
-    color: rgba(239, 199, 22, 0.808);
-    border-radius: 15px;
-    padding: 5px 15px;
-  }
-
-  #slide1 button:hover{
-    outline-offset: 3px;
-  }
-*/
-
-
-/*
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
-  }*/
-
-  button {
+  .play_button {
     position: relative;
     overflow: hidden;
     /*background: #42455a;*/
     background: rgb(43, 21, 71);
-    width: 87px;
-    height: 87px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     font-family: "Kanit",sans-serif;
     border: none;
@@ -109,13 +96,14 @@ h2{
     font-weight: 390;
     cursor: pointer;
     z-index: 1;
+    font-size: 23px;
     /*text-shadow: 0 0 40px white;*/
   
   }
-  button:active{
+  .play_button:active{
     transform: scale(0.95);
   }
-  button::before{
+  .play_button::before{
     content: '';
     position: absolute;
     inset: -1px 30px;
@@ -127,12 +115,11 @@ h2{
     box-shadow: 0 0 29px white;
   }
 
-  button:hover::before{
+  .play_button:hover::before{
     inset: -1px;
   }
 
-
-  button::after{
+  .play_button::after{
     content: '';
     position: absolute;
     inset: 3px;
@@ -151,7 +138,33 @@ h2{
     }
   }
 
+.container{
+  margin-top:300px;
+}
 
+#img1 {
+  border-radius:50%;
+  width: 30vw;
+}
+
+.row2{
+  margin-top:200px;
+}
+
+.info h1{
+  font-size: 6vw;
+  font-family: "Kanit", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  /*color:goldenrod;*/
+  color: aliceblue;
+  text-shadow: 0 0 40px white;
+}
+
+.info h2{
+  font-size: 2.5vw;
+  color: #b2a9b8;
+}
 
 .carousel-indicators{
     position: absolute;

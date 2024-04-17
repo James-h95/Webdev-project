@@ -6,6 +6,36 @@
     <title>Chat page</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/landing_style.css">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+
+        var num_messages = 0;
+
+        $(document).on("click","#button",function(){
+            var new_msg = $("#msg_input").val();
+            if (new_msg != "") {
+                num_messages += 1;
+
+                var time = new Date(Date.now());
+                var month_string = ["Jan", "Feb", "Mar", "Apr", 
+                                    "May", "Jun", "Jul", "Aug", "Sep", 
+                                    "Oct", "Nov", "Dec"];
+                var am_pm = time.getHours() > 12 ? "PM" : "AM"; 
+
+                var time_string = time.getHours() + ":" + time.getMinutes() + " " + am_pm 
+                                                  + " | " + month_string[time.getMonth()-1] 
+                                                  + " " + time.getDate();
+
+                $("#msg_output").append("<span>" + time_string + "</span>");
+                $("#msg_output").append("<p>" + "User: " + new_msg + "</p>");
+                
+                $("#chat_feed").scrollTop(num_messages*1000);
+                
+                $("#msg_input").val("");
+            }
+        });
+        </script>
 </head>
 <body>
     <!-- NAVBAR HERE-->

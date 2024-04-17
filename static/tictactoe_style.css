@@ -1,33 +1,35 @@
-html{
-    height:100%;
+@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+h1{
+    font-size: 50px;
+    font-family: "Kanit", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    color:white;
+    text-shadow: 0 0 40px white;
 }
 
-body {
-    background: rgb(48,23,79);
-    background: radial-gradient(circle, rgba(48,23,79,1) 0%, rgba(10,1,20,1) 100%);
-    height: 100%;
-    background-repeat: no-repeat;
+h2{
+    color: white;
 }
 
-h1 { 
-    color: orangered; 
-    margin-bottom: -5px; 
-} 
-p { 
-    margin-bottom: -10px; 
-} 
+#player1{
+    height:50px;
+}
+
 .ui { 
     display: flex; 
-    flex-direction: column; 
-    align-items: center; 
+    flex-direction: column;
 } 
+
 .row { 
     display: flex; 
 } 
+
 .cell { 
     border: none; 
-    width: 80px; 
-    height: 80px; 
+    width: 130px; 
+    height: 130px; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
@@ -35,57 +37,90 @@ p {
     text-align: center; 
     cursor: pointer; 
 }   
+
 .cell:active { 
     outline: none; 
 } 
+
+:disabled{
+    background: #ede1ed;
+}
+
 /* 3*3 Grid */
 #b1{ 
-    border-bottom: 1px solid gray; 
-    border-right: 1px solid gray; 
+    border-left: 6px solid #794c79;
+    border-top: 6px solid #c6a7c6;
+    border-width: 20px;
+    border-top-left-radius: 20px;
 } 
   
 #b2 { 
-    border-bottom: 1px solid gray; 
-    border-right: 1px solid gray; 
-    border-left: 1px solid gray; 
+    border-top: 6px solid #c6a7c6;
+    border-width: 20px;
+    border-left: solid #c6a7c6;
+    border-right: solid #c6a7c6;
+    
 } 
   
 #b3 { 
-    border-bottom: 1px solid gray; 
-    border-left: 1px solid gray; 
+    border-right: 6px solid #794c79;
+    border-top: 6px solid #c6a7c6;
+    border-width: 20px;
+    border-top-right-radius: 20px;
 } 
   
 #b4 { 
-    border-top: 1px solid gray; 
-    border-bottom: 1px solid gray; 
-    border-right: 1px solid gray; 
+    border-left: 6px solid #794c79;
+    border-width: 20px;
+    border-bottom: solid #794c79;
+    border-top: solid #794c79;
 } 
-      
-#b5 { 
-    border: 1px solid gray; 
-} 
+
+#b5 {
+    border-left: solid #c6a7c6;
+    border-right: solid #c6a7c6;
+    border-bottom: solid #794c79;
+    border-top: solid #794c79;
+}
   
 #b6 { 
-    border-top: 1px solid gray; 
-    border-bottom: 1px solid gray; 
-    border-left: 1px solid gray; 
+    border-right: 6px solid #794c79;
+    border-width: 20px;
+    border-bottom: solid #794c79;
+    border-top: solid #794c79;
 } 
   
 #b7 { 
-    border-top: 1px solid gray; 
-    border-right: 1px solid gray; 
+    border-left: 6px solid #794c79;
+    border-bottom: 6px solid #c6a7c6;
+    border-width: 20px;
+    border-bottom-left-radius: 20px;
 } 
   
 #b8 { 
-    border-top: 1px solid gray; 
-    border-right: 1px solid gray; 
-    border-left: 1px solid gray; 
+    border-bottom: 6px solid #c6a7c6;
+    border-width: 20px;
+    border-left: solid #c6a7c6;
+    border-right: solid #c6a7c6;
 } 
   
 #b9 { 
-    border-top: 1px solid gray; 
-    border-left: 1px solid gray; 
+    border-right: 6px solid #794c79;
+    border-bottom: 6px solid #c6a7c6;
+    border-width: 20px;
+    border-bottom-right-radius: 20px;
 } 
+
+.chat{
+    background-color:#999999;
+    opacity: 0.5;
+    width: 300px; 
+}
+
+.chat h2{
+    font-family: 
+}
+
 /* Reset Button */
 #but { 
     box-sizing: border-box; 
@@ -97,7 +132,6 @@ p {
     font-family: Verdana, 
         Geneva, Tahoma, sans-serif; 
   
-    background-color: whitesmoke; 
     color: dodgerblue; 
     font-size: 20px; 
     cursor: pointer; 
@@ -115,10 +149,3 @@ p {
 #main { 
     text-align: center; 
 } 
-  
-/* Game Instruction Text */
-#ins { 
-    font-family: Verdana,Geneva,  
-                    Tahoma, sans-serif; 
-    color: dodgerblue; 
-}

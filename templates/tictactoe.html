@@ -1,68 +1,112 @@
 <!DOCTYPE html> 
-<html> 
-      
-<head> 
-    <meta name="viewport" content= 
-        "width=device-width, initial-scale=1.0"> 
-    <!-- CSS file Included -->
-    <link rel="stylesheet" type="text/css" href="tictactoe_style.css"> 
-    <!-- JavaScript file included -->
-    <script src="tictactoe_gameplay.js"></script> 
-</head> 
+<html>  
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tic Tac Twist</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/landing_style.css">
+    <link rel="stylesheet" href="/static/tictactoe_style.css">
+</head>
   
-<body> 
-    <div id="main"> 
-        <h1>TIC TAC TOE</h1> 
-        <p id="ins"> 
-              Game starts by just Tap on 
-            box<br><br>First Player starts as 
-            <b>Player X </b>And Second Player as  
-            <b>Player 0</b> 
-        </p> 
-        <br><br> 
-        <div class = "ui"> 
-            <div class="row"> 
-                <input type="text" id= "b1" 
-                       class="cell" onclick="myfunc_3(); myfunc();" 
-                       readonly> 
-                <input type="text" id= "b2" 
-                       class="cell" onclick="myfunc_4(); myfunc();" 
-                       readonly> 
-                <input type="text" id= "b3" class="cell" 
-                       onclick="myfunc_5(); myfunc();" 
-                       readonly> 
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark">
+        <!--<div class="container-fluid">-->
+            <a class="navbar-brand kanit-regular" style="color: #ffffffdd; font-size: 1.4rem;"  href="#">
+                <!--<img src="static/deliverables/logo1.png" alt="logo" style="width:86px;height:69px;"><section></section>-->
+                Tic-Tac-Twist
+            </a>
+            <div class="collapse navbar-collapse kanit-light" id="navbarNav">
+                <!-- List 1-->
+                <ul class="navbar-nav">
+                    <!--<li class="nav-item">
+                        <a class="nav-link mr-3" style="color: #ffffffdd; font-size: 1.4rem;" href="#">Tic-Tac-Twist</a>
+                    </li>-->
+                    <li class="nav-item">
+                      <a class="nav-link" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Play</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Connect</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Shop</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#">Stats</a>
+                      </li>
+                  </ul>
+                <!-- List 2-->
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Register</a>
+                    </li>
+                </ul>
+            </div>
+    </nav>
+    <br><br> 
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div>
+                <img id="player1" src="https://static.vecteezy.com/system/resources/previews/009/292/244/original/default-avatar-icon-of-social-media-user-vector.jpg">
+            </div>
+
+            <div class = "mr-5 col-xs-8 ui mt-5 d-flex justify-content-center"> 
+                <div class="row"> 
+                    <input type="text" id= "b1" 
+                            class="cell" onclick="myfunc_3(); myfunc();" 
+                            readonly> 
+                    <input type="text" id= "b2" 
+                            class="cell" onclick="myfunc_4(); myfunc();" 
+                            readonly> 
+                    <input type="text" id= "b3" class="cell" 
+                            onclick="myfunc_5(); myfunc();" 
+                            readonly> 
+                </div> 
+                <div class="row"> 
+                    <input type="text" id= "b4" 
+                            class="cell" onclick="myfunc_6(); myfunc();" 
+                            readonly> 
+                    <input type="text" id= "b5" 
+                            class="cell" onclick="myfunc_7(); myfunc();" 
+                            readonly> 
+                    <input type="text" id= "b6" 
+                            class="cell" onclick="myfunc_8(); myfunc();" 
+                            readonly> 
+                </div> 
+                <div class="row"> 
+                    <input type="text" id= "b7" 
+                            class="cell" onclick="myfunc_9(); myfunc();" 
+                            readonly> 
+                    <input type="text" id= "b8" 
+                            class="cell" onclick="myfunc_10();myfunc();" 
+                            readonly> 
+                    <input type="text" id= "b9" 
+                            class="cell" onclick="myfunc_11();myfunc();" 
+                            readonly> 
+                </div> 
             </div> 
-            <div class="row"> 
-                <input type="text" id= "b4" 
-                       class="cell" onclick="myfunc_6(); myfunc();" 
-                       readonly> 
-                <input type="text" id= "b5" 
-                       class="cell" onclick="myfunc_7(); myfunc();" 
-                       readonly> 
-                <input type="text" id= "b6" 
-                       class="cell" onclick="myfunc_8(); myfunc();" 
-                       readonly> 
-            </div> 
-            <div class="row"> 
-                <input type="text" id= "b7" 
-                       class="cell" onclick="myfunc_9(); myfunc();" 
-                       readonly> 
-                <input type="text" id= "b8" 
-                       class="cell" onclick="myfunc_10();myfunc();" 
-                       readonly> 
-                <input type="text" id= "b9" 
-                       class="cell" onclick="myfunc_11();myfunc();" 
-                       readonly> 
-            </div> 
-        </div> 
-        <br><br><br> 
-        
-        <button id="but" onclick="myfunc_2()"> 
-            RESET 
-        </button> 
-        <br><br> 
-        <p id="print"></p> 
-    </div> 
+
+            <div class="col-xs-4 ml-5 mt-5 d-flex justify-content-center chat">
+                <h2>CHAT</h2>
+            </div>
+        </div>
+    </div>
+    <br><br><br> 
+
+    <p id="print"></p> 
+
+    <script src="tictactoe_gameplay.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body> 
   
 </html>

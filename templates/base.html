@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        {% block title%}
+
+        {% endblock %}
+    </title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="/static/landing_style.css"> -->
+</head>
+
+<body>
+<!-- NAVBAR HERE-->
+  <nav id="navWide" class="shadow-lg navbar navbar-expand-md navbar-dark fixed-top">
+    <!--<div class="container-fluid">-->
+        <a class="navbar-brand kanit-regular" style="color: #ffffffdd; font-size: 1.4rem;"  href="#">
+            <img src="/static/deliverables/logo.png" style="height:50px;width:auto;" alt="logo">
+        </a>
+        <div class="collapse navbar-collapse kanit-light" id="navbarNav">
+            <!-- List 1-->
+            <ul class="navbar-nav">
+                <!--<li class="nav-item">
+                    <a class="nav-link mr-3" style="color: #ffffffdd; font-size: 1.4rem;" href="#">Tic-Tac-Twist</a>
+                </li>-->
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Chat</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Connect</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Shop</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Stats</a>
+                </li>
+            </ul>
+            <!-- List 2-->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Register</a>
+                </li>
+            </ul>
+        </div>
+    <!--</div>-->
+  </nav>
+
+  <!-- Navbar side toggle for when it view becomes narrow-->
+  <div id="navShort" class="sidebar">
+    <!--<a class="sidebar-brand" style="color: #ffffffdd; font-size: 1.4rem;" href="#">Tic-Tac-Twist</a>-->
+    <a class="sidebar-toggler">&times;</a>
+    <div class="mt-3">
+        <a class='ml-3' href="#">
+            <img class='mb-4' src="/static/deliverables/logo.png" style="height:70px;width:auto;" alt="logo">
+        </a>
+        <a class="nav-link" aria-current="page" href="#">Home</a>
+        <a class="nav-link" href="#">Chat</a>
+        <a class="nav-link" href="#">Connect</a>
+        <a class="nav-link" href="#">Shop</a>
+        <a class="nav-link mb-5" href="#">Stats</a>
+        <a class="nav-link mt-5" href="#">Login</a>
+        <a class="nav-link" href="#">Register</a>
+    </div>
+  </div>
+
+  <a class="ml-3 mt-3" id="toggleBar">☰</a>
+  <!--LINK NOT WORKING-->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script>
+    $(document).ready(function () {
+      $("#toggleBar").on("click", function() {
+          $('.sidebar').width('180px');
+          $('#toggleBar').css('opacity', '0');
+      });
+
+      $(".sidebar-toggler").on("click", function(){
+          $('.sidebar').width('0');
+          $('#toggleBar').css('opacity', '100');
+      });
+    });
+  </script>
+
+      {% block content %}
+      {% endblock %}
+    <!-- Future content here-->
+</body>
+
+
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Share+Tech+Mono&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@100..700&display=swap');
+
+
+  body {
+      background: rgb(48,23,79);
+      background: radial-gradient(circle, rgba(48,23,79,1) 0%, rgba(10,1,20,1) 100%);
+      font-size: 1rem;
+      color: #c2c2c2;
+  }
+
+  .navbar{
+    backdrop-filter: blur(10px);
+  }
+
+  /* Sticky class added by JS when scrolling*/
+  .sticky{
+    position: sticky;
+    top:0;
+    z-index: 1000;
+    width: 100%;
+    box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.5); 
+    
+    /*The x-offset, which represents the horizontal shadow position
+    The y-offset, which represents the shadow’s position vertically
+    The blur radius affects the sharpness of the shadow; higher values mean lighter shadows, and vice versa
+    The fourth value defines the spread*/
+  }
+
+  .nav-link{
+      font-size: 1.14rem;
+      /*font-family:  monospace;*/
+      /*font-weight: 500;*/
+      color: #cac8c8;
+  }
+
+  .nav-link:hover{
+      color: whitesmoke;
+  }
+
+  h2{
+      font-size:2vw;
+      color:lightslategray;
+  }
+
+  .sidebar{
+    height: 100vh;
+    width:0;
+    position:fixed;
+    z-index:2;
+    top:0;
+    left:0;
+    overflow-x:hidden;
+    transition: 0.5s;
+    display:none;
+    background-color:rgba(48,23,79,1);
+  }
+  
+  .sidebar-toggler{
+    position:absolute;
+    font-size:40px;
+    cursor:pointer;
+    margin-left:130px;
+  }
+  
+  .sidebar .nav-link{
+    transition: 0.4s;
+  }
+  
+  #toggleBar{
+    position:relative;
+    display: none;
+    transition:0.4s;
+    color:lightslategray;
+    cursor:pointer;
+    font-size:6vw;
+  }
+  
+  @media(max-width:768px){
+    .sidebar{
+      display:block;
+    }
+  
+    #toggleBar{
+      display:block;
+    }
+  
+    .navbar-brand{
+      display:none;
+    }
+  
+    .navbar{
+      backdrop-filter:unset;
+    }
+  }
+  
+
+  .kanit-thin {
+    font-family: "Kanit", sans-serif;
+    font-weight: 100;
+    font-style: normal;
+  }
+
+  .kanit-extralight {
+    font-family: "Kanit", sans-serif;
+    font-weight: 200;
+    font-style: normal;
+  }
+
+  .kanit-light {
+    font-family: "Kanit", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+  }
+
+  .kanit-regular {
+    font-family: "Kanit", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .kanit-medium {
+    font-family: "Kanit", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  .kanit-semibold {
+    font-family: "Kanit", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  .kanit-bold {
+    font-family: "Kanit", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  .kanit-extrabold {
+    font-family: "Kanit", sans-serif;
+    font-weight: 800;
+    font-style: normal;
+  }
+
+  .kanit-black {
+    font-family: "Kanit", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+  }
+
+  .kanit-thin-italic {
+    font-family: "Kanit", sans-serif;
+    font-weight: 100;
+    font-style: italic;
+  }
+
+  .kanit-extralight-italic {
+    font-family: "Kanit", sans-serif;
+    font-weight: 200;
+    font-style: italic;
+  }
+
+  .kanit-light-italic {
+    font-family: "Kanit", sans-serif;
+    font-weight: 300;
+    font-style: italic;
+  }
+
+  .kanit-regular-italic {
+    font-family: "Kanit", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  .kanit-medium-italic {
+    font-family: "Kanit", sans-serif;
+    font-weight: 500;
+    font-style: italic;
+  }
+
+  .kanit-semibold-italic {
+    font-family: "Kanit", sans-serif;
+    font-weight: 600;
+    font-style: italic;
+  }
+
+  .kanit-bold-italic {
+    font-family: "Kanit", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+  }
+
+  .kanit-extrabold-italic {
+    font-family: "Kanit", sans-serif;
+    font-weight: 800;
+    font-style: italic;
+  }
+
+  .kanit-black-italic {
+    font-family: "Kanit", sans-serif;
+    font-weight: 900;
+    font-style: italic;
+  }
+
+</style>
+</html>

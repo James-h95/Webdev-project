@@ -1,60 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tic Tac Twist</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="/static/landing_style.css">
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %}
+    Shop/Market page
+{% endblock %}
 
-    <!-- NAVBAR HERE-->
-    <nav class="navbar navbar-expand-md navbar-dark">
-        <!--<div class="container-fluid">-->
-            <a class="navbar-brand kanit-regular" style="color: #ffffffdd; font-size: 1.4rem;"  href="#">
-                <!--<img src="static/deliverables/logo1.png" alt="logo" style="width:86px;height:69px;"><section></section>-->
-                Tic-Tac-Twist
-            </a>
-            <div class="collapse navbar-collapse kanit-light" id="navbarNav">
-                <!-- List 1-->
-                <ul class="navbar-nav">
-                    <!--<li class="nav-item">
-                        <a class="nav-link mr-3" style="color: #ffffffdd; font-size: 1.4rem;" href="#">Tic-Tac-Twist</a>
-                    </li>-->
-                    <li class="nav-item">
-                      <a class="nav-link" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#">Play</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#">Connect</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Shop</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">Stats</a>
-                      </li>
-                  </ul>
-                <!-- List 2-->
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Register</a>
-                    </li>
-                </ul>
-            </div>
-        <!--</div>-->
-    </nav>
+{% block content %}
+    <h1 class="title">Shop/Market</h1>
 
-    <h1> Shopping page!</h1>
+    <!-- Iterate over list provided in app.py-->
+    <!--Use temporary bootatrap table to display the items in our 'Shop'-->
+    <table class="table table-hover table-dark table-striped">
+        <thead>
+            <tr>
+                <!-- Our columns-->
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Rarity</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Our rows-->
+            {% for item in items %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>${{ item.price }}</td>
+                    <td>{{ item.rarity }}</td>
+                    <td>
+                        <button class="btn btn-outline btn-info">More info</button>
+                        <button class="btn btn-outline btn-success">Purchase</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-</body>
-</html>
+    <style>
+        /*Required due to the fixed-top bootstrap attribute in our navbar.It acts as the navbar doesnt even exist on the page, which messes up spacing*/
+        .title{
+            margin-top: 90px;
+        }
+    </style>
+{% endblock %}
