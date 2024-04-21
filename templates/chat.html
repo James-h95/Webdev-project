@@ -88,10 +88,8 @@
 <div class="chat-container py-3">
     <!-- Message header section-->
     <div class="msg-header d-flex ">
-            <img src="" alt="" class="msgimg">
-            <div class="active">
-                <h2 class="active mt-3 ml-2 lead display-5 mb-2" style="font-weight: 1rem; color: aliceblue;"> @ username</h2>
-            </div>
+        <img src="" alt="" class="msgimg">
+        <h2 class="active mt-3 ml-2 lead display-5 mb-2" style="font-weight: 1rem; color: aliceblue;">@username</h2>
     </div>
     <!-- Message header ends-->
     <!-- Chat inbox starts -->
@@ -106,7 +104,7 @@
                                 <img src="path_to_profile_image_of_sender.jpg" class="profile-icon recieved" alt="">
                                 <div class="received-msg-inbox">
                                     <p> Received Message =)</p>
-                                    <span class="time-left">18:06 PM | July 24 </span>
+                                    <span class="time-recieved">18:06 PM </span>
                                 </div>
                             </div>
                         </div>
@@ -118,7 +116,7 @@
                                 <img src="" class="profile-icon sent" alt="">
                                 <div class="sent-msg-inbox">
                                     <p> Sent Message =D</p>
-                                    <span class="time-right">18:08 PM | July 24 </span>
+                                    <span class="time-sent">18:08 PM </span>
                                 </div>
                             </div>
                         </div>
@@ -127,16 +125,19 @@
                 </div>
             </div>
             <!-- Suggested messages -->
-            <div class="suggested-messages my-2">
-                <span class="suggested-message" onclick="selectSuggestedMessage('Hello!')">Hello!</span>
-                <span class="suggested-message" onclick="selectSuggestedMessage('Good game!')">Good game!</span>
-                <span class="suggested-message" onclick="selectSuggestedMessage('Nice move!')">Nice move!</span>
-                <!-- Add more suggested messages here -->
-            </div>
-            <!-- Message bottom starts (input field) -->
-            <div class="msg-bottom input-group mt-4 d-flex">
-                <input type="text" class="form-control" placeholder="send a message...">
+                <div class="suggested-messages my-2 d-flex">
+                    <span class="suggested-message")">Hello!</span>
+                    <span class="suggested-message")">Good game!</span>
+                    <span class="suggested-message")">Nice move!</span>
+                    <span class="suggested-message")">&#128516</span>
+                    <span class="suggested-message")">&#128511</span>
+                    <span class="suggested-message")">&#128128</span>
+                    <!-- Add more suggested messages here -->
                 </div>
+            <!-- Message bottom starts (input field) -->
+            <div class="msg-bottom input-group mt-6 d-flex">
+                <input type="text" id = "msg_input" class="form-control" placeholder="Send a message...">
+                <button type="submit" class="message-submit"> Send</button>
             </div>
             <!-- Message bottom ends -->
         </div>
@@ -148,7 +149,7 @@
 
 <style>
 .chat-container {
-    background-color: #010101; /* Example color, change as needed */
+    background-color: #080709; /* Example color, change as needed */
     border-radius: 10px;
     width: 50%;
     margin:auto;
@@ -180,11 +181,12 @@ img {
 .msg-header h2 {
     margin: 0 auto;
     flex-grow: 1; /* Allows the username to grow and fill the space */
-    text-align: center; 
+    text-align: start; 
     padding: 0;
     color: #fff;
-    font-size: 20px;
-    padding-bottom: 8px;
+    font-size: 18px;
+    padding-bottom: 0px;
+    font-weight:400;
     
 }
 
@@ -209,26 +211,53 @@ img {
     padding-left: 15px;
     padding-right: 15px;
     width: 100%;
-    border-radius: 50%;
+    margin-top: 0;
 }
 /* Styling the input field */
 
 
 .input-group .form-control {
-    border-radius: 15px; 
+    border-radius: 20px !important; 
     background-color: #101014; 
     color: #ffffff; 
     border: 1px solid #eeefef; 
     padding: 10px 20px; 
     font-size: 12px; 
+    margin: 0;
+    bottom: 0px;
     box-shadow: inset 0 2px 5px rgba(0,0,0,0.2); 
 }
 
 /* To remove the border focus color */
 .input-group .form-control:focus {
-    box-shadow: none; /* Removes the default Bootstrap shadow */
-    border-color: #484e78; /* A lighter border for focus */
+    box-shadow: none;
+    border-color: #484e78; 
 }
+
+/* Send button */
+
+.message-submit {
+    position: absolute;
+    z-index: 3;
+    top: 6px;
+    right: 25px;
+    font-size: 9px;
+    border: none;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #484e78;
+    border-radius: 10px;
+    color: #eeefef;
+    outline: none !important;
+}
+
+.message-submit:hover {
+    border: #eeefef solid 1px;
+}
+
+
 
 /* Styling the incoming message */
 
@@ -236,7 +265,7 @@ img {
     width: 20px; /* Adjust size as needed */
     height: 20px;
     background-color: #d8c9c9; /* Placeholder color, use actual image */
-    border-radius: 10%; /* Slightly rounded corners for the square */
+    border-radius: 10%; 
     background-size: cover;
     margin-right: 20px;
     margin-left: 20px;
@@ -248,17 +277,17 @@ img {
 .received-msg-inbox, .sent-msg-inbox {
     border-radius: 12px;
     font-size: 12px;
-    padding: 12px;
+    padding: 10px;
     margin-left: 2px;
     margin-right:2px ;
-    margin-top: 5px;
+    margin-top: 2px;
     display:flex;
     color: rgb(250, 241, 241);
     position:relative;
-    background-color: #343857;
-    top: 0;
-    bottom: 0;
+    background-color: #484e78;
     word-wrap: break-word;
+    padding-bottom: 0px;
+    align-items: center;
 }
 
 
@@ -270,7 +299,7 @@ img {
     float: left;
     margin-right: 10px;
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start;
     margin-bottom: 8px;
 }
 .received-msg-inbox {
@@ -294,11 +323,10 @@ img {
 .sent-msg-inbox {
     justify-content: flex-end;
     float: right;
-    padding: 10px;}
+    padding-bottom: 0px;
+    align-items: flex-end;}
 
-.msg-page {
-    overflow: auto;
-}
+
 /* Clear floats */
 .received-chats:after, .sent-chats:after {
     content: "";
@@ -307,46 +335,61 @@ img {
 }
 
 /* Style time text */
-.time-left, .time-right {
-    display: block;
-    margin-top: 25px;
-    font-size: 7px;
+.time-recieved {
+    display:block;
+    font-size: 10px;
     color: #999;
+    position:absolute;
+    float: left;
+    top: 45px;
+}
+.time-sent {
+    display: block;
+    font-size: 10px;
+    color: #999;
+    position:absolute;
+    margin-top: 0;
+    top: 44px;
 }
 
+
+/* style suggested messages button*/
 .suggested-messages {
     display: flex;
     justify-content:flex-start;
-    gap: 30px; /* Adds space between the bubbles */
-    padding-left: 40px;
-    padding-bottom: 0px;
+    align-items: center;
+    gap: 6px; /* Adds space between the bubbles */
+    padding-left: 30px;
+    margin-top: 0px;
+    bottom: 30px;
 }
 
 .suggested-message {
-    display: inline-block;
-    background-color: #343857;
-    color: #fff;
-    padding: 2px 15px;
+    display: flex;
+    color: #ffffff;
+    background-color: rgb(19, 19, 20);
+    padding: 8px 8px;
     border-radius: 20px;
     cursor: pointer;
-    font-size: xx-small;
-    user-select: none; /* Prevents the text within the bubble from being selectable */
+    border: solid 1px whitesmoke;
+    font-size: 12px;
     transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
 
 .suggested-message:hover {
-    background-color: #50597b;
+    background-color: #6d7cb1;
 }
 
+@media (max-width: 576px) {
+    .suggested-messages {
+        font-size: 6cap; /* even smaller font size */
+    }
 
 </style>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-
-
-
     </script>
 </body>
 </html>

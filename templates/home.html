@@ -7,7 +7,7 @@
      <!-- FRONT SECTION-->
      <div class="text-center callToAction">
         <h1>Tic Tac Twist</h1>
-        <h2>THE ULTIMATE TIC-TAC-TOE EXPERIENCE IN ONE SITE</h2>
+        <h2 class="mb-5">THE ULTIMATE TIC-TAC-TOE EXPERIENCE IN ONE SITE</h2>
 
         <button class = "play_button" class="mt-5">
             <span>Play now!</span>
@@ -15,38 +15,67 @@
     </div>
 
     <!-- GAME INFO SECTION-->
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class = "col-sm-6 col-md-6 col-xs-12"> 
-                <img id="img1" src="https://png.pngtree.com/thumb_back/fw800/background/20221008/pngtree-bright-purple-square-mosaic-for-textural-background-glass-violet-digital-photo-image_39571226.jpg">
-            </div>
-            <div class="col-sm-6 col-md-6 col-xs-12 mt-5 info">
-                <h1 class="text-center">Connect</h1>
-                <h2 class="text-center">Make friends, challenge them to games, and begin climbing the ranks!</h2>
+
+    <!-- Connect Section-->
+    <section class="connect"> 
+        <div class="container">
+            <div class="row align-items ">
+                <div class = "col-sm-6 col-md-6 col-xs-12"> 
+                    <img id="img1" src="https://png.pngtree.com/thumb_back/fw800/background/20221008/pngtree-bright-purple-square-mosaic-for-textural-background-glass-violet-digital-photo-image_39571226.jpg">
+                </div>
+                <div class="col-sm-6 col-md-6 col-xs-12 mt-5 info">
+                    <h1 class="text-center">Connect</h1>
+                    <h2 class="text-center">Make friends, challenge them to games, and begin climbing the ranks!</h2>
+                </div>
             </div>
         </div>
-
+    </section>
+    <!-- Earn Section-->
+    <section class="Earn"> 
         <div class="row row2 justify-content-center">
             <div class = "col-sm-6 col-md-6 col-xs-12 mt-5 info"> 
                 <h1 class="text-center">Earn</h1>
                 <h2 class="text-center">The more you play, the more opportunities you have to collect coins and customise your avatar and gameplay.</h2>
             </div>
-            <div class="col-xs-4 ml-5 mt-5 justify-content-center">
+            <div class="col-sm-6 col-md-6 col-xs-12">
                 <img id="img1" src="https://png.pngtree.com/thumb_back/fw800/background/20221008/pngtree-bright-purple-square-mosaic-for-textural-background-glass-violet-digital-photo-image_39571226.jpg">
             </div>
         </div>
-    </div>
+
+    </section>
+
+    <!-- How to Play-->
+
+    <section class="how-to-play"> 
+        <div class="container">
+            <div class="row align-items ">
+                <div class = "col-sm-6 col-md-6 col-xs-12"> 
+                    <img id="img1" src="https://png.pngtree.com/thumb_back/fw800/background/20221008/pngtree-bright-purple-square-mosaic-for-textural-background-glass-violet-digital-photo-image_39571226.jpg">
+                </div>
+                <div class="col-sm-6 col-md-6 col-xs-12 mt-5 info">
+                    <h1 class="text-center">How to Play</h1>
+                    <h2 class="text-center">Learn how to play now!</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    
 
 
-    <footer class="text-center">
-        © 2024 TicTacTwist.com, or its affiliates. All rights reserved. 
-    </footer>
+    <footer> © 2024 TicTacTwist.com, or its affiliates. All rights reserved. </footer>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
         .callToAction h1{
             font-size: 8vw;
             font-family: "Kanit", sans-serif;
@@ -116,13 +145,20 @@
             }
         }
 
+        section{
+            padding: 70px 17% 60px;
+        }
+
         .container{
         margin-top:300px;
         }
 
+        
+
         #img1 {
-        border-radius:50%;
-        width: 30vw;
+        border-radius:100%;
+        width: 100%;
+        height: auto;
         }
 
         .row2{
@@ -130,18 +166,29 @@
         }
 
         .info h1{
-            font-size: 6vw;
+            font-size: 60px;
             font-family: "Kanit", sans-serif;
             font-weight: 500;
             font-style: normal;
             /*color:goldenrod;*/
             color: aliceblue;
             text-shadow: 0 0 40px white;
+            margin-bottom: 20px;
+            align-items: flex-end;
         }
 
         .info h2{
-        font-size: 2.5vw;
+        font-size: 20px;
         color: #b2a9b8;
+        line-height: 1.2;
+        margin-bottom: 35px;
+        }
+
+        .footer {
+            color: #ffffff;
+            text-align: center;
+            font-size: 12px;
+            padding: 20px; 
         }
     </style>
 {% endblock %}
