@@ -6,35 +6,73 @@
     <title>Chat page</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <!-- <link rel="stylesheet" href="/static/landing_style.css"> -->
-    
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
     <script>
-        /*
+        function getTime() {
+            var time_obj = new Date(Date.now());
+            
+            var hours = time_obj.getHours();
+            var mins = time_obj.getMinutes()  
+            var am_pm = hours <= 12 ? "am" : "pm"; 
+            
+            // Converting hours from 24hr time to 12hr time
+            hours = hours > 12 ? hours - 12 : hours;
+
+            var time = hours + ":" + mins + " " + am_pm 
+            return time;
+        }
+    </script>
+
+    <script>
+        // JS functions to create sent and received message boxes
+        function createMessage(message_type, message, time) {
+            $(".msg-page").append(
+                            $("<div/>", {"class":String(message_type)+"-chats"}).append( 
+                                $("<div/>", {"class":String(message_type)+"-chat-items"}).append(
+                                    $("<div/>", {"class":String(message_type)+"-msg mt-4"}).append(
+                                        $("<img/>", {"class":"profile-icon "+String(message_type)})
+                                        )
+                                        .append(
+                                            $("<div/>", {"class":String(message_type)+"-msg-inbox"})
+                                            .append(
+                                                $("<p/>", {text:message})
+                                            )    
+                                            .append(
+                                                $("<span/>", {"class":"time-"+String(message_type), 
+                                                text:time})
+                                            )
+
+                                        )
+                                    )
+                                )
+                            )
+        
+        }
+        </script>
+
+        <script>
         var num_messages = 0;
 
-        $(document).on("click","#button",function(){
-            var new_msg = $("#msg_input").val();
-            if (new_msg != "") {
+        $(document).on("click",".message-submit",function(){
+            var message = $(".form-control").val();
+            if (message != "") {
                 num_messages += 1;
-
-                var time = new Date(Date.now());
-                var month_string = ["Jan", "Feb", "Mar", "Apr", 
-                                    "May", "Jun", "Jul", "Aug", "Sep", 
-                                    "Oct", "Nov", "Dec"];
-                var am_pm = time.getHours() > 12 ? "PM" : "AM"; 
-
-                var time_string = time.getHours() + ":" + time.getMinutes() + " " + am_pm 
-                                                  + " | " + month_string[time.getMonth()-1] 
-                                                  + " " + time.getDate();
-
-                $("#msg_output").append("<span>" + time_string + "</span>");
-                $("#msg_output").append("<p>" + "User: " + new_msg + "</p>");
-                
-                $("#chat_feed").scrollTop(num_messages*1000);
-                
-                $("#msg_input").val("");
+                var time = getTime();
+                createMessage("sent", message, time);
+                $(".msg-page").scrollTop(1000*num_messages);
+                $(".form-control").val("");
             }
-        });*/
+        });
+
+        $(document).on("click",".suggested-message",function(e){
+            var message = $(e.target).text();
+            num_messages += 1;
+            var time = getTime();
+            createMessage("sent", message, time);
+            $(".msg-page").scrollTop(1000*num_messages);
+        });
         </script>
 </head>
 <body>
@@ -96,47 +134,24 @@
     <div class="container1">
         <div class="msg-inbox">
             <div class="chats">
-                <div class="msg-page"> <!-- Contains incoming & outgoing messages -->
-                    <!-- Structure of received messages -->
-                    <div class="received-chats">
-                        <div class="received-chats-items"> 
-                            <div class="received-msg mt-3">
-                                <img src="path_to_profile_image_of_sender.jpg" class="profile-icon recieved" alt="">
-                                <div class="received-msg-inbox">
-                                    <p> Received Message =)</p>
-                                    <span class="time-recieved">18:06 PM </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Structure of sent messages -->
-                    <div class="sent-chats">
-                        <div class = "sent-chat-items">     
-                            <div class="sent-msg mt-3">
-                                <img src="" class="profile-icon sent" alt="">
-                                <div class="sent-msg-inbox">
-                                    <p> Sent Message =D</p>
-                                    <span class="time-sent">18:08 PM </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Add more messages here -->
+                <div class="msg-page">
+                    <!--Messages are added hear by the JS function createMessage() -->
                 </div>
             </div>
             <!-- Suggested messages -->
                 <div class="suggested-messages my-2 d-flex">
-                    <span class="suggested-message")">Hello!</span>
-                    <span class="suggested-message")">Good game!</span>
-                    <span class="suggested-message")">Nice move!</span>
-                    <span class="suggested-message")">&#128516</span>
-                    <span class="suggested-message")">&#128511</span>
-                    <span class="suggested-message")">&#128128</span>
+                    <span class="suggested-message">Hello!</span>
+                    <span class="suggested-message">Good game!</span>
+                    <span class="suggested-message">Nice move!</span>
+                    <span class="suggested-message">&#128075</span>
+                    <span class="suggested-message">&#128516</span>
+                    <span class="suggested-message">&#128511</span>
+                    <span class="suggested-message">&#128128</span>
                     <!-- Add more suggested messages here -->
                 </div>
             <!-- Message bottom starts (input field) -->
             <div class="msg-bottom input-group mt-6 d-flex">
-                <input type="text" id = "msg_input" class="form-control" placeholder="Send a message...">
+                <input type="text" class="form-control" placeholder="Send a message...">
                 <button type="submit" class="message-submit"> Send</button>
             </div>
             <!-- Message bottom ends -->
@@ -215,6 +230,9 @@ img {
 }
 /* Styling the input field */
 
+.received-msg-inbox {
+    max-height: 70px;
+}
 
 .input-group .form-control {
     border-radius: 20px !important; 
@@ -257,7 +275,10 @@ img {
     border: #eeefef solid 1px;
 }
 
-
+.msg-page {
+    overflow: scroll;
+    height: 265px;
+}
 
 /* Styling the incoming message */
 
@@ -284,7 +305,7 @@ img {
     display:flex;
     color: rgb(250, 241, 241);
     position:relative;
-    background-color: #484e78;
+    background-color: #592484;
     word-wrap: break-word;
     padding-bottom: 0px;
     align-items: center;
@@ -335,7 +356,7 @@ img {
 }
 
 /* Style time text */
-.time-recieved {
+.time-received {
     display:block;
     font-size: 10px;
     color: #999;
@@ -344,6 +365,7 @@ img {
     top: 45px;
 }
 .time-sent {
+    width: 60px;
     display: block;
     font-size: 10px;
     color: #999;
@@ -360,7 +382,7 @@ img {
     align-items: center;
     gap: 6px; /* Adds space between the bubbles */
     padding-left: 30px;
-    margin-top: 0px;
+    padding-top: 10px;
     bottom: 30px;
 }
 
@@ -384,6 +406,7 @@ img {
     .suggested-messages {
         font-size: 6cap; /* even smaller font size */
     }
+}
 
 </style>
 
