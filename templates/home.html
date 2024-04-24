@@ -77,13 +77,17 @@
         var section3=$('.connect');
         $(window).scroll(function(){
             var scrollPos = $(window).scrollTop();
-            if(scrollPos > 200){
+            var windowHeight = $(window).height();
+            var windowWidth = $(window).width();
+            var verticalScrollPerc = (scrollPos / ($(document).height() - windowHeight)) * 100;
+
+            if(verticalScrollPerc > 20){
                 section1.css('opacity', '100');
             };
-            if(scrollPos > 800){
+            if(verticalScrollPerc > 50){
                 section2.css('opacity', '100');
             };
-            if(scrollPos > 1200){
+            if(verticalScrollPerc > 85){
                 section3.css('opacity', '100');
             };
         });
