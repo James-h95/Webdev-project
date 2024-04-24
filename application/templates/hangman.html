@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        Hangman!
+    </title>
+    <link rel="stylesheet" href="application/static/deliverables/hangman.css">
+</head>
+
+<body>
+    <h1>Hangman!</h1>
+
+    <div id="hangmanLetters">
+    </div>
+    <div id="hangmanSentence">
+    </div>
+    <div id="goesLeft">
+    </div>
+    <script type="text/javascript" src="application/static/templates/hangman.js"></script>
+</body>
+</html>
+
+<style>
+    body {
+        text-align:center;
+    }
+    
+    .letterHover:hover{
+        color:red;
+    }
+</style>
+
+<script>
+    let hangmanTarget = "guess the word";
+    var goesLeft = 8;
+    var lettersGuessed = new Array();
+    
+    function establishGame(hangmanTarget){
+        let hangmanTargetUpper = hangmanTarget.toUpperCase();
+        var lettersToGo = new Array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+    
+        let letterSpace = document.getElementById('hangmanLetters');
+        let letterNum = 0;
+        for(let letter in lettersToGo){
+            let newLetter = document.createElement('span');
+            let content = document.createTextNode(lettersToGo[letter] + ' ');
+            if(letter == 10 || letter == 20){
+                let space = document.createElement('br');
+                letterSpace.appendChild(space);
+            };
+            newLetter.id = "letter" + lettersToGo[letter];
+            newLetter.appendChild(content);
+            newLetter.style.fontSize = "30px";
+            newLetter.style.letterSpacing = "10px";
+            newLetter.style.lineHeight = "50px";
+            newLetter.style.cursor = "pointer";
+            newLetter.classList.add('letterHover');
+            newLetter.onclick = function() {makeGuess(newLetter.innerText);};
+            letterSpace.appendChild(newLetter);
+        };
+    
+        let sentenceSpace = document.getElementById("hangmanSentence");
+        sentenceSpace.style.fontSize = "50px";
+        for(let i = 0; i < hangmanTargetUpper.length; i++){
+            if(hangmanTargetUpper[i] == ' '){
+                let emptyLetter = document.createElement('span');
+                let content = document.createTextNode('\u00A0');
+                emptyLetter.appendChild(content);
+                sentenceSpace.appendChild(emptyLetter);
+            }
+            else{
+                let placeholder = document.createElement('span');
+                let content = document.createTextNode('_ ')
+                placeholder.appendChild(content);
+                placeholder.id = hangmanTargetUpper[i];
+                sentenceSpace.appendChild(placeholder);
+            };
+        };
+    
+        let goesLeftSpace = document.getElementById("goesLeft");
+        goesLeftSpace.style.marginTop = "40px";
+        let goesCounter = document.createElement('span');
+        let content = document.createTextNode('Attempts remaining: ' + goesLeft);
+        goesCounter.appendChild(content);
+        goesCounter.id = "goesCounter";
+        goesCounter.style.fontSize = "20px";
+        goesLeftSpace.appendChild(goesCounter);
+    };
+    
+    
+    function makeGuess(guess){
+        let correctGuesses = 0;
+        
+        let sentenceSpace = document.getElementById("hangmanSentence");
+        for(let i = 1; i < sentenceSpace.childNodes.length; i++){
+            if(guess.trim().toString() == sentenceSpace.childNodes[i].id.trim().toString()){
+                sentenceSpace.childNodes[i].innerText = guess;
+                correctGuesses++;
+            }
+            eliminatedLetter = document.getElementById('letter'+ guess.trim().toString());
+            eliminatedLetter.style.color = '#bfbfbf';
+            eliminatedLetter.onclick = null;
+            eliminatedLetter.style.cursor = 'default';
+        }
+    
+        if(correctGuesses == 0){
+            goesLeft--;
+            document.getElementById("goesCounter").innerText = 'Attempts remaining: ' + goesLeft;
+        }
+    
+        if(goesLeft == 0){
+            alert('Game over!');
+            location.reload();
+        }
+    }
+    
+    establishGame(hangmanTarget);
+    
+</script>
