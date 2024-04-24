@@ -1,6 +1,6 @@
 from application import app
 from flask import render_template
-from application.models import Item  
+from application.models import Item, Message  
 
 @app.route('/')
 @app.route('/home')
@@ -22,4 +22,5 @@ def shop_page():
 
 @app.route('/chat')
 def play_page():
+    messages = Message.query.all()
     return render_template('chat.html')
