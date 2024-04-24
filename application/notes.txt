@@ -1,10 +1,13 @@
 Instructions to create db entries thru SQLAlchemy for easier testing of our db:
 
-from application.models import db, Item
+from application.models import db,Item,User
 from application import app
 with app.app_context():
     db.create_all()
     # create ur entry here
     db.session.add(urEntry)
     db.session.commit()
+
+
+
 
