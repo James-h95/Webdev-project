@@ -1,6 +1,6 @@
-from application import app
+from application import app,db
 from flask import render_template
-from application.models import Item, Message  
+from application.models import Item, Message
 
 @app.route('/')
 @app.route('/home')

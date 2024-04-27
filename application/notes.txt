@@ -3,10 +3,32 @@ Instructions to create db entries thru SQLAlchemy for easier testing of our db:
 from application.models import db,Item,User
 from application import app
 with app.app_context():
+    db.drop_all() //deletes table data currently in
     db.create_all()
     # create ur entry here
     db.session.add(urEntry)
     db.session.commit()
+
+
+Adding data to the tables
+
+
+Example assigning item object to user object:
+>>> with app.app_context():
+...     db.session.add(item1)
+...     db.session.add(user1)
+...     item1.users.append(user1)
+...     db.session.commit()     
+
+
+Query items owned by a user with username='j1':
+>>> with app.app_context():
+...     x_query = User.query.filter_by(username="j1").first()   
+...     items_in_x = x_query.items
+...     for item in items_in_x:
+...             print(item.name)
+...
+
 
 
 
