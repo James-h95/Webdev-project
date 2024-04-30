@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title%}
+Register Page
+{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <div class="container">
+        <form method="post" class="form-register" style="color:black">
+            {{ form.hidden_tag() }}
+            <img class="mb-3" src="https://pngimg.com/d/sticky_note_PNG18964.png" style="height:200px;width:auto;margin-top: 90px;">
+            <h1 class="mb-2">Create Your Account</h1>
+            <br>
+            <p>
+            <!--{{ form.username.label() }}--->
+            {{ form.username(class="form-control", placeholder="User Name") }}
+            </p>
+
+            <p>
+            <!--{{ form.password1.label() }}-->
+            {{ form.password1(class="form-control", placeholder="Password") }}
+            </p>
+
+            <p>
+            <!--{{ form.password2.label() }}-->
+            {{ form.password2(class="form-control", placeholder="Confirm Password") }}
+            </p>
+            <br>
+    
+            {{ form.submit(class="btn btn-lg btn-block btn-info")}}
+        </form>
+    </div> 
+</div>
+
+
+<style>
+    /*h1{
+        margin-top: 90px;
+    }*/
+
+    /*
+    .form-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }*/
+</style>
+{% endblock %}

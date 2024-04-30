@@ -30,6 +30,10 @@ Query items owned by a user with username='j1':
 ...
 
 
+Things ive yet to do:
+- PAssword hashing etc
+
+
 
 
 
