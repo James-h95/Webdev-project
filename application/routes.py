@@ -18,9 +18,19 @@ def shop_page():
     items = Item.query.all()
     return render_template('shop.html',items=items)
 
-
-
 @app.route('/chat')
 def play_page():
     messages = Message.query.all()
     return render_template('chat.html')
+
+@app.route('/feed')
+def feed_page():
+    return render_template('feed.html')
+
+@app.route('/create')
+def create_page():
+    return render_template('create.html')
+
+@app.route('/leaderboard')
+def leaderboard_page():
+    return render_template('leaderboard.html')

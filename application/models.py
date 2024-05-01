@@ -1,12 +1,12 @@
 from application import db
 
 class User(db.Model):
-    id = db.column(db.String(length=30),nullable=False,unique=True)
+    id = db.Column(db.String(length=30),nullable=False,primary_key=True,unique=True)
     username =db.Column(db.String(length=30),nullable=False,unique=True)
-    email_address = db.column(db.String(length=50),nullable=False,unique=True)
+    email_address = db.Column(db.String(length=50),nullable=False,unique=True)
     password = db.Column(db.String(length=60), nullable=False)
     balance = db.Column(db.Integer(),nullable=False,default=10)
-    items = db.relationship('Item',backref='owner',lazy=true)
+    items = db.Relationship('Item',backref='owner',lazy=True)
 
 class Item(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
