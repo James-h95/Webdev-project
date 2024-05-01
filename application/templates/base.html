@@ -26,13 +26,13 @@
                     <a class="nav-link mr-3" style="color: #ffffffdd; font-size: 1.4rem;" href="#">Tic-Tac-Twist</a>
                 </li>-->
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="#">home</a>
+                    <a class="nav-link" aria-current="page" href="{{ url_for('home_page') }}">home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">feed</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">shop</a>
+                    <a class="nav-link" href="{{ url_for('shop_page') }}">shop</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">leaderboard</a>
@@ -44,7 +44,7 @@
                     <a class="nav-link" href="#">login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">register</a>
+                    <a class="nav-link" href="{{ url_for('register_page') }}">register</a>
                 </li>
             </ul>
         </div>
@@ -70,7 +70,7 @@
 
   <a class="ml-3" id="toggleBar">☰</a>
 
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  
   <script>
     $(document).ready(function () {
       $("#toggleBar").on("click", function() {
@@ -84,9 +84,16 @@
       });
     });
   </script>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <p>{{ message }}</p>
+      {% endfor %}
+    {% endif %}
+    {% endwith %}
 
-      {% block content %}
-      {% endblock %}
+    {% block content %}
+    {% endblock %}
     <!-- Future content here-->
 </body>
 
