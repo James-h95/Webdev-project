@@ -1,10 +1,11 @@
-from application import app
-from flask import render_template
-from application.models import Item, Message  
+from application import app,db
+from flask import render_template, redirect, url_for, flash, get_flashed_messages
+from application.models import Item, User, Message
+from application.forms import RegisterForm
 
 @app.route('/')
 @app.route('/home')
-def landing_page():
+def home_page():
     return render_template('home.html')
 
 # Flask APP initialisation. Our Python package
@@ -23,7 +24,7 @@ def play_page():
     messages = Message.query.all()
     return render_template('chat.html')
 
-@app.route('/feed')
+app.route('/feed')
 def feed_page():
     return render_template('feed.html')
 
@@ -34,3 +35,18 @@ def create_page():
 @app.route('/leaderboard')
 def leaderboard_page():
     return render_template('leaderboard.html')
+
+@app.route('/register', methods=['GET','POST'])
+def register_page():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        new_user = User(username=form.username.data,password=form.password1.data) # directly uses password data
+        db.session.add(new_user)
+        db.session.commit()
+        flash("New user added!",new_user.username)
+        return redirect(url_for('shop_page'))
+    #Check if any validations fail
+    if form.errors != {}:
+        for err_msg in form.errors.values():
+           flash(f'There was an error with creating a user: {err_msg}') 
+    return render_template('register.html',form=form)
