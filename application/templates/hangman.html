@@ -1,98 +1,411 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"> 
+  <head> 
+    <title>Hang Man Game</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>
-        Hangman!
-    </title>
-    <link rel="stylesheet" href="application/static/deliverables/hangman.css">
-</head>
 
-<body>
-    <h1>Hangman!</h1>
+  </head>
+  <body> 
+    <!-- Time Up Modal -->
+    <div id="timeUpModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Time's Up!</h2>
+        <p>Your time for this game has expired.</p>
+      </div>
+    </div>
 
-    <div id="hangmanLetters">
+    <!-- Failed Modal -->
+    <div id="failedModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>You Failed!</h2>
+        <p>You've run out of attempts. Better luck next time!</p>
+      </div>
     </div>
-    <div id="hangmanSentence">
-    </div>
-    <div id="goesLeft">
-    </div>
-    <script type="text/javascript" src="application/static/templates/hangman.js"></script>
-</body>
-</html>
 
-<style>
-    body {
-        text-align:center;
+    <!-- Win  Modal -->
+    <div id="winModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>You Won!</h2>
+        <p> Woohooo!!! You Won !</p>
+      </div>
+    </div>
+
+    <div class="container"> 
+      <div class="hangman-stand">
+        <div class="header">
+          <div class="theme">Theme:
+            <span id="ThemeType">Movies </span> 
+          </div>
+          <div id="timer">Time Remaining: <span id="timerValue">3:00</span></div>
+        </div>
+        <br>
+        <br>
+        <img src="hangman.svg" draggable="false" alt="hangman-img">
+      </div>
+      <div class="game-box "> 
+        <div id="hangmanSentence">
+        </div>
+        <br>
+        <br> 
+        <div id="hangmanLetters">
+        </div>
+        <div id="goesLeft">
+        </div>
+
+
+      </div>
+
+  </div>
+
+  </body>
+
+  <style> 
+    @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Oxanium:wght@200..800&family=Walter+Turncoat&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Grandstander:ital,wght@0,100..900;1,100..900&display=swap');
+  
+  * { 
+    margin: 0;
+    padding:0;
+    box-sizing: border-box;
+    font-family: 'Indie Flower';
+  }
+
+  body{
+    display: flex;
+    padding: 0 10px;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; 
+    background-color: #ffffff;
+  }
+
+  .container{
+    display: flex;
+    width: 95vw;
+    height: 90vh;
+    padding: 0px 30px 00px 30px;
+    background: #fff;
+    border-radius: 10px;
+    align-items: flex-end;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    border: #eacd11 solid 5px;
+  }
+
+  .header{
+    font-size: 1vw;
+    display:flex;
+    justify-content:space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 226.10%;
+    margin-top: 0px;
+    padding: 10px;
+  }
+
+  .modal{
+    border: 2px outset black;
+    border-radius: 5px;
+    padding: 9px;
+    font-weight: bold;
+    background-color: rgb(241, 241, 134);
+    margin: 15px 15px;
+
+  }
+  .theme{
+    font-weight: bold;
+    color: #000000;
+    border: 2px outset black;
+    border-radius: 5px;
+    padding: 9px;
+    margin: 0px;
+    background-color: rgb(241, 241, 134);
+
+
+  }
+
+  #timer{
+    font-weight: bold;
+    color: #000000;
+    border: 2px outset black;
+    border-radius: 5px;
+    padding: 9px;
+    margin: 0px;
+    background-color: rgb(241, 241, 134);
+  }
+
+  .hangman-stand img{
+    max-width: 40vw;
+
+  }
+
+  .hangman-stand h1{
+    display:flex;
+    justify-content:center;
+    text-align: center;
+    font-size: 50px;
+  }
+  .game-box{
+    padding: 60px;
+  }
+  .game-box .word-display {
+    gap: 20px;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #hangmanLetters button {
+    background-color: rgb(10, 12, 9);
+    color: #ffffff; 
+    border: black; 
+    border-radius: 2px;
+    border: solid 2px black; 
+    margin: 0.5%;
+    cursor: pointer;
+    font-size: 1.5vw; 
+    align-items: center;
+    padding: 8px;
+  }
+
+  #hangmanLetters button:hover {
+    background-color: transparent; 
+    color: #0d0b0b; 
+  }
+
+  #hangmanLetters button:disabled {
+    color: #171111;
+    cursor: not-allowed; 
+  }
+  #hangmanSentence span.placeholder {
+    font-size: 1.5vw; 
+    margin: 0px;
+    color: #090101; 
+    align-items: center;
+    font-weight: 800;
+    align-content: center;
+  }
+
+  #hangmanSentence {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+  #hangmanSentence span.placeholder {
+    margin: 10px; /* Adjust as needed */
+  }
+
+  #goesLeft {
+    padding-top: 20px;
+    font-weight:bolder;
+    font-size: 1.5vw;
+
+  }
+  .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
     }
-    
-    .letterHover:hover{
-        color:red;
-    }
-</style>
 
-<script>
-    let hangmanTarget = "guess the word";
-    var goesLeft = 8;
-    var lettersGuessed = new Array();
-    
+  .modal-content {
+    background-color: #ffffff;
+    margin: 15% auto;
+    padding: 30px;
+    border: 1px solid #888;
+    width: 30%;
+  }
+  .modal h2{
+    padding-bottom: 10px;
+  }
+  .modal p{
+    background-color: #eacd11;
+    padding: 20px 10px 20px 10px;
+    border: #000000 solid 1px ;
+    border-radius: 2px;
+  }
+
+  .close {
+    color: #151515;
+    float: right;
+    font-size: 40px;
+    font-weight: bold;
+  }
+
+  .close:hover, .close:focus {
+    color: rgb(198, 232, 62);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  #hangmanLetters button.theme-button {
+  background-color: rgb(126, 201, 88);
+  
+}
+
+  @media (max-width: 900px) {
+    .container {
+      flex-direction: column;
+      padding: 40px;
+      min-height: 100vh;
+      align-items: center;
+      font-size: 1vw;
+    }
+    .hangman-stand img{
+      max-width: 80vw;
+      margin: 0px;
+      padding: 0px;
+    }
+    .header{
+      margin-bottom: 0px;
+      width: 100%;
+      margin-top: 0px;
+      padding: 5px;
+    }
+    #goesLeft {
+    padding-top: 10px;
+    font-size: 1.5vw;
+
+  }
+
+  }
+
+
+
+
+  </style>
+  <script>
+    let hangmanTarget = "Tennis's is very cool's"; /* word to be guessed*/ 
+    let goesLeft = 7; /* number of attempts allowed*/ 
+    let timerValue = 120; /* timer in seconds*/ 
+    let timerInterval;
+    let theme = "All"; /* theme/topic of the word to be guessed*/ 
+
+    document.getElementById("ThemeType").textContent = theme
+
+  
+    let themeColors = {
+      media: "#ff6bba",
+      history: "#fae62f",
+      books: "#5447ff",
+      sports: "#45991f",
+      music: "#fc8f28",
+      games: "Tomato",
+      places: "#53fcfc",
+      food: "#fc0303",
+      miscellanous: "#c0ff2b",
+      all: "rgb(230, 235, 235)"
+    };
+
+      function setTheme(theme) {
+        const color = themeColors[theme.toLowerCase()];
+        
+        // Update container border color
+        document.querySelector('.container').style.borderColor = color;
+        
+        
+        // Update theme background color
+        document.querySelector('.theme').style.backgroundColor = color;
+        
+        // Update timer background color
+        document.querySelector('#timer').style.backgroundColor = color;
+        
+        // Update modal paragraph background color
+        document.querySelectorAll('.modal p').forEach(p => {
+          p.style.backgroundColor = color;
+        });
+      }
+
+      // Call setTheme function with the current theme
+      setTheme(theme);
+
+    /* set Time function*/ 
+    function startTimer() {
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function updateTimer() {
+      const minutes = Math.floor(timerValue / 60);
+      const seconds = timerValue % 60;
+      const timerValueElement = document.getElementById('timerValue');
+      timerValueElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+      if (timerValue === 0) {
+        clearInterval(timerInterval);
+        showModal("timeUpModal");
+      } else {
+        timerValue--;
+      }
+    }
+
+    /* array of hangman Images*/   
+    const hangmanImages = [
+    'hangman.svg','hangman.1.svg', 'hangman.2.svg','hangman.3.svg','hangman.4.svg', 'hangman.5.svg', 'hangman.6.svg', 'hangman.7.svg',
+    ]
+    let currentImageIndex = 0
+
+    /* estiablish game function*/ 
     function establishGame(hangmanTarget){
         let hangmanTargetUpper = hangmanTarget.toUpperCase();
         var lettersToGo = new Array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
-    
+
         let letterSpace = document.getElementById('hangmanLetters');
-        let letterNum = 0;
         for(let letter in lettersToGo){
-            let newLetter = document.createElement('span');
+            let newLetter = document.createElement('button');
             let content = document.createTextNode(lettersToGo[letter] + ' ');
-            if(letter == 10 || letter == 20){
-                let space = document.createElement('br');
-                letterSpace.appendChild(space);
-            };
             newLetter.id = "letter" + lettersToGo[letter];
             newLetter.appendChild(content);
-            newLetter.style.fontSize = "30px";
-            newLetter.style.letterSpacing = "10px";
-            newLetter.style.lineHeight = "50px";
-            newLetter.style.cursor = "pointer";
-            newLetter.classList.add('letterHover');
             newLetter.onclick = function() {makeGuess(newLetter.innerText);};
             letterSpace.appendChild(newLetter);
         };
-    
+
         let sentenceSpace = document.getElementById("hangmanSentence");
-        sentenceSpace.style.fontSize = "50px";
+
         for(let i = 0; i < hangmanTargetUpper.length; i++){
             if(hangmanTargetUpper[i] == ' '){
                 let emptyLetter = document.createElement('span');
-                let content = document.createTextNode('\u00A0');
+                let content = document.createTextNode('\u00A0\u00A0\u00A0');
                 emptyLetter.appendChild(content);
                 sentenceSpace.appendChild(emptyLetter);
             }
             else{
-                let placeholder = document.createElement('span');
-                let content = document.createTextNode('_ ')
-                placeholder.appendChild(content);
-                placeholder.id = hangmanTargetUpper[i];
-                sentenceSpace.appendChild(placeholder);
-            };
+              let placeholder = document.createElement('span');
+              let content;
+              if (hangmanTargetUpper[i] == "'") {
+                  // Display apostrophe instead of underscore
+                  content = document.createTextNode(hangmanTargetUpper[i]);
+              } else {
+                  content = document.createTextNode('_');
+              }
+              placeholder.appendChild(content);
+              placeholder.id = hangmanTargetUpper[i];
+              placeholder.classList.add('placeholder'); 
+              sentenceSpace.appendChild(placeholder);
+          };
         };
-    
+
         let goesLeftSpace = document.getElementById("goesLeft");
-        goesLeftSpace.style.marginTop = "40px";
         let goesCounter = document.createElement('span');
         let content = document.createTextNode('Attempts remaining: ' + goesLeft);
         goesCounter.appendChild(content);
         goesCounter.id = "goesCounter";
-        goesCounter.style.fontSize = "20px";
         goesLeftSpace.appendChild(goesCounter);
+        
     };
-    
-    
+
+
     function makeGuess(guess){
         let correctGuesses = 0;
-        
+
         let sentenceSpace = document.getElementById("hangmanSentence");
         for(let i = 1; i < sentenceSpace.childNodes.length; i++){
             if(guess.trim().toString() == sentenceSpace.childNodes[i].id.trim().toString()){
@@ -100,22 +413,67 @@
                 correctGuesses++;
             }
             eliminatedLetter = document.getElementById('letter'+ guess.trim().toString());
-            eliminatedLetter.style.color = '#bfbfbf';
+            eliminatedLetter.style.backgroundColor = "gray";
+            eliminatedLetter.style.color = "white"
             eliminatedLetter.onclick = null;
             eliminatedLetter.style.cursor = 'default';
+            eliminatedLetter.disabled = true;
         }
-    
         if(correctGuesses == 0){
             goesLeft--;
             document.getElementById("goesCounter").innerText = 'Attempts remaining: ' + goesLeft;
+            updateHangmanImage(); 
         }
-    
+
+            // Check if all correct words have been guessed
+        let allWordsGuessed = true;
+        for (let i = 0; i < sentenceSpace.childNodes.length; i++) {
+            if (sentenceSpace.childNodes[i].nodeName === "SPAN" && sentenceSpace.childNodes[i].innerText === "_") {
+                allWordsGuessed = false;
+                break;
+            }
+        }
+
+        if (allWordsGuessed) {
+          showModal("winModal");
+        }
+
         if(goesLeft == 0){
-            alert('Game over!');
-            location.reload();
+          showModal("failedModal");
+
         }
     }
-    
+
+    /* update hangman image */ 
+
+    function updateHangmanImage() {
+      const hangmanImage = document.querySelector('.hangman-stand img');
+      currentImageIndex++;
+      hangmanImage.src = hangmanImages[currentImageIndex];
+    }
+
+    /* show modal  / popup function*/ 
+    function showModal(modalId) {
+    const modal = document.getElementById(modalId);
+    const span = modal.querySelector(".close");
+
+    modal.style.display = "block";
+
+    span.onclick = function() {
+        modal.style.display = "none";
+        location.reload();
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+            location.reload();
+          }
+        }
+      }
+
     establishGame(hangmanTarget);
-    
-</script>
+    startTimer();
+  </script>
+
+</html>
