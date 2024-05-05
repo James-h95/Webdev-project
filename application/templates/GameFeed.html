@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <!-- Sample nav bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Sample Nav Bar</a>
+    </nav>
+
+
+    <div class="container-fluid mt-2">
+        <div class="row">
+            <div class="col-md-2">
+                <!-- Filter bar -->
+                <div class="card filter-card">
+                    <div class="filterBar-header">Filters</div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>Category</label>
+                            <div class="ThemeFilters">
+                              <button id="AllCat" data-filter="clear"> All</button>
+                              <button id="HistoryCat" data-filter="History" > History</button>
+                              <button id="MediaCat" data-filter="Media" > Media</button>
+                              <button id="SportsCat" data-filter="Sports" > Sports</button>
+                              <button id="MusicCat" data-filter="Music" > Music</button>
+                              <button id="GamesCat" data-filter="Games" > Games</button>
+                              <button id="BooksCat" data-filter="Books"> Books</button>
+                              <button id="PlacesCat" data-filter="Places"> Places</button>
+                              <button id="FoodCat" data-filter="Food"> Food</button>
+                              <button id="MiscCat" data-filter="Misc"> Misc</button>
+
+                              
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="filterTime">Time (seconds)</label>
+                            <div class="TimeFilters">
+                              <button id="AllCat" data-filter="clear">All</button>
+                              <button data-filter="1-2"> 1-2</button>
+                              <button data-filter="2-3"> 2-3 </button>
+                              <button data-filter="3-4"> 3-4 </button>
+                              <button data-filter="4-5"> 4-5 </button>
+                              <button data-filter="5-6"> 5-6 </button>
+                              <button data-filter="7-8"> 7-8 </button>
+                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game cards -->
+          <div class="col-md-10">
+            <div class="row" id="gameCards">
+              <!-- Game cards will be added here dynamically -->
+              
+          </div>
+        </div>
+    </div>
+</body>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Grandstander:ital,wght@0,100..900;1,100..900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Oxanium:wght@200..800&family=Walter+Turncoat&display=swap');
+  
+  * { 
+    margin: 0;
+    padding:0;
+    font-family: 'Grandstander';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .form-control  {
+    max-width: 40%;
+    border: 2px solid black;
+    background-color: rgb(242, 236, 148);
+    margin-bottom: 30px;
+    text-align: center;
+    justify-content: center;
+  }
+  .filterBar-header{
+  background-color: transparent;
+  font-size: 1.5vw;
+  text-align: center;
+  padding-bottom: 0px;
+  align-items: center;
+  display: flex;
+  margin-top: 20px; 
+  }
+.filter-card {
+      align-items: center;
+      max-width: 100%;
+      padding: 0;
+      margin: 0px;
+      border: 1px solid black ;
+      background-color: rgb(244, 249, 182);
+  }
+  .ThemeFilters {
+    padding: 2px;
+  }
+  .ThemeFilters button {
+    padding: 5px;
+    margin: 4px;
+    border-radius: 2px;
+  }
+
+  .TimeFilters button {
+    padding: 5px;
+    margin: 4px;
+    border-radius: 2px;
+    border-color: 1px solid black;
+    background-color: rgb(167, 124, 240);
+  }
+
+  #HistoryCat{
+        background-color:#fae62f;
+        }
+
+  #SportsCat{
+      background-color:#45991f;
+      color:white;
+  }
+
+  #MusicCat{
+      background-color:#fc8f28;
+  }
+
+  #GamesCat{
+      background-color:#ac14ba;
+      color:white;
+  }
+
+  #MediaCat{
+      background-color:#ff6bba;
+  }
+
+  #BooksCat{
+      background-color:#5447ff;
+      color:white;
+  }
+
+  #FoodCat{
+      background-color:#fc0303;
+      color:white;
+  }
+
+  #PlacesCat{
+      background-color:#53fcfc;
+  }
+
+  #MiscCat{
+      background-color:#c0ff2b;
+  }
+  #AllCat{
+    background-color: chocolate;
+  }
+
+  .card-header {
+    background-color: transparent;
+    font-size: 1.5vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+    padding-bottom: 0px;
+  }
+
+  .card-title {
+    font-size: 1vw; 
+    text-align: center; 
+    margin: 0%;
+    margin-left: 10px;
+  }
+
+  .game-card .start-game {
+    position: absolute;
+    bottom: 10px; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 45%;
+    height: 40%;
+    border: 2px solid black;
+    background-color: transparent;
+    color: rgb(29, 23, 23);
+    font-weight: 700;
+  }
+  .start-game:hover{
+    background-color: white;
+    color: rgb(0, 0, 0);
+    box-shadow: 0 15px 10px rgba(21, 21, 17, 0.8);
+  }
+
+  #gameCards{
+    margin: 40px;
+    text-align: center;
+  }
+
+  .pr {
+  width: 30px; 
+  height: 30px;
+  border-radius: 20%; 
+  object-fit: cover; 
+  }
+</style>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+  // Sample data for games
+  const games = [
+    { username: 'username', theme: 'History', time: '1-2' , profileImage : ""},
+    { username: 'username', theme: 'Media', time: '2-3',  profileImage : "" },
+    { username: 'username', theme: 'Sports', time: '3-4',  profileImage : ""},
+    { username: 'username', theme: 'Games', time: '3-4',  profileImage : "" },
+    { username: 'username', theme: 'Places', time: '2-3' ,  profileImage : ""},
+    { username: 'username', theme: 'Music', time: '7-8',  profileImage : "" },
+    { username: 'username', theme: 'Books', time: '7-8' ,  profileImage : ""},
+    { username: 'username', theme: 'Food', time: '7-8',  profileImage : "" },
+    { username: 'username', theme: 'Misc', time: '7-8' ,  profileImage : "" },
+    { username: 'username', theme: 'Misc', time: '1-2' ,  profileImage : ""},
+    { username: 'username', theme: 'Misc', time: '3-4' ,  profileImage : ""},
+    { username: 'username', theme: 'History', time: '5-6' ,  profileImage : ""},
+    { username: 'username', theme: 'Media', time: '4-5',  profileImage : "" },
+    { username: 'username', theme: 'Books', time: '4-5' ,  profileImage : "" },
+    { username: 'username', theme: 'Books', time: '4-5' ,  profileImage : "" },
+    { username: 'username', theme: 'Books', time: '4-5' ,  profileImage : "" },
+    { username: 'username', theme: 'Books', time: '4-5' ,  profileImage : "" },
+    { username: 'username', theme: 'Books', time: '4-5' ,  profileImage : "" },
+    { username: 'username', theme: 'Books', time: '4-5' ,  profileImage : "" },
+  ];
+  // Function to create a game card
+function createGameCard(game) {
+  const card = $('<div>').addClass('col-md-3 mb-4');
+  const cardBody = $('<div>').addClass('card game-card');
+  const cardHeader = $('<div>').addClass('card-header');
+  const profileImage = $('<img>').addClass('pr').attr('src', game.profileImage); 
+  const cardTitle = $('<h5>').addClass('card-title').text(game.username);
+  const startGameButton = $('<button>').addClass('start-game').text('Start Game !');
+
+  // Set the card color based on the theme
+  const themeColors = {
+    History: '#fae62f',
+    Media: '#ff6bba',
+    Sports: '#45991f',
+    Music: '#fc8f28',
+    Games: '#ac14ba',
+    Books: '#5447ff',
+    Places: '#53fcfc',
+    Food: '#fc0303',
+    Misc: '#c0ff2b',
+  };
+  cardBody.css('background-color', themeColors[game.theme] || 'gray');
+  cardBody.css("height", "120px"), card.css("padding-right", "5px");
+  startGameButton.css('border-radius', '10px');
+  cardBody.css("border-radius", "10px");
+
+  // Append pr and username to card header
+  cardHeader.append(profileImage, cardTitle);
+  cardBody.append(cardHeader, startGameButton);
+  card.append(cardBody);
+  return card;
+}
+
+// Render game cards
+function renderGameCards(games, themeFilter, timeFilter) {
+        $('#gameCards').empty();
+        games.forEach((game) => {
+            if (
+                (themeFilter === 'clear' || game.theme === themeFilter) &&
+                (timeFilter === 'clear' || game.time === timeFilter)
+            ) {
+                $('#gameCards').append(createGameCard(game));
+            }
+        });
+    }
+
+    // Initial rendering of game cards
+    renderGameCards(games, 'clear', 'clear');
+    
+    // Filter game cards based on category buttons
+    $('.ThemeFilters button').click(function() {
+        const themeFilter = $(this).data('filter');
+        const timeFilter = $('.TimeFilters button.active').data('filter');
+        $('.ThemeFilters button').removeClass('active');
+        $(this).addClass('active');
+        renderGameCards(games, themeFilter, timeFilter);
+    });
+
+    // Filter game cards based on time limit buttons
+    $('.TimeFilters button').click(function() {
+        const themeFilter = $('.ThemeFilters button.active').data('filter');
+        const timeFilter = $(this).data('filter');
+        $('.TimeFilters button').removeClass('active');
+        $(this).addClass('active');
+        renderGameCards(games, themeFilter, timeFilter);
+    });
+
+    // Show all game cards
+    $('.ThemeFilters button[data-filter="All"], .TimeFilters button[data-filter="All"]').click(function() {
+        $('.ThemeFilters button, .TimeFilters button').removeClass('active');
+        $(this).addClass('active');
+        renderGameCards(games, 'clear', 'clear');
+    });
+
+// Change button color for Themes filters when clicked
+$('.ThemeFilters button').click(function() {
+  $('.ThemeFilters button').css('background-color', ''); // Reset all button colors
+  $(this).css('background-color', 'gray'); 
+});
+// Change button color for Time filters when clicked
+$('.TimeFilters button').click(function() {
+  $('.TimeFilters button').css('background-color', ''); // Reset all button colors
+  $(this).css('background-color', 'gray');  // Change background color of the clicked button
+});
+
+  
+</script>
+
+</html>
