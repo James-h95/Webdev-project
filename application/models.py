@@ -9,19 +9,19 @@ users_items = db.Table('users_items',
     )
 
 class User(db.Model):
-    id = db.Column(db.String(length=30),nullable=False, primary_key=True, unique=True)
+    id = db.Column(db.Integer(), primary_key=True)
     username =db.Column(db.String(length=30),nullable=False,unique=True)
     email_address = db.Column(db.String(length=50),nullable=False,unique=True)
     password = db.Column(db.String(length=60), nullable=False)
     balance = db.Column(db.Integer(),nullable=False,default=10)
-    items = db.relationship('Item',backref='owner',lazy=True)
+    items = db.relationship('Item',secondary=users_items, back_populates='users',lazy='dynamic')
 
 class Item(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(length=30),nullable=False,unique=True)
     price = db.Column(db.Integer(),nullable=False)
     rarity = db.Column(db.String(length=30),nullable=False)
-    users = db.relationship('User',secondary=users_items, back_populates="items")
+    users = db.relationship('User',secondary=users_items, back_populates="items",lazy='dynamic')
     
     #def __repr__(self):
         #return f'Item {self.name}'
