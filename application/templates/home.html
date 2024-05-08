@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-    Home page
+    Home
 {% endblock %}
 
 {% block content %}
@@ -14,7 +14,7 @@
         </button>-->
         <div class="buttonContainer">
             <input class="text-center" type="image" id="playNow" src="https://pngimg.com/d/sticky_note_PNG18964.png">
-            <div id="playNowText">play<br>now!</div>
+            <a href="{{ url_for('feed_page') }}"><div id="playNowText">play<br>now!</div></a>
         </div>
     </div>
 
@@ -64,8 +64,6 @@
             </div>
         </div>
     </section>
-
-    <footer> © 2024 Let's Hang, or its affiliates. All rights reserved. </footer>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

@@ -1,7 +1,5 @@
 from application import db
 
-
-
 #Association table
 users_items = db.Table('users_items',
     db.Column('user_id',db.Integer(),db.ForeignKey('user.id')),
@@ -25,7 +23,6 @@ class Item(db.Model):
     
     #def __repr__(self):
         #return f'Item {self.name}'
-    
 
 class Message(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
@@ -36,3 +33,28 @@ class Message(db.Model):
     
     def __reprr__(self):
         return f'Message: {self.text}'
+    
+# Game association table
+# 1 user [plays] M games M [made by] 1 user
+# 1 game [made by] 1 user
+
+users_games = db.Table('users_games_played', 
+    db.Column('user_id', db.Integer(),db.ForeignKey('user.id')),
+    db.Column('game_id', db.Integer(),db.ForeignKey('game.id')),
+    db.Column('time', db.Integer()),
+    db.Column('comment', db.String(length=200))
+    )    
+
+class Game(db.Model):
+     id = db.Column(db.Integer(), primary_key=True)
+     creator = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+     phrase = db.Column(db.String(length=250),nullable=False)
+     category = db.Column(db.String(length=10),nullable=False)
+     timeLimit = db.Column(db.Integer(),nullable=False)
+     caption = db.Column(db.String(length=200))
+     created = db.Column(db.DateTime(timezone=True))
+     times_played = db.Column(db.Integer())
+     successes = db.Column(db.Integer())
+     
+    
+     
