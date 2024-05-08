@@ -32,7 +32,7 @@ def feed_page():
 def create_page():
     form = CreateGameForm()
     if form.validate_on_submit():
-        new_game = Game(phrase=form.phrase.data,category=form.category.data,timeLimit=form.timeLimit.data,caption=form.caption.data) # directly uses password data
+        new_game = Game(phrase=form.phrase.data,category=form.category.data,timeLimit=form.timeLimit.data,caption=form.caption.data)
         db.session.add(new_game)
         db.session.commit()
         flash("Game is now live!")
@@ -56,5 +56,5 @@ def register_page():
     #Check if any validations fail
     if form.errors != {}:
         for err_msg in form.errors.values():
-           flash(f'There was an error with creating a user: {err_msg}',category='danger') 
+           flash(f'There was an error with creating a user: {err_msg}') 
     return render_template('register.html',form=form)
