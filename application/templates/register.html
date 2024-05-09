@@ -4,11 +4,11 @@ Register Page
 {% endblock %}
 
 {% block content %}
-<div class="text-center">
+<div class="register text-center">
     <div class="container">
         <form method="post" class="form-register" style="color:black">
             {{ form.hidden_tag() }}
-            <img class="mb-3" src="https://pngimg.com/d/sticky_note_PNG18964.png" style="height:200px;width:auto;margin-top: 90px;">
+            <img class="mb-2" src="https://pngimg.com/d/sticky_note_PNG18964.png" style="height:200px;width:auto;margin-top: 90px;">
             <h1 class="mb-2">Create Your Account</h1>
             <br>
             <p>
@@ -28,15 +28,17 @@ Register Page
             <br>
     
             {{ form.submit(class="btn btn-lg btn-block btn-info")}}
+            
+            <div class="incase mt-2">
+                <h7>Click here if you already have an account:</h7>
+                <a class="btn btn-sm btn-secondary" href="{{ url_for('register_page') }}">Login</a>
+            </div>
         </form>
     </div> 
 </div>
 
 
 <style>
-    body{
-        margin-top: 90px;
-    }
 
 </style>
 {% endblock %}
