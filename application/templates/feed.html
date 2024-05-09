@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+{% block title %}
+    Feed
+{% endblock %}
+
+{% block content %}
+    <div class="text-center pageHeading">
+        <h1>Feed</h1>
+        <h2>create, play, explore</h2>
+    </div>
+
+    <div class="text-center mt-5 gameFeed">
+    </div>
+
+    <div id="tooltip-htp"><b>How to play:</b><br>
+        1. Filter by category and difficulty level to suit your gameplay.<br>
+        2. Click on a game to play.<br>
+        3. Complete the game within the time and moves limits to earn rewards!<br><br>
+        <b>Create:</b><br>
+        1. Follow the "create" button to make your own game.<br>
+        2. Pick a category and set a word or phrase to be solved.<br>
+        3. Choose a difficulty level to determine the number of guesses and time limit.<br>
+        4. Add a caption and post to make your game live!
+    </div>
+
+    <div id="helpButton" class="text-center">
+        <button id="help">?</button>
+    </div>
+
+    <div id="createButton">
+        <a href="{{ url_for('create_page') }}"><button id="create">create</button><a>
+    </div>
+
+    
+    <a href"#"><button id="chat">
+        <div class="container text-center">
+            <div class="row justify-content-between">
+                <div id="chatHeading">
+                    chat
+                </div>
+                <div class="col-4 pl-5" id="exitChat">
+                    <span id="clickToExit">x</span>
+                </div>
+            </div>
+        </div>
+    </button><a>
+    <div id="chatBody">
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            var toggleUp = false;
+
+            $("#helpButton").mouseenter(function(){
+                $('#tooltip-htp').css('opacity', '100%');
+            });
+            $("#helpButton").mouseleave(function(){
+                $('#tooltip-htp').css('opacity', '0');
+            });
+            $("#chat").on("click", function(){
+                if(!toggleUp){
+                    $('#chat').height($(window).height() / 1.5);
+                    $('#chat').css('width', "40vw");
+                    $('#chatBody').height($(window).height() / 1.5 - $('#chat').height())
+                    $('#chatBody').css('width', "40vw");
+                    $('#chatHeading').css('font-size', '180%');
+                    $('#exitChat').css('font-size', '180%');
+                    $('#chat').css('cursor', 'default');
+                    $('#chatHeading').addClass('col-4 pr-5');
+                    toggleUp = true;
+                }
+            });
+            $("#clickToExit").on("click", function(){
+                event.stopPropagation();
+                $('#chat').height('');
+                $('#chat').css('width', '');
+                $('#chatBody').height('');
+                $('#chatBody').css('width', '');
+                $('#chatHeading').css('font-size', '');
+                $('#chat').css('cursor', 'pointer');
+                $('#chatHeading').removeClass('col-4 pr-5')
+                $('#exitChat').css('font-size', '');
+                toggleUp = false;
+            });
+        });
+    </script>
+
+    <style>
+        .pageHeading h1{
+            font-size: 3vw;
+            font-family: "Indie Flower", sans-serif;
+            font-weight: 500;
+            color: #ebd834;
+            margin-top: 120px;
+        }
+
+        .pageHeading h2{
+            color:black;
+            font-family: "Indie Flower", sans-serif;
+            font-weight: bold;
+            font-size:2vw;
+        }
+
+        #helpButton{
+            position:fixed;
+            bottom:10%;
+            left:10%;
+        }
+
+        #help{
+            @media screen and (max-width: 600px) {
+                height:4.5vw;
+                width:4.5vw;
+                font-size:3vw;
+            }
+            @media screen and (min-width: 601px) {
+                height:2.5vw;
+                width:2.5vw;
+                font-size:1.6vw;
+            }
+            border-radius:50%;
+            background-color:#ebd834;
+            color:black;
+            font-family: "Indie Flower", sans-serif;
+            font-weight:bold;
+            pointer-events:none;
+        }
+
+        #tooltip-htp{
+            padding:1%;
+            background-color: #fcf4ac;
+            position:absolute;
+            color:black;
+            left:10%;
+            text-align:left;
+            @media screen and (max-width: 600px) {
+                height:40vw;
+                width:30vw;
+                font-size:1.5vw;
+                bottom:15%;
+            }
+            @media screen and (min-width: 601px) {
+                height:25vw;
+                width:15vw;
+                font-size:0.8vw;
+                bottom:17%;
+            }
+            opacity:0;
+            transition:0.3s ease;
+        }
+
+        #createButton{
+            position:fixed;
+            bottom:10%;
+            left:50%;
+            transform: translate(-50%, 0);
+        }
+
+        #create{
+            border-radius:50px;
+            @media screen and (max-width: 600px) {
+                height:5vw;
+                width:14vw;
+                font-size:3vw;
+            }
+            @media screen and (min-width: 601px) {
+                height:2.5vw;
+                width:8vw;
+                font-size:1.5vw;
+            }
+            font-family: "Indie Flower", sans-serif;
+            font-weight:bold;
+            background-color: #ebd834;
+        }
+
+        #chat{
+            @media screen and (max-width: 600px) {
+                height:5vw;
+                width:14vw;
+                font-size:3vw;
+            }
+            @media screen and (min-width: 601px) {
+                height:2.5vw;
+                width:16vw;
+                font-size:1.5vw;
+            }
+            background-color: #ebd834;
+            border-bottom:none;
+            border-top-left-radius:10px;
+            border-top-right-radius:10px;
+            transition:0.5s ease;
+            position:fixed;
+            bottom:0%;
+            right: 10%;
+            display: inline-flex;
+            justify-content:center;
+        }
+
+        #chatHeading{
+            transition: 0.5s ease;
+            font-family: "Indie Flower", sans-serif;
+            font-weight:bold;
+        }
+
+        #exitChat{
+            font-size: 0;
+            font-family: "Indie Flower", sans-serif;
+            font-weight:bold;
+        }
+
+        #clickToExit{
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        #chatBody{
+            @media screen and (max-width: 600px) {
+                height:5vw;
+                width:14vw;
+                font-size:3vw;
+            }
+            @media screen and (min-width: 601px) {
+                height:2.5vw;
+                width:16vw;
+                font-size:1.5vw;
+            }
+            font-family: "Indie Flower", sans-serif;
+            background-color:white;
+            border-bottom:none;
+            transition:0.5s ease;
+            position:fixed;
+            bottom:-6%;
+            right: 10%;
+            border: solid 2px black;
+        }
+    </style>
+{% endblock %}

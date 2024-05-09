@@ -16,7 +16,7 @@
 <!-- NAVBAR HERE-->
   <nav id="navWide" class="shadow-lg navbar navbar-expand-md navbar-dark fixed-top">
     <!--<div class="container-fluid">-->
-        <a class="navbar-brand kanit-regular" style="color: #ffffffdd; font-size: 1.4rem;"  href="#">
+        <a class="navbar-brand kanit-regular" style="color: #ffffffdd; font-size: 1.4rem;"  href="{{ url_for('home_page') }}">
             <img src="https://pngimg.com/d/sticky_note_PNG18964.png" style="height:50px;width:auto;" alt="logo">
         </a>
         <div class="collapse navbar-collapse kanit-light" id="navbarNav">
@@ -29,13 +29,13 @@
                     <a class="nav-link" aria-current="page" href="{{ url_for('home_page') }}">home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">feed</a>
+                    <a class="nav-link" href="{{ url_for('feed_page') }}">feed</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('shop_page') }}">shop</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">leaderboard</a>
+                    <a class="nav-link" href="{{ url_for('leaderboard_page') }}">leaderboard</a>
                 </li>
             </ul>
             <!-- List 2-->
@@ -56,21 +56,21 @@
     <!--<a class="sidebar-brand" style="color: #ffffffdd; font-size: 1.4rem;" href="#">Tic-Tac-Twist</a>-->
     <a class="sidebar-toggler">&times;</a>
     <div class="mt-3">
-        <a class='ml-3' href="#">
+        <a class='ml-3' href="{{ url_for('home_page') }}">
             <img class='mb-4' src="https://pngimg.com/d/sticky_note_PNG18964.png" style="height:70px;width:auto;" alt="logo">
         </a>
-        <a class="nav-link" aria-current="page" href="#">home</a>
-        <a class="nav-link" href="#">feed</a>
-        <a class="nav-link" href="#">shop</a>
-        <a class="nav-link mb-5" href="#">leaderboard</a>
+        <a class="nav-link" aria-current="page" href="{{ url_for('home_page') }}">home</a>
+        <a class="nav-link" href="{{ url_for('feed_page') }}">feed</a>
+        <a class="nav-link" href="{{ url_for('shop_page') }}">shop</a>
+        <a class="nav-link mb-5" href="{{ url_for('leaderboard_page') }}">leaderboard</a>
         <a class="nav-link mt-5" href="#">login</a>
-        <a class="nav-link" href="#">register</a>
+        <a class="nav-link" href="{{ url_for('register_page') }}">register</a>
     </div>
   </div>
 
   <a class="ml-3" id="toggleBar">☰</a>
 
-  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script>
     $(document).ready(function () {
       $("#toggleBar").on("click", function() {
@@ -108,11 +108,7 @@
 
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-  @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Share+Tech+Mono&display=swap');
-  @import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-  @import url('https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@100..700&display=swap');
-
+  @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
 
   body {
       background: white;
