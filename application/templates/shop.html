@@ -1,14 +1,17 @@
 {% extends 'base.html' %}
 {% block title %}
-    Shop/Market page
+    Shop
 {% endblock %}
 
 {% block content %}
-    <h1 class="title">Shop/Market</h1>
+    <div class="text-center pageHeading">
+        <h1>Shop</h1>
+        <h2>elevate your game and style</h2>
+    </div>
 
     <!-- Iterate over list provided in app.py-->
     <!--Use temporary bootatrap table to display the items in our 'Shop'-->
-    <table class="table table-hover table-dark table-striped">
+    <table class="table table-hover table-dark table-striped mt-5">
         <thead>
             <tr>
                 <!-- Our columns-->
@@ -36,9 +39,19 @@
     </table>
 
     <style>
-        /*Required due to the fixed-top bootstrap attribute in our navbar.It acts as the navbar doesnt even exist on the page, which messes up spacing*/
-        .title{
-            margin-top: 90px;
+        .pageHeading h1{
+            font-size: 3vw;
+            font-family: "Indie Flower", sans-serif;
+            font-weight: 500;
+            color: #ebd834;
+            margin-top: 80px;
+        }
+
+        .pageHeading h2{
+            color:black;
+            font-family: "Indie Flower", sans-serif;
+            font-weight: bold;
+            font-size:2vw;
         }
     </style>
 {% endblock %}

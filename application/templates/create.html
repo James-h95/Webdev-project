@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block title %}
+    Create
+{% endblock %}
+
+{% block content %}
+    <div class="text-center mb-5 pageHeading">
+        <h1>Create</h1>
+        <h2>design games for all to play!</h2>
+    </div>
+
+    <div class="container text-align-center">
+        {% if form.phrase.errors %}
+            <ul class="errors">
+                {% for error in form.phrase.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class='container mt-5'>
+        <form name="create_page" method="POST" class="form">
+            <div class="row justify-content-around">
+                <p>
+                    <span class="label">{{ form.category.label()}}</span>
+                    {{ form.category(class="form-control") }}
+                </p>
+                <p>
+                    <span class="label">{{ form.phrase.label()}}</span>
+                    {{ form.phrase(class="form-control") }}
+                </p>
+            </div>
+            <div class="row justify-content-around">
+                <p>
+                    <span class="label">{{ form.timeLimit.label()}}</span>
+                    {{ form.timeLimit(class="form-control") }}
+                </p>
+                <p>
+                    <span class="label">{{ form.caption.label()}}</span>
+                    {{ form.caption(class="form-control") }}
+                </p>
+            </div>
+    </div>
+
+    <div class="mt-5" id="createButton">
+        <button id="create">create</button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script>
+       
+    </script>
+
+    <style>
+
+        .pageHeading h1{
+            font-size: 3vw;
+            font-family: "Indie Flower", sans-serif;
+            font-weight: 500;
+            color: #ebd834;
+            margin-top: 120px;
+        }
+
+        .pageHeading h2{
+            color:black;
+            font-family: "Indie Flower", sans-serif;
+            font-weight: bold;
+            font-size:2vw;
+        }
+
+        #createButton{
+            position:fixed;
+            bottom:10%;
+            left:50%;
+            transform: translate(-50%, 0);
+        }
+
+        #create{
+            border-radius:50px;
+            height:4.5vw;
+            width:10vw;
+            font-size:2.5vw;
+            font-family: "Indie Flower", sans-serif;
+            font-weight:bold;
+            background-color: #ebd834;
+        }
+
+        p{
+            font-size:2vw;
+        }
+
+        .label{
+            font-family: "Indie Flower", sans-serif;
+            color:black;
+            font-weight:bold;
+        }
+
+        .errors{
+            color:red;
+        }
+    </style>
+{% endblock %}

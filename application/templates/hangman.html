@@ -42,25 +42,18 @@
           </div>
           <div id="timer">Time Remaining: <span id="timerValue">3:00</span></div>
         </div>
-        <br>
-        <br>
-        <img src="hangman.svg" draggable="false" alt="hangman-img">
+        <img src="http://127.0.0.1:5501/application/static/deliverables/hangmanGameImages/hangman.1.svg" alt="hangman-img">
       </div>
       <div class="game-box "> 
         <div id="hangmanSentence">
         </div>
         <br>
-        <br> 
         <div id="hangmanLetters">
         </div>
         <div id="goesLeft">
         </div>
-
-
       </div>
-
   </div>
-
   </body>
 
   <style> 
@@ -96,18 +89,15 @@
     position: absolute;
     border: #eacd11 solid 5px;
   }
-
   .header{
     font-size: 1vw;
     display:flex;
     justify-content:space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 80px;
     width: 226.10%;
     margin-top: 0px;
-    padding: 10px;
   }
-
   .modal{
     border: 2px outset black;
     border-radius: 5px;
@@ -115,7 +105,6 @@
     font-weight: bold;
     background-color: rgb(241, 241, 134);
     margin: 15px 15px;
-
   }
   .theme{
     font-weight: bold;
@@ -125,8 +114,6 @@
     padding: 9px;
     margin: 0px;
     background-color: rgb(241, 241, 134);
-
-
   }
 
   #timer{
@@ -141,7 +128,6 @@
 
   .hangman-stand img{
     max-width: 40vw;
-
   }
 
   .hangman-stand h1{
@@ -160,6 +146,7 @@
     justify-content: center;
     align-items: center;
   }
+  
   #hangmanLetters button {
     background-color: rgb(10, 12, 9);
     color: #ffffff; 
@@ -168,9 +155,10 @@
     border: solid 2px black; 
     margin: 0.5%;
     cursor: pointer;
-    font-size: 1.5vw; 
+    font-size: 2vw; 
     align-items: center;
     padding: 8px;
+    width: calc(100% / 15 - 2px);
   }
 
   #hangmanLetters button:hover {
@@ -178,12 +166,9 @@
     color: #0d0b0b; 
   }
 
-  #hangmanLetters button:disabled {
-    color: #171111;
-    cursor: not-allowed; 
-  }
+
   #hangmanSentence span.placeholder {
-    font-size: 1.5vw; 
+    font-size: 2vw; 
     margin: 0px;
     color: #090101; 
     align-items: center;
@@ -201,8 +186,10 @@
   }
 
   #goesLeft {
-    padding-top: 20px;
-    font-weight:bolder;
+    margin-top : 20px;
+    padding: 10px;
+    font-weight: 800;
+    text-align: start;
     font-size: 1.5vw;
 
   }
@@ -236,13 +223,13 @@
 
   .close {
     color: #151515;
-    float: right;
+    float: inline-end;
     font-size: 40px;
     font-weight: bold;
   }
 
   .close:hover, .close:focus {
-    color: rgb(198, 232, 62);
+    color: rgb(255, 237, 145);
     text-decoration: none;
     cursor: pointer;
   }
@@ -255,25 +242,28 @@
   @media (max-width: 900px) {
     .container {
       flex-direction: column;
-      padding: 40px;
+      padding-top: 10px;
       min-height: 100vh;
       align-items: center;
-      font-size: 1vw;
+      font-size: 2vw;
     }
     .hangman-stand img{
-      max-width: 80vw;
-      margin: 0px;
+      max-width: 68vw;
+      margin-left: 100px;
       padding: 0px;
     }
     .header{
       margin-bottom: 0px;
       width: 100%;
       margin-top: 0px;
-      padding: 5px;
+      padding: 0px;
+      font-size: 2vw;
     }
     #goesLeft {
-    padding-top: 10px;
-    font-size: 1.5vw;
+    padding: 8px;
+    padding-top: 0px;
+    margin: 5px;
+    font-size: 3vw;
 
   }
 
@@ -288,7 +278,7 @@
     let goesLeft = 7; /* number of attempts allowed*/ 
     let timerValue = 120; /* timer in seconds*/ 
     let timerInterval;
-    let theme = "All"; /* theme/topic of the word to be guessed*/ 
+    let theme = "sports"; /* theme/topic of the word to be guessed*/ 
 
     document.getElementById("ThemeType").textContent = theme
 
@@ -348,9 +338,18 @@
     }
 
     /* array of hangman Images*/   
-    const hangmanImages = [
-    'hangman.svg','hangman.1.svg', 'hangman.2.svg','hangman.3.svg','hangman.4.svg', 'hangman.5.svg', 'hangman.6.svg', 'hangman.7.svg',
-    ]
+    const hangmanImages = [ 
+    'application/static/deliverables/hangmanGameImages/hangman.1.svg',
+    'http://127.0.0.1:5501/application/static/deliverables/hangmanGameImages/hangman.2.svg',
+    'http://127.0.0.1:5501/application/static/deliverables/hangmanGameImages/hangman.3.svg',
+    'http://127.0.0.1:5501/application/static/deliverables/hangmanGameImages/hangman.4.svg',
+    'http://127.0.0.1:5501/application/static/deliverables/hangmanGameImages/hangman.5.svg',
+    'http://127.0.0.1:5501/application/static/deliverables/hangmanGameImages/hangman.6.svg',
+    'http://127.0.0.1:5501/application/static/deliverables/hangmanGameImages/hangman.7.svg',
+
+
+
+];
     let currentImageIndex = 0
 
     /* estiablish game function*/ 
@@ -447,10 +446,12 @@
     /* update hangman image */ 
 
     function updateHangmanImage() {
-      const hangmanImage = document.querySelector('.hangman-stand img');
-      currentImageIndex++;
-      hangmanImage.src = hangmanImages[currentImageIndex];
+    const hangmanImage = document.querySelector('.hangman-stand img');
+    currentImageIndex++;
+    if (currentImageIndex < hangmanImages.length) {
+        hangmanImage.src = hangmanImages[currentImageIndex];
     }
+}
 
     /* show modal  / popup function*/ 
     function showModal(modalId) {
