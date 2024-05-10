@@ -40,7 +40,7 @@
                         <div class="form-group">
                             <label for="filterTime">Time (seconds)</label>
                             <div class="TimeFilters">
-                              <button id="AllCat" data-filter="clear">All</button>
+                              <button class = active id="AllCat" data-filter="clear">All</button>
                               <button data-filter="1-2"> 1-2</button>
                               <button data-filter="2-3"> 2-3 </button>
                               <button data-filter="3-4"> 3-4 </button>
@@ -57,6 +57,7 @@
             <!-- Game cards -->
           <div class="col-md-10">
             <div class="row" id="gameCards">
+            
               <!-- Game cards will be added here dynamically -->
               
           </div>
@@ -65,95 +66,84 @@
 </body>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Grandstander:ital,wght@0,100..900;1,100..900&display=swap');
   @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Oxanium:wght@200..800&family=Walter+Turncoat&display=swap');
   
   * { 
     margin: 0;
     padding:0;
-    font-family: 'Grandstander';
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Indie Flower';
   }
 
   .form-control  {
-    max-width: 40%;
-    border: 2px solid black;
-    background-color: rgb(242, 236, 148);
-    margin-bottom: 30px;
     text-align: center;
     justify-content: center;
+    position: sticky;
   }
   .filterBar-header{
   background-color: transparent;
   font-size: 1.5vw;
   text-align: center;
-  padding-bottom: 0px;
+  padding-bottom: 0%;
   align-items: center;
   display: flex;
-  margin-top: 20px; 
+  margin-top: 3vh; 
   }
 .filter-card {
-      align-items: center;
-      max-width: 100%;
-      padding: 0;
-      margin: 0px;
-      border: 1px solid black ;
-      background-color: rgb(244, 249, 182);
+    position: sticky;
+    top: 20%;
+    z-index: 1000;
+    align-items: center;
+    max-width: 100%;
+    font-size: 1.25vw;
+    background-color:rgb(245, 255, 170);
+    border: 1px solid black;
   }
-  .ThemeFilters {
-    padding: 2px;
-  }
+
   .ThemeFilters button {
-    padding: 5px;
-    margin: 4px;
+    padding: 2%;
+    margin: 2%;
+    font-weight: bolder;
     border-radius: 2px;
   }
 
   .TimeFilters button {
-    padding: 5px;
-    margin: 4px;
+    padding: 2%;
+    margin: 2%;
     border-radius: 2px;
     border-color: 1px solid black;
+    font-weight: bolder;
     background-color: rgb(167, 124, 240);
   }
 
   #HistoryCat{
         background-color:#fae62f;
-        }
-
+  }
   #SportsCat{
       background-color:#45991f;
       color:white;
   }
-
   #MusicCat{
       background-color:#fc8f28;
   }
-
   #GamesCat{
       background-color:#ac14ba;
       color:white;
+      opacity: 1;
   }
-
   #MediaCat{
       background-color:#ff6bba;
   }
-
   #BooksCat{
       background-color:#5447ff;
       color:white;
   }
-
   #FoodCat{
       background-color:#fc0303;
       color:white;
   }
-
   #PlacesCat{
       background-color:#53fcfc;
   }
-
   #MiscCat{
       background-color:#c0ff2b;
   }
@@ -161,51 +151,152 @@
     background-color: chocolate;
   }
 
-  .card-header {
-    background-color: transparent;
-    font-size: 1.5vw;
+  /* game button / card  styles  */ 
+  #gameCards{
+  margin-top: 5vw;
+  }
+  .game-card {
+      position: relative;
+      width: 15vw; 
+      height: 15vw;
+      border: none;
+      text-align: center;
+      cursor: pointer;
+      margin: 1vw 1vw 5vw 5vw; /* margin of game buttons/card */
+      border-radius: 70px 70px 20px 20px;
+      transition: transform 0.3s ease; /
+  }
+
+  .game-card::before, .game-card::after {
+      content: '';
+      position: absolute;
+      top: 100%; 
+      width: 5px; /* Line thickness */
+      height: 0vh; 
+      background-color: black;
+      transition: height 0.3s ease; 
+  }
+
+  .game-card::before {
+      left: 25%; 
+  }
+  .game-card::after {
+      right: 25%; 
+  }
+  .game-card:hover {
+      transform: translateY(-10px); 
+  }
+  .game-card:hover::before, .game-card:hover::after {
+      height: 8vh; 
+  }
+  .game-card .card-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    border-radius: 70px 70px 20px 20px; 
+  }
+
+  .game-card .profile-image {
+    width: 5vw;
+    height: 5vw;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    z-index: 2000;
+    position: absolute; 
+    top: -20%; 
+    left: 50%;
+    margin-top: 1%;
+    transform: translateX(-50%); 
+  }
+
+  .game-card .category-name {
+    font-size: 2vw;
+    font-weight: bold;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 5px;
-    padding-bottom: 0px;
+    padding-bottom: 2vh;
   }
 
-  .card-title {
-    font-size: 1vw; 
-    text-align: center; 
-    margin: 0%;
-    margin-left: 10px;
+  .game-card .user-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 35%;
+    background-color: rgba(205, 203, 203, 0.4);
+    padding-left: 5%;
+    padding-right: 5%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    word-wrap: break-word;
+    box-sizing: border-box; 
+    font-size: 1vw;
+    font-weight: 800;
+    border-radius: 0% 0% 9% 9%; 
   }
 
   .game-card .start-game {
-    position: absolute;
-    bottom: 10px; 
-    left: 50%;
-    transform: translateX(-50%);
-    width: 45%;
-    height: 40%;
-    border: 2px solid black;
-    background-color: transparent;
-    color: rgb(29, 23, 23);
-    font-weight: 700;
+      display: none;
+      font-size: 1vw;
+      font-weight: bolder;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -80%);
+      background-color: transparent;
+      color: black;
+      padding: 5%;
+      border-radius: 10px;
+      border: none
+    }
+
+  .game-card:hover .start-game {
+      display: block;
+      border: none;
   }
-  .start-game:hover{
-    background-color: white;
-    color: rgb(0, 0, 0);
-    box-shadow: 0 15px 10px rgba(21, 21, 17, 0.8);
+  .game-card:hover{
+    box-shadow: 5px 5px 20px rgb(18, 19, 14);
   }
 
-  #gameCards{
-    margin: 40px;
-    text-align: center;
+
+  .hand{
+      display: none;
+      position: absolute;
+      transition: all 0.3s ease;
+      width: 5vw; 
+      height: auto; 
+      z-index: 1000;
+      transition: all 0.3s ease;
+  }
+  .left-hand {
+      left: calc(50% - 7vw); 
+      top: 50%;
+      transform: translateY(-50%) translateX(-100%);
+  }
+  .right-hand {
+      right: calc(50% - 17vw); 
+      top: 40%;
+      transform: translateY(-50%) translateX(-100%);
+  }
+  .game-card:hover .hand {
+      display: block; 
   }
 
-  .pr {
-  width: 30px; 
-  height: 30px;
-  border-radius: 20%; 
-  object-fit: cover; 
+  @media (max-width: 768px) {
+
+      .filter-card{ display: none;} /* dont display filter bar for smaller screens */ 
+      .game-card::before, .game-card::after {
+          height: 0vh; 
+      }
+
+      .game-card:hover::before, .game-card:hover::after {
+          height: 2vh; 
+      }
   }
 </style>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -215,112 +306,138 @@
 <script>
   // Sample data for games
   const games = [
-    { username: 'username', theme: 'History', time: '1-2' , profileImage : ""},
-    { username: 'username', theme: 'Media', time: '2-3',  profileImage : "" },
-    { username: 'username', theme: 'Sports', time: '3-4',  profileImage : ""},
-    { username: 'username', theme: 'Games', time: '3-4',  profileImage : "" },
-    { username: 'username', theme: 'Places', time: '2-3' ,  profileImage : ""},
-    { username: 'username', theme: 'Music', time: '7-8',  profileImage : "" },
-    { username: 'username', theme: 'Books', time: '7-8' ,  profileImage : ""},
-    { username: 'username', theme: 'Food', time: '7-8',  profileImage : "" },
-    { username: 'username', theme: 'Misc', time: '7-8' ,  profileImage : "" },
-    { username: 'username', theme: 'Misc', time: '1-2' ,  profileImage : ""},
-    { username: 'username', theme: 'Misc', time: '3-4' ,  profileImage : ""},
-    { username: 'username', theme: 'History', time: '5-6' ,  profileImage : ""},
-    { username: 'username', theme: 'Media', time: '4-5',  profileImage : "" },
-    { username: 'username', theme: 'Books', time: '4-5' ,  profileImage : "" },
-    { username: 'username', theme: 'Books', time: '4-5' ,  profileImage : "" },
-    { username: 'username', theme: 'Books', time: '4-5' ,  profileImage : "" },
-    { username: 'username', theme: 'Books', time: '4-5' ,  profileImage : "" },
-    { username: 'username', theme: 'Books', time: '4-5' ,  profileImage : "" },
-    { username: 'username', theme: 'Books', time: '4-5' ,  profileImage : "" },
+    { username: 'username', theme: 'History', time: '1-2' , profileImage : "https://i.pinimg.com/236x/6c/35/c5/6c35c525c3c0f1abef4c1b8b3c820727.jpg" , caption: "Have a great day! Testing a very long  caption"},
+    { username: 'username', theme: 'Media', time: '2-3',  profileImage : "https://www.shutterstock.com/image-vector/stick-figure-holding-megaphone-concept-260nw-2225049455.jpg" , caption: "Have a great day!"},
+    { username: 'username', theme: 'Sports', time: '3-4',  profileImage : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiyOEnGLc7-DK_sKjvQd6znxXBoLT7CI_2UVCg2LeEOo_b-agMjuqeWMrG0wse8bQaUBs&usqp=CAU" , caption: "Have a great day!"},
+    { username: 'username', theme: 'Games', time: '3-4',  profileImage : "https://i.pinimg.com/236x/6a/f0/d4/6af0d454aa84b4422da5db4b95e1180d.jpg" , caption: "Have a great day!"},
+    { username: 'username', theme: 'Places', time: '2-3' ,  profileImage : "https://i.pinimg.com/236x/2a/bb/e4/2abbe4315bde8bcb464178693e56c442.jpg" , caption: "Have a great day!"},
+    { username: 'username', theme: 'Music', time: '7-8',  profileImage : "https://i.pinimg.com/474x/2d/6c/26/2d6c268c55752e531c4c3166cf9ec378.jpg" , caption: "Have a great day!"},
+    { username: 'username', theme: 'Books', time: '7-8' ,  profileImage : "https://i.pinimg.com/236x/c6/b3/d3/c6b3d33f7c109372c09b5b049128e05d.jpg" , caption: "Have a great day!"},
+    { username: 'username', theme: 'Food', time: '7-8',  profileImage : "https://i.pinimg.com/236x/45/eb/9d/45eb9dbc00ae49cf39843cae5142886c.jpg" , caption: "Have a great day!"},
+    { username: 'username', theme: 'Misc', time: '7-8' ,  profileImage : "https://i.pinimg.com/236x/e5/11/64/e51164b42c3d9e22267493dc120cb4d6.jpg" , caption: "Have a great day!" },
+    { username: 'username', theme: 'Misc', time: '1-2' ,  profileImage : "" , caption: "Have a great day!"},
+    { username: 'username', theme: 'Misc', time: '3-4' ,  profileImage : "" , caption: "Have a great day!"},
+    { username: 'username', theme: 'History', time: '5-6' ,  profileImage : "" , caption: "Have a great day!"},
+    { username: 'username', theme: 'Media', time: '4-5',  profileImage : "" , caption: "Have a great day!"},
+    { username: 'username', theme: 'Books', time: '4-5' ,  profileImage : "" , caption: "Have a great day!" },
+    { username: 'username', theme: 'Books', time: '4-5' ,  profileImage : ""  , caption: "Have a great day!"},
+    { username: 'username', theme: 'Books', time: '4-5' ,  profileImage : "" , caption: "Have a great day!" },
+    { username: 'username', theme: 'Books', time: '4-5' ,  profileImage : "" , caption: "Have a great day!"},
+    { username: 'username', theme: 'Books', time: '4-5' ,  profileImage : "" , caption: "Have a great day!" },
+    { username: 'username', theme: 'Books', time: '4-5' ,  profileImage : "" , caption: "Have a great day!"}
   ];
-  // Function to create a game card
-function createGameCard(game) {
-  const card = $('<div>').addClass('col-md-3 mb-4');
-  const cardBody = $('<div>').addClass('card game-card');
-  const cardHeader = $('<div>').addClass('card-header');
-  const profileImage = $('<img>').addClass('pr').attr('src', game.profileImage); 
-  const cardTitle = $('<h5>').addClass('card-title').text(game.username);
-  const startGameButton = $('<button>').addClass('start-game').text('Start Game !');
 
   // Set the card color based on the theme
   const themeColors = {
-    History: '#fae62f',
-    Media: '#ff6bba',
-    Sports: '#45991f',
-    Music: '#fc8f28',
-    Games: '#ac14ba',
-    Books: '#5447ff',
-    Places: '#53fcfc',
-    Food: '#fc0303',
-    Misc: '#c0ff2b',
+    History: '#FFD33B',
+    Media: '#FF7AB2',
+    Sports: '#7AE864',
+    Music: '#FD9A5C',
+    Games: '#CE64E8',
+    Books: '#5C6FC8',
+    Places: '#9ACBFF',
+    Food: '#FF4040',
+    Misc: '#C1FF72',
   };
-  cardBody.css('background-color', themeColors[game.theme] || 'gray');
-  cardBody.css("height", "120px"), card.css("padding-right", "5px");
-  startGameButton.css('border-radius', '10px');
-  cardBody.css("border-radius", "10px");
+  // 
+  function createGameCard(game) {
 
-  // Append pr and username to card header
-  cardHeader.append(profileImage, cardTitle);
-  cardBody.append(cardHeader, startGameButton);
-  card.append(cardBody);
-  return card;
+    const card = $('<button>').addClass('card game-card');
+    const cardBody = $('<div>').addClass('card-body');
+    const profileImage = $('<img>').addClass('profile-image').attr('src', game.profileImage);
+    const categoryName = $('<div>').addClass('category-name').text(game.theme);
+
+    const userInfo = $('<div>').addClass('user-info').text(`@${game.username} - ${game.caption}`);
+    const startGame = $('<button>').addClass('start-game').text(' Click to start the game !');
+    const rightHand = $('<img>').addClass('hand right-hand').attr('src', 'http://127.0.0.1:5501/application/static/deliverables/gameFeed/hand-2.svg');
+    const leftHand = $('<img>').addClass('hand left-hand').attr('src', 'http://127.0.0.1:5501/application/static/deliverables/gameFeed/hand1.svg');
+
+    cardBody.css('background-color', themeColors[game.theme] || 'gray');
+    
+    cardBody.append(profileImage, categoryName, userInfo);
+    card.append(cardBody);
+    card.append(startGame, rightHand, leftHand);
+
+    $(document).ready(function() {
+    $('.game-card').hover(
+        function() {
+            $(this).find('.hand').show();
+        },
+        function() {
+            $(this).find('.hand').hide();
+        }
+      );
+    });
+
+    // Hover events
+    card.hover(
+        function() { // Mouse enter
+            categoryName.hide();
+            startGame.show();
+            console.log("Hover in");
+        },
+        function() { // Mouse leave
+            categoryName.show();
+            startGame.hide();
+            console.log("Hover out");
+        }
+    );
+    return card;
 }
 
-// Render game cards
-function renderGameCards(games, themeFilter, timeFilter) {
-        $('#gameCards').empty();
-        games.forEach((game) => {
-            if (
-                (themeFilter === 'clear' || game.theme === themeFilter) &&
-                (timeFilter === 'clear' || game.time === timeFilter)
-            ) {
-                $('#gameCards').append(createGameCard(game));
-            }
-        });
-    }
+  // Render game cards
+  function renderGameCards(games, themeFilter, timeFilter) {
+          $('#gameCards').empty();
+          games.forEach((game) => {
+              if (
+                  (themeFilter === 'clear' || game.theme === themeFilter) &&
+                  (timeFilter === 'clear' || game.time === timeFilter)
+              ) {
+                  $('#gameCards').append(createGameCard(game));
+              }
+          });
+      }
 
-    // Initial rendering of game cards
-    renderGameCards(games, 'clear', 'clear');
+      // Initial rendering of game cards
+      renderGameCards(games, 'clear', 'clear');
+      
+      // Filter game cards based on category buttons
+      $('.ThemeFilters button').click(function() {
+          const themeFilter = $(this).data('filter');
+          const timeFilter = $('.TimeFilters button.active').data('filter');
+          $('.ThemeFilters button').removeClass('active');
+          $(this).addClass('active');
+          renderGameCards(games, themeFilter, timeFilter);
+      });
+
+      // Filter game cards based on time limit buttons
+      $('.TimeFilters button').click(function() {
+          const themeFilter = $('.ThemeFilters button.active').data('filter');
+          const timeFilter = $(this).data('filter');
+          $('.TimeFilters button').removeClass('active');
+          $(this).addClass('active');
+          renderGameCards(games, themeFilter, timeFilter);
+      });
+
+      // Show all game cards
+      $('.ThemeFilters button[data-filter="All"], .TimeFilters button[data-filter="All"]').click(function() {
+          $('.ThemeFilters button, .TimeFilters button').removeClass('active');
+          $(this).addClass('active');
+          renderGameCards(games, 'clear', 'clear');
+      });
+
+  // Change button color for Themes filters when clicked
+  $('.ThemeFilters button').click(function() {
+    $('.ThemeFilters button').css('background-color', ''); // Reset all button colors
+    $(this).css('background-color', 'gray'); 
+  });
+  // Change button color for Time filters when clicked
+  $('.TimeFilters button').click(function() {
+    $('.TimeFilters button').css('background-color', ''); // Reset all button colors
+    $(this).css('background-color', 'gray');  // Change background color of the clicked button
+  });
+
     
-    // Filter game cards based on category buttons
-    $('.ThemeFilters button').click(function() {
-        const themeFilter = $(this).data('filter');
-        const timeFilter = $('.TimeFilters button.active').data('filter');
-        $('.ThemeFilters button').removeClass('active');
-        $(this).addClass('active');
-        renderGameCards(games, themeFilter, timeFilter);
-    });
-
-    // Filter game cards based on time limit buttons
-    $('.TimeFilters button').click(function() {
-        const themeFilter = $('.ThemeFilters button.active').data('filter');
-        const timeFilter = $(this).data('filter');
-        $('.TimeFilters button').removeClass('active');
-        $(this).addClass('active');
-        renderGameCards(games, themeFilter, timeFilter);
-    });
-
-    // Show all game cards
-    $('.ThemeFilters button[data-filter="All"], .TimeFilters button[data-filter="All"]').click(function() {
-        $('.ThemeFilters button, .TimeFilters button').removeClass('active');
-        $(this).addClass('active');
-        renderGameCards(games, 'clear', 'clear');
-    });
-
-// Change button color for Themes filters when clicked
-$('.ThemeFilters button').click(function() {
-  $('.ThemeFilters button').css('background-color', ''); // Reset all button colors
-  $(this).css('background-color', 'gray'); 
-});
-// Change button color for Time filters when clicked
-$('.TimeFilters button').click(function() {
-  $('.TimeFilters button').css('background-color', ''); // Reset all button colors
-  $(this).css('background-color', 'gray');  // Change background color of the clicked button
-});
-
-  
 </script>
 
 </html>
