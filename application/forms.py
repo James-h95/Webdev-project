@@ -25,6 +25,15 @@ class RegisterForm(FlaskForm):
     #password1 = StringField('Password:',validators=[Length(min=7),DataRequired()])
     #password2 = StringField('Confirm Password:',validators=[EqualTo('password1'), DataRequired()])
     submit = SubmitField('Sign Up')
+
+
+class LoginForm(FlaskForm):
+    username = StringField('User Name:',validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    submit = SubmitField('Log in')
+    
+
+    
     
 class CreateGameForm(FlaskForm):
     category = SelectField('Category:',choices=[("media", "Media"), ("books", "Books"), ("history", "History"), ("sports", "Sports"), ("music", "Music"), ("games", "Games"), ("places", "Places"), ("food", "Food"), ("misc", "Misc.")], validators=[DataRequired()])
