@@ -41,3 +41,4 @@ class CreateGameForm(FlaskForm):
     phraseValidator = Regexp(regex=r'^[a-zA-Z\s,"\'\?!:;.]+$', message='Must contain only letters and the following punctuation: ''"".,?!:;')
     phrase = StringField('Word/phrase:',validators=[Length(min=3,max=250), phraseValidator,DataRequired()])
     caption = StringField('Caption (optional):',validators=[Length(max=200)])
+    submit = SubmitField('Create game')

@@ -2,7 +2,7 @@ from application import app,db
 from flask import render_template, redirect, url_for, flash, get_flashed_messages
 from application.models import Item, User, Message, Game
 from application.forms import RegisterForm, CreateGameForm,LoginForm
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 
 @app.route('/')
 @app.route('/home')
@@ -27,6 +27,7 @@ def play_page():
     return render_template('chat.html')
 
 @app.route('/feed')
+@login_required
 def feed_page():
     return render_template('feed.html')
 
@@ -34,10 +35,10 @@ def feed_page():
 def create_page():
     form = CreateGameForm()
     if form.validate_on_submit():
-        new_game = Game(phrase=form.phrase.data,category=form.category.data,timeLimit=form.timeLimit.data,caption=form.caption.data)
+        new_game = Game(phrase=form.phrase.data,category=form.category.data,timeLimit=form.timeLimit.data,caption=form.caption.data,creator=current_user.id)
         db.session.add(new_game)
         db.session.commit()
-        flash("Game is now live!")
+        flash("Game is now live!",category="success")
         return redirect(url_for('feed_page'))
     return render_template('create.html', form=form)
 
