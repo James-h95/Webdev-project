@@ -3,6 +3,7 @@ from flask import render_template, redirect, url_for, flash, get_flashed_message
 from application.models import Item, User, Message, Game
 from application.forms import RegisterForm, CreateGameForm,LoginForm
 from flask_login import login_user, logout_user, login_required, current_user
+import datetime
 
 @app.route('/')
 @app.route('/home')
@@ -26,22 +27,27 @@ def play_page():
     messages = Message.query.all()
     return render_template('chat.html')
 
-@app.route('/feed')
+@app.route('/feed', methods=['GET'])
 @login_required
 def feed_page():
-    return render_template('feed.html')
+    games = Game.query.all()
+    return render_template('feed.html', games=games)
+
+@app.route('/hangman')
+def hangman_page():
+    return render_template('hangman.html')
 
 @app.route('/create', methods=['GET', 'POST'])
 def create_page():
     form = CreateGameForm()
     if form.validate_on_submit():
-        new_game = Game(phrase=form.phrase.data,category=form.category.data,timeLimit=form.timeLimit.data,caption=form.caption.data,creator=current_user.id)
+        date = datetime.datetime.now()
+        new_game = Game(creator_id=current_user.id, phrase=form.phrase.data,category=form.category.data,timeLimit=form.timeLimit.data,caption=form.caption.data,created=date,times_played=0,successes=0)
         db.session.add(new_game)
         db.session.commit()
         flash("Game is now live!",category="success")
         return redirect(url_for('feed_page'))
     return render_template('create.html', form=form)
-
 
 @app.route('/leaderboard')
 def leaderboard_page():

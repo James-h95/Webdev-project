@@ -20,7 +20,7 @@ class User(db.Model, UserMixin):
     _password = db.Column(db.String(length=60), nullable=False) #avoid naming confusion
     balance = db.Column(db.Integer(),nullable=False,default=10)
     items = db.relationship('Item',secondary=users_items, back_populates='users',lazy='dynamic')
-    games = db.relationship('Game',backref='creator_user', lazy=True)
+    games_created = db.relationship('Game', back_populates='creator')
 
     @property
     #GETTER
@@ -77,7 +77,8 @@ class Game(db.Model):
      created = db.Column(db.DateTime(timezone=True))
      times_played = db.Column(db.Integer())
      successes = db.Column(db.Integer())
-     creator = db.Column(db.Integer(), db.ForeignKey('user.id'))
+     creator_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
+     creator = db.relationship('User', back_populates='games_created')
      
     
      

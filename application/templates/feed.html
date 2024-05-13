@@ -4,12 +4,35 @@
 {% endblock %}
 
 {% block content %}
-    <div class="text-center pageHeading">
+    <div class="text-center mb-5 pageHeading">
         <h1>Feed</h1>
         <h2>create, play, explore</h2>
     </div>
 
-    <div class="text-center mt-5 gameFeed">
+    <div class="container mt-5">
+        <div class="row">
+                {% set cols = 3 %}
+                {% for game in games %}
+                    <div class="col-md-4 mt-5">
+                        <button href="{{ url_for('hangman_page') }}" class="mb-5 card game-card {{ game.category|lower|replace('.', '')}}">
+                            <div class="card-body">
+                                <img class="profile-image" src="https://img.freepik.com/premium-vector/stick-figure-man-isolated-vector_566661-759.jpg"></img>
+                                    <div class="category-name">
+                                        {{ game.category }}
+                                    </div>
+                                    <div class="start-game">Start game!</div>
+                                    <div class="user-info">
+                                        @{{ game.creator.username }} - {{ game.caption }}
+                                    </div>
+                            </div>
+                            <img class="hand right-hand" src="http://127.0.0.1:5501/application/static/deliverables/gameFeed/hand-2.svg"></img>
+                            <img class="hand left-hand" src="http://127.0.0.1:5501/application/static/deliverables/gameFeed/hand1.svg"></img>
+                        </button>
+                    </div>
+                    {% if loop.index % cols == 0 %}
+                        </div><div class="row">
+                    {% endif %}
+                    {% endfor %}
     </div>
 
     <div id="tooltip-htp"><b>How to play:</b><br>
@@ -56,9 +79,11 @@
 
             $("#helpButton").mouseenter(function(){
                 $('#tooltip-htp').css('opacity', '100%');
+                $('#tooltop-htp').css('z-index', '5');
             });
             $("#helpButton").mouseleave(function(){
                 $('#tooltip-htp').css('opacity', '0');
+                $('#tooltop-htp').css('z-index', '0');
             });
             $("#chat").on("click", function(){
                 if(!toggleUp){
@@ -85,6 +110,16 @@
                 $('#exitChat').css('font-size', '');
                 toggleUp = false;
             });
+            $('.game-card').mouseenter(function(){
+                    $(this).find('.category-name').hide();
+                    $(this).find('.start-game').css('visibility', 'visible');
+                    $(this).find('.hand').show();
+            });
+            $('.game-card').mouseleave(function(){
+                    $(this).find('.category-name').show();
+                    $(this).find('.start-game').css('visibility', 'hidden');
+                    $(this).find('.hand').hide();
+            });
         });
     </script>
 
@@ -108,6 +143,7 @@
             position:fixed;
             bottom:10%;
             left:10%;
+            z-index:2;
         }
 
         #help{
@@ -132,7 +168,7 @@
         #tooltip-htp{
             padding:1%;
             background-color: #fcf4ac;
-            position:absolute;
+            position:relative;
             color:black;
             left:10%;
             text-align:left;
@@ -157,6 +193,7 @@
             bottom:10%;
             left:50%;
             transform: translate(-50%, 0);
+            z-index:4;
         }
 
         #create{
@@ -197,6 +234,7 @@
             right: 10%;
             display: inline-flex;
             justify-content:center;
+            z-index: 10;
         }
 
         #chatHeading{
@@ -213,7 +251,7 @@
 
         #clickToExit{
             cursor: pointer;
-            z-index: 2;
+            z-index: 3;
         }
 
         #chatBody{
@@ -236,5 +274,166 @@
             right: 10%;
             border: solid 2px black;
         }
+
+        .game-card {
+            width: 10vw; 
+            height: 10vw;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 70px 70px 0px 0px;
+            transition: transform 0.3s ease; /
+            z-index:4;
+            border: 2px solid black;
+        }
+
+        .game-card::before, .game-card::after {
+            content: '';
+            position: absolute;
+            top: 100%; 
+            width: 5px; /* Line thickness */
+            height: 0vh; 
+            background-color: black;
+            transition: height 0.3s ease; 
+        }
+
+        .game-card::before {
+            left: 25%; 
+        }
+        .game-card::after {
+            right: 25%; 
+        }
+        .game-card:hover {
+            transform: translateY(-10px); 
+        }
+        .game-card:hover::before, .game-card:hover::after {
+            height: 8vh; 
+        }
+
+        .game-card .card-body {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100%;
+          width: 100%;
+        }
+      
+        .game-card .profile-image {
+          width: 4vw;
+          height: 4vw;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 2px solid black;
+          z-index: 3;
+          position: absolute; 
+          top: -20%; 
+          left: 50%;
+          margin-top: 1%;
+          transform: translateX(-50%); 
+        }
+      
+        .game-card .category-name {
+          font-size: 1.5vw;
+          font-weight: bold;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding-bottom: 2vh;
+          font-family: "Indie Flower", sans-serif;
+        }
+      
+        .game-card .user-info {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 35%;
+          background-color: rgba(205, 203, 203, 0.4);
+          padding-left: 10%;
+          padding-right: 5%;
+          display: flex;
+          justify-content: start;
+          align-items: center;
+          word-wrap: break-word;
+          box-sizing: border-box; 
+          font-size: 0.7vw;
+        }
+      
+        .start-game {
+            visibility: hidden;
+            font-size: 1.2vw;
+            font-weight: bolder;
+            position: absolute;
+            background-color: transparent;
+            color: black;
+            padding-bottom: 2vh;
+            align-items: center;
+            justify-content: center;
+            font-family: "Indie Flower", sans-serif;
+          }
+
+        .history{
+            background-color:#FFD33B;
+        }
+
+        .media{
+            background-color:#FF7AB2;
+        }
+
+        .sports{
+            background-color:#7AE864;
+        }
+        
+        .music{
+            background-color:#FD9A5C;
+        }
+
+        .games{
+            background-color:#CE64E8;
+        }
+
+        .books{
+            background-color:#5C6FC8;
+        }
+
+        .places{
+            background-color:#9ACBFF;
+        }
+
+        .food{
+            background-color:#FF4040;
+        }
+
+        .misc{
+            background-color:#C1FF72;
+        }
+
+        .game-card:hover{
+          box-shadow: 5px 5px 20px rgb(18, 19, 14);
+        }
+
+        .hand{
+            display: none;
+            position: absolute;
+            transition: all 0.3s ease;
+            width: 5vw; 
+            height: auto; 
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        .left-hand {
+            left: calc(50% - 7vw); 
+            top: 50%;
+            transform: translateY(-50%) translateX(-100%);
+        }
+        .right-hand {
+            right: calc(50% - 17vw); 
+            top: 40%;
+            transform: translateY(-50%) translateX(-100%);
+        }
+        .game-card:hover .hand {
+            display: block; 
+        }
+
     </style>
 {% endblock %}
