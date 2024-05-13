@@ -9,11 +9,14 @@
         <h2>create, play, explore</h2>
     </div>
 
+
     <div class="container mt-5">
-        <div class="row">
+        <!-- Each row-->
+        <div class="row justify-content start">
                 {% set cols = 3 %}
+                <!-- For each gamebox-->
                 {% for game in games %}
-                    <div class="col-md-4 mt-5">
+                    <div class="col-4">
                         <button href="{{ url_for('hangman_page') }}" class="mb-5 card game-card {{ game.category|lower|replace('.', '')}}">
                             <div class="card-body">
                                 <img class="profile-image" src="https://img.freepik.com/premium-vector/stick-figure-man-isolated-vector_566661-759.jpg"></img>
@@ -29,10 +32,12 @@
                             <img class="hand left-hand" src="http://127.0.0.1:5501/application/static/deliverables/gameFeed/hand1.svg"></img>
                         </button>
                     </div>
-                    {% if loop.index % cols == 0 %}
-                        </div><div class="row">
+
+                    {% if loop.index % cols == 0 and not loop.last %}
+                        <div class="row justify-content start"></div>
                     {% endif %}
-                    {% endfor %}
+                {% endfor %}
+        </div>
     </div>
 
     <div id="tooltip-htp"><b>How to play:</b><br>
@@ -55,7 +60,7 @@
     </div>
 
     
-    <a href"#"><button id="chat">
+    <a href="#"><button id="chat">
         <div class="container text-center">
             <div class="row justify-content-between">
                 <div id="chatHeading">
@@ -139,6 +144,13 @@
             font-size:2vw;
         }
 
+        .container {
+            width: 50%;
+            margin: 0 auto;
+            border: 5px solid;
+        }
+
+        
         #helpButton{
             position:fixed;
             bottom:10%;
