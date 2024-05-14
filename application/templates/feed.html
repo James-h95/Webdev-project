@@ -79,7 +79,7 @@
                         )
                         .append(
                             // Adding the message text and timestamp
-                            $("<div/>", {"class":msg_type + "-text-box"})
+                            $("<div/>", {"class":msg_type + "-textbox"})
                             .append(
                                 $("<div/>", {"class":msg_type + "-text",text:text})
                             ) 
@@ -201,7 +201,7 @@
                 if(!toggleUp){
                     $('#chat').height($(window).height() / 1.3);
                     $('#chat').css('width', "22vw");
-                    $('#chatBody').height($(window).height() / 1.3 - $('#chat').height())
+                    $('#chatBody').height($(window).height() / 1.256 - $('#chat').height())
                     $('#chatBody').css('width', "22vw");
                     $('#chat').css('cursor', 'default');
                     $('#chat').css('cursor', 'pointer');
@@ -252,10 +252,13 @@
         <div class="container text-center">
                 <div class="chat-heading">
                     <img src="" alt="" class="profile-icon-header">
-                    <div class="current-username.current-username">
-                        <span>@all</span>
-                        <div class="username-list ">
-                            <p>@all</p>
+                    <div class="current-username">
+                        All
+                        <div class="username-list">
+                            <div class="username-list-header">Friends</div>
+                            <p>@user_1</p><p>@user_2</p><p>@user_3</p><p>@user_4</p>
+                            <p>@user_5</p><p>@user_6</p><p>@user_7</p><p>@user_8</p>
+                            <p>@user_9</p><p>@user_10</p><p>@user_11</p><p>@user_12</p>
                             <p>@user_1</p><p>@user_2</p><p>@user_3</p><p>@user_4</p>
                             <p>@user_5</p><p>@user_6</p><p>@user_7</p><p>@user_8</p>
                             <p>@user_9</p><p>@user_10</p><p>@user_11</p><p>@user_12</p>
@@ -281,7 +284,7 @@
                 <input type="text" class="form-control" placeholder="Send a message...">
                 <button type="submit" class="message-submit"> 
 
-                    Submit
+                    Send
                 </button>
             </div>
         </div>
@@ -382,16 +385,18 @@
                 width:12vw;
                 font-size:1.5vw
             }
+            z-index: 0;
             border-radius: 3px;
             border-style: solid;
             border-width: 2px;
             transition:0.6s ease;
             position:fixed;
+            color: #000000;
             bottom:0%;
             right: 7%;
             display: inline-flex;
             justify-content:center;
-            background-color: #fef1a6;
+            background-color: #4267B2;
             box-shadow: 2px 5px 4px rgba(0,0,0,0.3); 
         }
 
@@ -406,7 +411,7 @@
                 width:12vw;
                 font-size:3vw;
             }
-            
+            z-index: 0;
             font-family: sans-serif;
             background-color:rgb(255, 255, 255);
             border-bottom:none;
@@ -420,16 +425,15 @@
 
         /* Chat styling */
 
-
-        .chat-heading{
+        .chat-heading {
             transition: 0.6s ease;
-            margin: 0 auto;
-            flex-grow: 1; /* Allows the username to grow and fill the space */
-            text-align: start; 
+            text-align:justify; 
             padding: 0;
             color: #fff;
             font-size: 25px;
-            padding-bottom: 0px;
+            display: flex;
+            flex-direction: row;
+            padding-top: 0.5vw;
         }
             
         img {
@@ -441,28 +445,28 @@
         .container {
             width: 100%;
             height: 100%;
+            padding: 0;
         }
 
         .messages {
+            z-index: 0;
             width: 100%;
-            height: 80%;
+            height: 82%;
             flex-direction: column; 
             display: flex;
             align-items: baseline;
             justify-content: start; /* Aligns children to the start of the container */
-            padding-left: 20px;
             padding-top: 0px;
             padding-bottom: 1px;
             color: white;
             margin-top: 0px;
-            border-bottom: 2px solid lightgrey !important;
-            border-top: 2px solid lightgrey !important;
+            border-bottom: 10px solid white;
+            border-top: 10px solid white;
 
             /* Used example from 
             https://jsfiddle.net/3wjs84ce/
             to enable scrolling without showing a scrollbar
             */
-            z-index: 2;
             overflow-y: scroll;
             overflow: scroll;
             scrollbar-width: none; 
@@ -472,78 +476,64 @@
         }
 
         .received-message, .sent-message {
-            border-radius: 9px;
-            position: relative;
-            font-size: 15px;
-            padding: 10px;
             margin-top: 30px;
-            height: 70px;
             display:flex;
-            background-color:#ff9ac8;
-            color: rgba(0, 0, 0, 0.848);
-            word-wrap: break-word;
-            align-items:center;
-            box-shadow: 2px 5px 4px rgba(0,0,0,0.3); 
+            position: relative;
+            height: 70px;
         }
 
-        .received-message {
-            justify-content: flex-start;
-            float: left;
+        .received-textbox, .sent-textbox {
+            border-radius: 9px;
+            font-size: 15px;
+            padding: 10px;
+            word-wrap: break-word;
+            align-items:center;
+            background-color:#ff9ac8;
+            color: rgba(0, 0, 0, 0.848);
+            box-shadow: 2px 5px 4px rgba(0,0,0,0.3); 
         }
 
         .received-message, .received-textbox {
             text-align: left;
             float: left;
-            margin-right: 10px;
+            margin-left: 10px;
             display: flex;
-            align-items: flex-end;
+            align-items: flex-start;
         }
 
         .sent-message, .sent-textbox {
             text-align: left;
-            float: right;
             margin-left: 10px;
             display: flex;
-            align-items: flex-end;
+            align-items: flex-start;
         }
 
         .sent-textbox {
-            float: right;
             background-color:#feff9c;
         }
 
-
         .received-text, .sent-text {
             min-width: 50px;
-            height: 15px;
-            line-height: 15px;    
+            padding-bottom: 10px;
+            height: 20px;
+            line-height: 20px;    
         }
 
         /* Clear floats (Plural?) */
-        .received-message:after, .sent-message:after { 
+        .received-textbox:after, .sent-textbox:after { 
             content: "";
             display: table;
             clear: both;
         }
 
 
-
-        /* Styling the msg-bottom container */
-        .msg-bottom {
-            max-width: 100%;
-            flex: 0 1 40px;
-            position: relative;
-            padding-left: 15px;
-            padding-right: 15px;
-            width: 100%;
-            margin-top: 0;
-        }
-
         .input-group .form-control {
+            margin-left: 10px;
             border-radius: 20px !important; 
             background-color:rgb(225, 225, 225);
             color: #000000; 
             border: 1px solid #eeefef; 
+            margin-top: 20px;
             font-size: 15px;    
             box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
         }
@@ -557,15 +547,15 @@
         .message-submit {
             z-index: 3;
             right: 18px;
-            font-size: 10px;
+            font-size: 15px;
             border: none;
-            padding-top: 0px;
-            padding-bottom: 20px;
-            padding-left: 30px;
-            padding-right: 18px;
-            background-color: #fff098;
+            margin-top: 20px;
+            margin-right: 10px;
+            padding-left: 20px;
+            padding-right: 20px;
+            background-color: #4267B2;
             border-radius: 20px;
-            color: rgba(0, 0, 0, 0.751);
+            color: rgb(255, 255, 255);
             outline: none !important;
         }
 
@@ -576,61 +566,70 @@
         .profile-icon-header {
             width: 40px; /* Adjust size as needed */
             height: 40px;
+            margin-left: 4.5px;
             background-color: lightgray;/* Placeholder color, use actual image */
-            border-radius: 10%;
+            border-radius: 70%;
             border-style: solid;
             border-color:lightgrey;
         }
-        .profile-icon {
-            width: 30px; /* Adjust size as needed */
-            height: 30px;
+        .sent-profile-icon, .received-profile-icon{
+            width: 40px; /* Adjust size as needed */
+            height: 40px;
             background-color: lightgray;/* Placeholder color, use actual image */
-            border-radius: 10%;
+            border-radius: 70%;
             border-style: solid;
             border-color:lightgrey;
-            margin-right: 20px;
-            margin-left: 20px;
         }
 
+        .received-profile-icon {
+            float: left;
+        }
+
+        .sent-profile-icon {
+            float: right;
+        }
 
         .received-time, .sent-time {
             width: 80px;
             font-size: 15px;
             color: #171212cb;
             position:absolute;
-            top: 30px;
-        }
-
-        .sent-time {
-            align-self: auto;
+            padding-top: 30px;
         }
 
         .username-list {
-            z-index: 3;
+            z-index: -5;
             display: none;
-            position: absolute;
             font-size: 25px; 
             color: #000;
-            background-color: #fffdee;
-            max-width: 100px;
-            max-height: 250px;
+            background-color:#ffffff;
+            width:8vw;
             padding-top: 10px;
             padding-right: 80px;
-            overflow: scroll;
-            scrollbar-width: none;
         }
 
         .current-username {
-            color: #000;
-            width: 1vw;
+            color: #ffffff;
+            padding-left: 1vw;
+            width: 3vw;
         }
 
-        .current-username:hover .username-list   {
+        .current-username:hover .username-list {
+            z-index: -5;
             display: block;
             position: absolute;
+            height: 100%;
+            left: -170px;
+            top: 10px;
+            overflow: scroll;
+            scrollbar-width: none;
         }
         .username-list  p:hover {
             color:#fb4999;
+        }
+
+        .username-list-header {
+            background-color: #4267B2;
         }
 
     </style>
