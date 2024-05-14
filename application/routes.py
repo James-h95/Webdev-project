@@ -4,6 +4,7 @@ from application.models import Item, User, Message, Game
 from application.forms import RegisterForm, CreateGameForm,LoginForm
 from flask_login import login_user, logout_user, login_required, current_user
 import datetime
+from flask import request
 
 @app.route('/')
 @app.route('/home')
