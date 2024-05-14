@@ -51,15 +51,15 @@
                                         @{{ game.creator.username }} - {{ game.caption }}
                                     </div>
                             </div>
-                            <img class="hand right-hand" src="http://127.0.0.1:5501/application/static/deliverables/gameFeed/hand-2.svg"></img>
-                            <img class="hand left-hand" src="http://127.0.0.1:5501/application/static/deliverables/gameFeed/hand1.svg"></img>
+                            <img class="hand right-hand" src="{{ url_for('static', filename='deliverables/gameFeed/hand-2.svg') }}"></img>
+                            <img class="hand left-hand" src="{{ url_for('static', filename='deliverables/gameFeed/hand1.svg') }}"></img>
                         </button>
-                    </div>
-
+                    </div> 
+                    
                     {% if loop.index % cols == 0 and not loop.last %}
                         <div class="row mt-2 justify-content-start"></div>
                     {% endif %}
-                {% endfor %}
+                {% endfor %} 
         </div>
     </div>
 
@@ -151,15 +151,17 @@
         }); 
         function filterGames() {
             const categoryFilter = document.getElementById('categoryFilter').value.toLowerCase();
-            const timeLimit = document.getElementById('timeSlider').value;
+            const timeLimit = parseInt(document.getElementById('timeSlider').value);
             const gameCards = document.querySelectorAll('.game-card');
+            const gameContainer = document.querySelector('.row.mt-2.justify-content-start');
             gameCards.forEach(card => {
                 const gameCategory = card.getAttribute('data-category').toLowerCase();
-                const gameTime = card.getAttribute('data-time');
+                const gameTime = parseInt(card.getAttribute('data-time'));
+                const cardParent = card.parentNode;
                 if ((categoryFilter === '' || gameCategory === categoryFilter) && (timeLimit === '120' || gameTime <= timeLimit)) {
-                    card.style.display = ''; 
+                    cardParent.style.display = 'inline-block'; 
                 } else {
-                    card.style.display = 'none'; 
+                    cardParent.style.display = 'none'; 
                 }
             });
         }
@@ -180,14 +182,13 @@
         *{
             font-family: "Indie Flower", sans-serif;
         }
-        .filter-bar{
-            /*border: #0d0d0b 0.25px solid;
-            border-radius: 20px; */
-            padding: 1vh;
-
+        .row.mt-2.justify-content-start {
+            display: flex;
+            flex-wrap: wrap;
         }
-        .filter-bar .row .col-md-3:not(:last-child) {
-            margin-bottom: 0px;
+
+        .filter-bar{
+            padding: 1vh;
         }
         #timeSliderLabel{
             color: #0d0d0b;
@@ -195,7 +196,7 @@
             font-size: 1vw;
         }
         #categoryFilter {
-            border: 2px solid #e6e633;
+            border: 2px solid #0a0a08;
             background-color: #ffef5b;
             font-size: 1vw;
             font-weight: 900;
@@ -390,7 +391,6 @@
                 width:16vw;
                 font-size:1.5vw;
             }
-            font-family: "Indie Flower", sans-serif;
             background-color:white;
             border-bottom:none;
             transition:0.5s ease;
@@ -411,12 +411,15 @@
             z-index:4;
             border: 2px solid black;
         }
-
+        .row.mt-2.justify-content-start {
+            display: flex;
+            flex-wrap: wrap;
+        }
         .game-card::before, .game-card::after {
             content: '';
             position: absolute;
             top: 100%; 
-            width: 5px; /* Line thickness */
+            width: 5px; 
             height: 0vh; 
             background-color: black;
             transition: height 0.3s ease; 
@@ -433,6 +436,15 @@
         }
         .game-card:hover::before, .game-card:hover::after {
             height: 8vh; 
+        }
+        @media (max-width: 768px) {
+            .game-card::before, .game-card::after {
+                height: 0vh; 
+            }
+
+            .game-card:hover::before, .game-card:hover::after {
+                height: 2vh; 
+            }
         }
 
         .game-card .card-body {
@@ -541,12 +553,12 @@
             transition: all 0.3s ease;
         }
         .left-hand {
-            left: calc(50% - 7vw); 
-            top: 50%;
+            left: calc(50% - 4.5vw); 
+            top: 70%;
             transform: translateY(-50%) translateX(-100%);
         }
         .right-hand {
-            right: calc(50% - 17vw); 
+            right: calc(50% - 14vw); 
             top: 40%;
             transform: translateY(-50%) translateX(-100%);
         }
