@@ -10,12 +10,6 @@ from flask import request
 
 NUM_VISIBLE_MESSAGES = 50
 
-# -----------------------------------------------------
-# This temporary and used for testing. A random id in 
-# the range 0-99 is created to mimic a users id
-from random import randint
-USER_ID = randint(1, 1_000_000) % 100
-# -----------------------------------------------------
 
 @app.route('/')
 @app.route('/home')
@@ -35,8 +29,10 @@ def shop_page():
     return render_template('shop.html',items=items)
 
 @app.route('/feed', methods=['GET', 'POST'])
-#@login_required
+@login_required
 def feed_page():
+
+    user_id = current_user.get_id()
     games = Game.query.all()
 
     # Handling all GET requests. Tasks common to all GET
@@ -58,7 +54,7 @@ def feed_page():
                 elif row is not None:
                     message = {}
                     # If the message was sent by the user
-                    if (row.sender_id == USER_ID):
+                    if (row.sender_id == user_id):
                         message["type"] = "sent"
                         
                     # Else if the message was sent to @all chat
@@ -81,13 +77,13 @@ def feed_page():
         # Returning most recent messages
         if request.args.get("request_type") == "update_query":
             update_required = (len(visible_messages) > 0)
-            return {"USER_ID":USER_ID,
+            return {"user_id":user_id,
                     "update_required":update_required,
                     "visible_messages":visible_messages}
         
         else:
             # Loading the page
-            return render_template('feed.html', USER_ID = USER_ID,
+            return render_template('feed.html', user_id = user_id,
                                 visible_messages = visible_messages,
                                 games=games)
 
