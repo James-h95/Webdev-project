@@ -7,8 +7,12 @@
 
     <script>
 
+
         var UPDATE_INTERVAL = 1000; /* Time before requesting and
                                  new messages (milliseconds) */ 
+
+        var toggleUp = false;
+
         var global_time_counter = 0;
         var global_time_string = null;
 
@@ -180,9 +184,21 @@
             });
         }, UPDATE_INTERVAL);
 
+
+        $(document).on("click","#chat-minimize", function() {
+            if(toggleUp){
+                    $('#chat').height('');
+                    $('#chat').css('width', '');
+                    $('#chatBody').height('');
+                    $('#chatBody').css('width', '');
+                    $('#chat').css('cursor', 'pointer');
+                    $(".chat-heading").empty();
+                    $(".chat-heading").append($("<div/>", {text:"Chat"}))
+                    toggleUp = false;
+                } 
+        });
+
         $(document).ready(function () {
-            
-            var toggleUp = false;
 
         /* Ensuring that msg-page div is scrolled all the way down 
             to the most recent message when the page is loaded  
@@ -221,25 +237,9 @@
                             )
                     )
                     .append(
-                        $('<b href"#"/>')
-                        .append(
-                            $("<button/>", {id:"chat-minimize", text:"x"})
-                        )
-                    )            
+                        $("<button/>", {id:"chat-minimize", text:"x"})
+                    )        
                     toggleUp = true;
-                }
-            });
-
-            $("#current-username").on("click", function(){
-                if(toggleUp){
-                    $('#chat').height('');
-                    $('#chat').css('width', '');
-                    $('#chatBody').height('');
-                    $('#chatBody').css('width', '');
-                    $('#chat').css('cursor', 'pointer');
-                    $(".chat-heading").empty();
-                    $(".chat-heading").append($("<div/>", {text:"Chat"}))
-                    toggleUp = false;
                 }
             });
 
