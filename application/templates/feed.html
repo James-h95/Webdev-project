@@ -276,7 +276,52 @@
         <h2>Create, Play, Explore!</h2>
     </div>
 
-    <div class="text-center mt-5 gameFeed">
+    <div class="container filter-bar">
+        <div class="row justify-content-center">
+                <select id="categoryFilter" onchange="filterGames()">
+                    <option value="">All Categories</option>
+                    <option value="history">History</option>
+                    <option value="media">Media</option>
+                    <option value="sports">Sports</option>
+                    <option value="music">Music</option>
+                    <option value="games">Games</option>
+                    <option value="books">Books</option>
+                    <option value="places">Places</option>
+                    <option value="food">Food</option>
+                    <option value="misc">Misc.</option>
+                </select>
+        </div>
+    </div>
+
+
+    <div class="container mt-5">
+        <!-- Each row-->
+        <div class="row mt-2 justify-content-start">
+                {% set cols = 3 %}
+                <!-- For each gamebox-->
+                {% for game in games %}
+                    <div class="col-4 mt-4" >
+                        <button href="{{ url_for('hangman_page') }}" class="mb-5 card game-card {{ game.category|lower|replace('.', '')}}" data-category="{{ game.category|lower }}" data-time = "{{ game.timeLimit }}">
+                            <div class="card-body">
+                                <img class="profile-image" src="https://img.freepik.com/premium-vector/stick-figure-man-isolated-vector_566661-759.jpg"></img>
+                                    <div class="category-name">
+                                        {{ game.category }}
+                                    </div>
+                                    <div class="start-game">Start game!</div>
+                                    <div class="user-info">
+                                        @{{ game.creator.username }} - {{ game.caption }}
+                                    </div>
+                            </div>
+                            <img class="hand right-hand" src="{{ url_for('static', filename='deliverables/gameFeed/hand-2.svg') }}"></img>
+                            <img class="hand left-hand" src="{{ url_for('static', filename='deliverables/gameFeed/hand1.svg') }}"></img>
+                        </button>
+                    </div>
+
+                    {% if loop.index % cols == 0 and not loop.last %}
+                        <div class="row mt-2 justify-content-start"></div>
+                    {% endif %}
+                {% endfor %}
+        </div>
     </div>
 
     <div id="tooltip-htp"><b>How to play:</b><br>
@@ -299,7 +344,7 @@
     </div>
 
     
-    <a href"#"><button id="chat">
+    <a href="#"><button id="chat">
         <div class="container text-center">
                 <div class="chat-heading">
                     <div> Chat </div>
@@ -329,7 +374,115 @@
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            var toggleUp = false;
+
+            $("#helpButton").mouseenter(function(){
+                $('#tooltip-htp').css('display', 'block');
+                $('#tooltop-htp').css('z-index', '5');
+            });
+            $("#helpButton").mouseleave(function(){
+                $('#tooltip-htp').css('display', 'none');
+                $('#tooltop-htp').css('z-index', '0');
+            });
+            $('.game-card').mouseenter(function(){
+                    $(this).find('.category-name').hide();
+                    $(this).find('.start-game').css('visibility', 'visible');
+                    $(this).find('.hand').show();
+            });
+            $('.game-card').mouseleave(function(){
+                    $(this).find('.category-name').show();
+                    $(this).find('.start-game').css('visibility', 'hidden');
+                    $(this).find('.hand').hide();
+            });
+        }); 
+        function filterGames() {
+            const categoryFilter = document.getElementById('categoryFilter').value.toLowerCase();
+            const gameCards = document.querySelectorAll('.game-card');
+            gameCards.forEach(card => {
+                const gameCategory = card.getAttribute('data-category').toLowerCase();
+                const cardParent = card.parentNode;
+
+                if (categoryFilter === '' || gameCategory === categoryFilter){
+                    cardParent.style.display = ''; 
+                } else {
+                    cardParent.style.display = 'none'; 
+                }
+            });
+        }
+            
+    </script>
+
     <style>
+        *{
+            font-family: "Indie Flower", sans-serif;
+        }
+
+        .filter-bar{
+            padding: 1vh;
+
+        }
+        .filter-bar .row .col-md-3:not(:last-child) {
+            margin-bottom: 0px;
+        }
+        #timeSliderLabel{
+            color: #0d0d0b;
+            font-weight: 900;
+            font-size: 1vw;
+        }
+        #categoryFilter {
+            border: 2px solid #0a0a08;
+            background-color: #ffef5b;
+            font-size: 1vw;
+            font-weight: 900;
+            border-radius: 10px;
+            height: 5vh;
+            padding: 2px;
+            width: 10vw;
+            margin-right: 10vw;
+        }
+
+        #categoryFilter option {
+            background-color: #efefa9;
+            border-radius: 2px solid;
+            color: #140e0e;
+        }
+
+
+        .form-range {
+            -webkit-appearance: none; 
+            width: 40%; 
+            height: 1vh;
+            background: #f3f3a5; 
+            border: 1px solid black; 
+            border-radius: 10px;
+            transition: opacity .5s;
+            margin: 0vw 0.5vw 0 0.5vw;
+        }
+
+        .form-range::-webkit-slider-thumb {
+            -webkit-appearance: none; 
+            appearance: none;
+            width: 1.5vw;
+            height: 3vh;
+            background: #f5f553;
+            cursor: pointer;
+            border-radius: 50%;
+            border: #0d0d0b 1px solid;
+        }
+        #clearTimeButton {
+            margin-top: 0px;
+            border: 2px solid #10100d;
+            background-color: #f9e42c;
+            font-size: 1vw;
+            font-weight: 900;
+            border-radius: 20px;
+            height:4vh; 
+        }
         .pageHeading h1{
             font-size: 3vw;
             font-family: "Indie Flower", sans-serif;
@@ -343,10 +496,18 @@
             font-size:2vw;
         }
 
+        .container {
+            @include make-container();
+            padding-left: 10vw;
+            width: 75%;
+        }
+
+        
         #helpButton{
             position:fixed;
             bottom:10%;
             left:10%;
+            z-index:2;
         }
 
         #help{
@@ -369,10 +530,11 @@
 
         #tooltip-htp{
             padding:1%;
-            background-color: #fff3ae;
-            position:absolute;
+            background-color: #fcf4ac;
+            position:fixed;
             color:black;
             left:10%;
+            z-index: 1000;
             text-align:left;
             @media screen and (max-width: 600px) {
                 height:40vw;
@@ -386,8 +548,8 @@
                 font-size:0.8vw;
                 bottom:17%;
             }
-            opacity:0;
-            transition:0.6s ease;
+            display:none;
+            transition:0.3s ease;
         }
 
         #createButton{
@@ -395,6 +557,7 @@
             bottom:10%;
             left:50%;
             transform: translate(-50%, 0);
+            z-index:4;
         }
 
         #create{
@@ -410,7 +573,9 @@
                 font-size:1.5vw;
             }
             font-family: "Indie Flower", sans-serif;
-            background-color: #faea93;
+            font-weight:bold;
+            background-color: #ebd834;
+            box-shadow: white 0 0 100px 50px;
         }
 
         #chat{
@@ -675,6 +840,169 @@
 
         .username-list  p:hover {
             color:#fb4999;
+
+        }
+
+        .game-card {
+            width: 10vw; 
+            height: 10vw;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 70px 70px 0px 0px;
+            transition: transform 0.3s ease; 
+            z-index:4;
+            border: 2px solid black;
+        }
+        .game-card::before, .game-card::after {
+            content: '';
+            position: absolute;
+            top: 100%; 
+            width: 5px; 
+            height: 0vh; 
+            background-color: black;
+            transition: height 0.3s ease; 
+        }
+
+        .game-card::before {
+            left: 25%; 
+        }
+        .game-card::after {
+            right: 25%; 
+        }
+        .game-card:hover {
+            transform: translateY(-10px); 
+        }
+        .game-card:hover::before, .game-card:hover::after {
+            height: 8vh; 
+        }
+        @media (max-width: 768px) {
+            .game-card::before, .game-card::after {
+                height: 0vh; 
+            }
+
+            .game-card:hover::before, .game-card:hover::after {
+                height: 2vh; 
+            }
+        }
+
+        .game-card .card-body {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100%;
+          width: 100%;
+        }
+      
+        .game-card .profile-image {
+          width: 4vw;
+          height: 4vw;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 2px solid black;
+          z-index: 3;
+          position: absolute; 
+          top: -20%; 
+          left: 50%;
+          transform: translateX(-50%); 
+        }
+      
+        .game-card .category-name {
+          font-size: 1.5vw;
+          position:absolute;
+          font-weight: bold;
+          text-align:center;
+          padding-bottom: 2vh;
+        }
+      
+        .game-card .user-info {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 35%;
+          background-color: rgba(205, 203, 203, 0.4);
+          padding-left: 10%;
+          padding-right: 5%;
+          display: flex;
+          justify-content: start;
+          align-items: center;
+          word-wrap: break-word;
+          box-sizing: border-box; 
+          font-size: 0.7vw;
+        }
+      
+        .start-game {
+            visibility: hidden;
+            position:absolute;
+            font-size: 1.2vw;
+            font-weight: bolder;
+            background-color: transparent;
+            color: black;
+            padding-bottom: 2vh;
+          }
+
+        .history{
+            background-color:#FFD33B;
+        }
+
+        .media{
+            background-color:#FF7AB2;
+        }
+
+        .sports{
+            background-color:#7AE864;
+        }
+        
+        .music{
+            background-color:#FD9A5C;
+        }
+
+        .games{
+            background-color:#CE64E8;
+        }
+
+        .books{
+            background-color:#5C6FC8;
+        }
+
+        .places{
+            background-color:#9ACBFF;
+        }
+
+        .food{
+            background-color:#FF4040;
+        }
+
+        .misc{
+            background-color:#C1FF72;
+        }
+
+        .game-card:hover{
+          box-shadow: 1px 1px 20px rgb(215, 215, 213);
+        }
+
+        .hand{
+            display: none;
+            position: absolute;
+            transition: all 0.3s ease;
+            width: 5vw; 
+            height: auto; 
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        .left-hand {
+            left: calc(50% - 7vw); 
+            top: 50%;
+            transform: translateY(-50%) translateX(-100%);
+        }
+        .right-hand {
+            right: calc(50% - 17vw); 
+            top: 40%;
+            transform: translateY(-50%) translateX(-100%);
+        }
+        .game-card:hover .hand {
+            display: block; 
         }
 
     </style>

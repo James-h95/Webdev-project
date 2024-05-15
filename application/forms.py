@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, IntegerField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, IntegerField, TextAreaField
 from wtforms.validators import Length, EqualTo, DataRequired, NumberRange, Regexp, ValidationError
 from application.models import User
 
@@ -25,10 +25,20 @@ class RegisterForm(FlaskForm):
     #password1 = StringField('Password:',validators=[Length(min=7),DataRequired()])
     #password2 = StringField('Confirm Password:',validators=[EqualTo('password1'), DataRequired()])
     submit = SubmitField('Sign Up')
+
+
+class LoginForm(FlaskForm):
+    username = StringField('User Name:',validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    submit = SubmitField('Log in')
+    
+
+    
     
 class CreateGameForm(FlaskForm):
     category = SelectField('Category:',choices=[("media", "Media"), ("books", "Books"), ("history", "History"), ("sports", "Sports"), ("music", "Music"), ("games", "Games"), ("places", "Places"), ("food", "Food"), ("misc", "Misc.")], validators=[DataRequired()])
     timeLimit = IntegerField('Time Limit (s):',validators=[NumberRange(min=30,max=120),DataRequired()])
     phraseValidator = Regexp(regex=r'^[a-zA-Z\s,"\'\?!:;.]+$', message='Must contain only letters and the following punctuation: ''"".,?!:;')
-    phrase = StringField('Word/phrase:',validators=[Length(min=3,max=250), phraseValidator,DataRequired()])
-    caption = StringField('Caption (optional):',validators=[Length(max=200)])
+    phrase = TextAreaField('Word/phrase:',validators=[Length(min=3,max=250), phraseValidator,DataRequired()])
+    caption = TextAreaField('Caption (optional):',validators=[Length(max=200)])
+    submit = SubmitField('Create')

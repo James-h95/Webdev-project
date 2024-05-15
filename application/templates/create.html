@@ -21,6 +21,7 @@
 
     <div class='container mt-5'>
         <form name="create_page" method="POST" class="form">
+            {{ form.hidden_tag() }}
             <div class="row justify-content-around">
                 <p>
                     <span class="label">{{ form.category.label()}}</span>
@@ -41,11 +42,16 @@
                     {{ form.caption(class="form-control") }}
                 </p>
             </div>
+            <div class="mt-5" id="createButton">
+                {{ form.submit(class_="create") }}
+            </div>
+        </form>
     </div>
 
-    <div class="mt-5" id="createButton">
-        <button id="create">create</button>
-    </div>
+    <a href="{{ url_for('feed_page') }}"><div id="backButton">
+        <button id="back">back to feed</button>
+    </div></a>
+
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -55,7 +61,6 @@
     </script>
 
     <style>
-
         .pageHeading h1{
             font-size: 3vw;
             font-family: "Indie Flower", sans-serif;
@@ -78,11 +83,11 @@
             transform: translate(-50%, 0);
         }
 
-        #create{
+        .create{
             border-radius:50px;
             height:4.5vw;
-            width:10vw;
-            font-size:2.5vw;
+            width:11vw;
+            font-size:1.9vw;
             font-family: "Indie Flower", sans-serif;
             font-weight:bold;
             background-color: #ebd834;
@@ -101,5 +106,32 @@
         .errors{
             color:red;
         }
+
+        #backButton{
+            position:fixed;
+            bottom:10%;
+            left:10%;
+            z-index:2;
+        }
+
+        #back{
+            @media screen and (max-width: 600px) {
+                height:6vw;
+                width:13vw;
+                font-size:1.5vw;
+            }
+            @media screen and (min-width: 601px) {
+                height:3.5vw;
+                width:7vw;
+                font-size:1vw;
+            }
+            border-radius:50px;
+            background-color:#ebd834;
+            color:black;
+            font-family: "Indie Flower", sans-serif;
+            font-weight:bold;
+            pointer-events:none;
+        }
+
     </style>
 {% endblock %}
