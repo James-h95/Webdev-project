@@ -179,8 +179,6 @@
                 }
             });
         }, UPDATE_INTERVAL);
-            
-
 
         $(document).ready(function () {
             
@@ -223,13 +221,16 @@
                             )
                     )
                     .append(
-                        $("<div/>", {"class":"chat-minimize", text:"x"})
+                        $('<b href"#"/>')
+                        .append(
+                            $("<button/>", {id:"chat-minimize", text:"x"})
+                        )
                     )            
                     toggleUp = true;
                 }
             });
 
-            $(".chat-minimize").on("click", function(){
+            $("#current-username").on("click", function(){
                 if(toggleUp){
                     $('#chat').height('');
                     $('#chat').css('width', '');
@@ -448,11 +449,14 @@
             flex-direction: row;
         }
 
-        .chat-minimize {
+        #chat-minimize {
             vertical-align:top;
             float: right;
             font-size: 25px;
             font-weight:bolder;
+            color: #fff;
+            border: none;
+            background: none;
         }
 
             
