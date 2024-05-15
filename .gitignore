@@ -3,3 +3,4 @@
 
 # Ignore database
 *.db
+application/__pycache__/forms.cpython-312.pyc

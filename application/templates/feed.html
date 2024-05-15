@@ -10,8 +10,7 @@
     </div>
 
     <div class="container filter-bar">
-        <div class="row">
-            <div class="col-md-3">
+        <div class="row justify-content-center">
                 <select id="categoryFilter" onchange="filterGames()">
                     <option value="">All Categories</option>
                     <option value="history">History</option>
@@ -22,13 +21,7 @@
                     <option value="books">Books</option>
                     <option value="places">Places</option>
                     <option value="food">Food</option>
-                </select>
-            </div>
-            <div class="col-md-6 time-container">
-                <label for="timeSlider" id="timeSliderLabel">Time Limit: <span id="timeValue">20-120</span> seconds</label>
-                <input type="range" class = form-range id="timeSlider" min="20" max="120" step="1" value="120" oninput="updateTimeValue(this.value); filterGames()">
-                <button id="clearTimeButton" onclick="clearTimeFilter()">Clear Time</button>
-            </div>
+                </select>      
         </div>
     </div>
 
@@ -151,29 +144,21 @@
         }); 
         function filterGames() {
             const categoryFilter = document.getElementById('categoryFilter').value.toLowerCase();
-            const timeLimit = parseInt(document.getElementById('timeSlider').value);
             const gameCards = document.querySelectorAll('.game-card');
-            const gameContainer = document.querySelector('.row.mt-2.justify-content-start');
+
             gameCards.forEach(card => {
                 const gameCategory = card.getAttribute('data-category').toLowerCase();
-                const gameTime = parseInt(card.getAttribute('data-time'));
                 const cardParent = card.parentNode;
-                if ((categoryFilter === '' || gameCategory === categoryFilter) && (timeLimit === '120' || gameTime <= timeLimit)) {
-                    cardParent.style.display = 'inline-block'; 
+
+                if ((categoryFilter === '' || gameCategory === categoryFilter)) {
+                    cardParent.style.display = '';
                 } else {
-                    cardParent.style.display = 'none'; 
+                    cardParent.style.display = 'none';
                 }
             });
         }
 
-        function updateTimeValue(value) {
-            document.getElementById('timeValue').textContent = `20-${value}`;
-        }
-        function clearTimeFilter() {
-            document.getElementById('timeSlider').value = 120;
-            updateTimeValue(120);
-            filterGames();
-        }
+
         
             
     </script>
@@ -182,18 +167,9 @@
         *{
             font-family: "Indie Flower", sans-serif;
         }
-        .row.mt-2.justify-content-start {
-            display: flex;
-            flex-wrap: wrap;
-        }
 
         .filter-bar{
             padding: 1vh;
-        }
-        #timeSliderLabel{
-            color: #0d0d0b;
-            font-weight: 900;
-            font-size: 1vw;
         }
         #categoryFilter {
             border: 2px solid #0a0a08;
@@ -204,6 +180,7 @@
             height: 5vh;
             padding: 2px;
             width: 10vw;
+            margin-right: 10vw;
         }
 
         #categoryFilter option {
@@ -212,36 +189,6 @@
             color: #140e0e;
         }
 
-
-        .form-range {
-            -webkit-appearance: none; 
-            width: 40%; 
-            height: 1vh;
-            background: #f3f3a5; 
-            border: 1px solid black; 
-            border-radius: 10px;
-            transition: opacity .5s;
-            margin: 0vw 0.5vw 0 0.5vw;
-        }
-        .form-range::-webkit-slider-thumb {
-            -webkit-appearance: none; 
-            appearance: none;
-            width: 1.5vw;
-            height: 3vh;
-            background: #f5f553;
-            cursor: pointer;
-            border-radius: 50%;
-            border: #0d0d0b 1px solid;
-        }
-        #clearTimeButton {
-            margin-top: 0px;
-            border: 2px solid #10100d;
-            background-color: #f9e42c;
-            font-size: 1vw;
-            font-weight: 900;
-            border-radius: 20px;
-            height:4vh; 
-        }
         .pageHeading h1{
             font-size: 3vw;
             font-family: "Indie Flower", sans-serif;
@@ -259,7 +206,7 @@
 
         .container {
             @include make-container();
-            padding-left:10vw;
+            padding-left: 10vw;
             width: 75%;
         }
 
@@ -296,6 +243,7 @@
             position:fixed;
             color:black;
             left:10%;
+            z-index: 1000;
             text-align:left;
             @media screen and (max-width: 600px) {
                 height:40vw;
@@ -410,10 +358,6 @@
             transition: transform 0.3s ease; 
             z-index:4;
             border: 2px solid black;
-        }
-        .row.mt-2.justify-content-start {
-            display: flex;
-            flex-wrap: wrap;
         }
         .game-card::before, .game-card::after {
             content: '';
