@@ -12,6 +12,7 @@
                                  new messages (milliseconds) */ 
 
         var toggleUp = false;
+        var username_list_open = false;
 
         var global_time_counter = 0;
         var global_time_string = null;
@@ -197,6 +198,30 @@
                     toggleUp = false;
                 } 
         });
+
+        // $(document).on("click",".current-username", function() {
+        //     if (!username_list_open) {
+        //         $(".username-list").css("z-index", "10");
+        //         $(".username-list").css("position", "overflow");
+        //         $(".username-list").css("display", "block");
+        //         $(".username-list").css("left", "-100vw");
+        //         $(".username-list").css("overflow", "scroll");
+        //         $(".username-list").css("scrollbar-width", "none");
+        //         username_list_open = true;
+        //     }
+        //     else {
+        //         $(".username-list").css("color", "#ffffff");
+        //         $(".username-list").css("display", "none");
+        //         $(".username-list").css("font-size", "25px");
+        //         $(".username-list").css("background-color", "#ffffff;");
+        //         $(".username-list").css("width", "6vw");
+        //         $(".username-list").css("padding-top", "10px");
+        //         $(".username-list").css("padding-right", "80px");     
+        //         username_list_open = false;
+        //     }
+        // });
+
+
 
         $(document).ready(function () {
 
@@ -648,22 +673,8 @@
             transition:0.3s ease;
         }
 
-        .current-username:active .username-list {
-            z-index: -5;
-            display: block;
-            position: absolute;
-            height: 100%;
-            left: -170px;
-            top: 10px;
-            overflow: scroll;
-            scrollbar-width: none;
-        }
         .username-list  p:hover {
             color:#fb4999;
-        }
-
-        .username-list-header {
-            background-color: #4267B2;
         }
 
     </style>
