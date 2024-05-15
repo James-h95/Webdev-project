@@ -21,7 +21,8 @@
                     <option value="books">Books</option>
                     <option value="places">Places</option>
                     <option value="food">Food</option>
-                </select>      
+                    <option value="misc">Misc.</option>
+                </select>
         </div>
     </div>
 
@@ -47,12 +48,12 @@
                             <img class="hand right-hand" src="{{ url_for('static', filename='deliverables/gameFeed/hand-2.svg') }}"></img>
                             <img class="hand left-hand" src="{{ url_for('static', filename='deliverables/gameFeed/hand1.svg') }}"></img>
                         </button>
-                    </div> 
-                    
+                    </div>
+
                     {% if loop.index % cols == 0 and not loop.last %}
                         <div class="row mt-2 justify-content-start"></div>
                     {% endif %}
-                {% endfor %} 
+                {% endfor %}
         </div>
     </div>
 
@@ -145,21 +146,17 @@
         function filterGames() {
             const categoryFilter = document.getElementById('categoryFilter').value.toLowerCase();
             const gameCards = document.querySelectorAll('.game-card');
-
             gameCards.forEach(card => {
                 const gameCategory = card.getAttribute('data-category').toLowerCase();
                 const cardParent = card.parentNode;
 
-                if ((categoryFilter === '' || gameCategory === categoryFilter)) {
-                    cardParent.style.display = '';
+                if (categoryFilter === '' || gameCategory === categoryFilter){
+                    cardParent.style.display = ''; 
                 } else {
-                    cardParent.style.display = 'none';
+                    cardParent.style.display = 'none'; 
                 }
             });
         }
-
-
-        
             
     </script>
 
@@ -170,6 +167,15 @@
 
         .filter-bar{
             padding: 1vh;
+
+        }
+        .filter-bar .row .col-md-3:not(:last-child) {
+            margin-bottom: 0px;
+        }
+        #timeSliderLabel{
+            color: #0d0d0b;
+            font-weight: 900;
+            font-size: 1vw;
         }
         #categoryFilter {
             border: 2px solid #0a0a08;
@@ -189,6 +195,37 @@
             color: #140e0e;
         }
 
+
+        .form-range {
+            -webkit-appearance: none; 
+            width: 40%; 
+            height: 1vh;
+            background: #f3f3a5; 
+            border: 1px solid black; 
+            border-radius: 10px;
+            transition: opacity .5s;
+            margin: 0vw 0.5vw 0 0.5vw;
+        }
+
+        .form-range::-webkit-slider-thumb {
+            -webkit-appearance: none; 
+            appearance: none;
+            width: 1.5vw;
+            height: 3vh;
+            background: #f5f553;
+            cursor: pointer;
+            border-radius: 50%;
+            border: #0d0d0b 1px solid;
+        }
+        #clearTimeButton {
+            margin-top: 0px;
+            border: 2px solid #10100d;
+            background-color: #f9e42c;
+            font-size: 1vw;
+            font-weight: 900;
+            border-radius: 20px;
+            height:4vh; 
+        }
         .pageHeading h1{
             font-size: 3vw;
             font-family: "Indie Flower", sans-serif;
@@ -497,12 +534,12 @@
             transition: all 0.3s ease;
         }
         .left-hand {
-            left: calc(50% - 4.5vw); 
-            top: 70%;
+            left: calc(50% - 7vw); 
+            top: 50%;
             transform: translateY(-50%) translateX(-100%);
         }
         .right-hand {
-            right: calc(50% - 14vw); 
+            right: calc(50% - 17vw); 
             top: 40%;
             transform: translateY(-50%) translateX(-100%);
         }
