@@ -4,9 +4,276 @@
 {% endblock %}
 
 {% block content %}
-    <div class="text-center mb-5 pageHeading">
+
+    <script>
+
+
+        var UPDATE_INTERVAL = 1000; /* Time before requesting and
+                                 new messages (milliseconds) */ 
+
+        var toggleUp = false;
+        var username_list_open = false;
+
+        var global_time_counter = 0;
+        var global_time_string = null;
+
+        var target_user_id = 0; /* User id of 0 indicates that 
+                                @Everyone is the target */
+
+        /**
+         * Returns a string describing the current time e.g. "2:30 pm"
+         * Takes the argument "time" to be the number of milliseconds 
+         * since the epoch
+         */
+        function create_time_string(time) {
+            
+            var date = new Date(parseInt(time));
+            var hours = String(date.getHours());
+            var mins = String(date.getMinutes());
+
+
+            // Setting the correct am or pm suffix
+            var am_pm = hours <= 12 ? "am" : "pm"; 
+            
+            // Converting hours from 24hr time to 12hr time
+            hours = hours > 12 ? hours - 12 : hours;
+
+            // Adding leading zeros to "pad-out" any numbers
+            // less than 10
+            if (hours.length == 1) {
+                hours = "0" + hours
+            } 
+            if (mins.length == 1) {
+                mins = "0" + mins
+            } 
+
+            // Constructing the final string
+            var time_string = hours + ":" + mins + " " + am_pm;
+            return time_string;
+        }
+
+        /**
+         * Appends the html for a single message. 
+         * If the variable "message_type" is the string "received" then 
+         * the message is placed on the left side of the chat, if it is
+         * "sent", then it is on the right side.
+         * The variable "time" is the number of milliseconds since the epoch
+         */
+        function create_message(message_type, text, time) {
+            
+            if (time > global_time_counter) {
+                global_time_counter = time;
+            }
+
+
+            // If the time string is new (i.e. different from the global
+            // time string) then the global time string is updated. Otherwise 
+            // the time string is set to empty.
+            // This updates minute by minute.
+            var time_string = create_time_string(time);
+            if (global_time_string != time_string)  {
+                global_time_string = time_string;
+            }
+            else {
+                time_string = "";
+            }
+
+            msg_type = String(message_type)
+            $(".messages").append(
+                $("<div/>", {"class":msg_type+"-message"}).append( 
+                            $("<img/>", {"class":msg_type + "-profile-icon"})
+                        )
+                        .append(
+                            // Adding the message text and timestamp
+                            $("<div/>", {"class":msg_type + "-textbox"})
+                            .append(
+                                $("<div/>", {"class":msg_type + "-text",text:text})
+                            ) 
+                            .append($("<span/>", {"class":msg_type + "-time", text:time_string}))   
+                        )
+                        
+                    )
+        };
+
+        /**
+         * Sends a POST request to the backend asking
+         * that the variable "text" be stored in the 
+         * database as the content of a sent message
+         * created at "time" by the user with id of
+         * "sender_id" to the user with id "receiver_id"
+         * Note that if the variable "all_message" is 
+         * set as the boolean true the the message will be 
+         * understood as intended for all users and the 
+         * variable "receiver_id" will effectively be ignored.
+         */
+        function upload_message(text, time, sender_id, receiver_id, for_all) {
+            $.ajax({
+                type: "POST",
+                url: "/feed",
+                data: {"text":text,
+                    "time":time,
+                    "sender_id": sender_id,
+                    "receiver_id":receiver_id,
+                    "for_all":for_all
+                    }
+            });
+        };
+
+        /**
+         * Main input handling function. When triggered,
+         * the contents of the input form are added to the
+         * chat as a "sent" message and then sent to the 
+         * database via a POST request handled by the 
+         * upload_message() function
+         */
+        function handle_input() {
+            var text = $(".form-control").val();
+            // Not proceeding if no next is found
+            if (text != "") {
+                var time = Date.now();
+                create_message("sent", text, time); 
+                
+                // Scrolling the feed down to the most recent message
+                // Used https://stackoverflow.com/a/2664878 to figure
+                // out how to index the div to find its scroll height
+                $(".messages").scrollTop($(".messages")[0].scrollHeight);
+                $(".form-control").val("");
+                
+                var for_all = (target_user_id == 0)
+                upload_message(text, time, "{{USER_ID}}", target_user_id, for_all);
+            }
+        };
+        /**
+         * Triggers handle_input() if the submit button is clicked 
+         */
+            $(document).on("click",".message-submit", function() {
+            handle_input();  
+        });
+
+        /**
+         * Triggers handle_input() if the enter button is pushed
+         */
+        $(document).on("keypress", function(e) {
+            if(e.which == "13") {
+                handle_input();
+            }
+        });
+
+        /**
+         * A looped check that periodically sends a get request to 
+         * the server for any new messages for the user
+         */
+        setInterval(function() {
+            $.ajax({
+                type: "GET",
+                url: "/feed",
+                data: {"request_type":"update_query"},
+                success: function (data) {
+                    if (data["update_required"]) {
+                        var messages = data["visible_messages"];
+                        var i = 0;
+                        while (i < messages.length) {
+                            if (messages[i]["time"] > global_time_counter) {
+                                create_message(messages[i]["type"],
+                                            messages[i]["text"],
+                                            messages[i]["time"]);
+                            }
+                            i++;
+                        } 
+                    }
+                }
+            });
+        }, UPDATE_INTERVAL);
+
+
+        $(document).on("click","#chat-minimize", function() {
+            if(toggleUp){
+                    $('#chat').height('');
+                    $('#chat').css('width', '');
+                    $('#chatBody').height('');
+                    $('#chatBody').css('width', '');
+                    $('#chat').css('cursor', 'pointer');
+                    $(".chat-heading").empty();
+                    $(".chat-heading").append($("<div/>", {text:"Chat"}))
+                    toggleUp = false;
+                } 
+        });
+
+        // $(document).on("click",".current-username", function() {
+        //     if (!username_list_open) {
+        //         $(".username-list").css("z-index", "10");
+        //         $(".username-list").css("position", "overflow");
+        //         $(".username-list").css("display", "block");
+        //         $(".username-list").css("left", "-100vw");
+        //         $(".username-list").css("overflow", "scroll");
+        //         $(".username-list").css("scrollbar-width", "none");
+        //         username_list_open = true;
+        //     }
+        //     else {
+        //         $(".username-list").css("color", "#ffffff");
+        //         $(".username-list").css("display", "none");
+        //         $(".username-list").css("font-size", "25px");
+        //         $(".username-list").css("background-color", "#ffffff;");
+        //         $(".username-list").css("width", "6vw");
+        //         $(".username-list").css("padding-top", "10px");
+        //         $(".username-list").css("padding-right", "80px");     
+        //         username_list_open = false;
+        //     }
+        // });
+
+
+
+        $(document).ready(function () {
+
+        /* Ensuring that msg-page div is scrolled all the way down 
+            to the most recent message when the page is loaded  
+            https://stackoverflow.com/a/2664878 was used to understand
+            how to index a div to find its scroll height */
+            $(".messages").scrollTop($(".messages")[0].scrollHeight);
+
+            $("#helpButton").mouseenter(function(){
+                $('#tooltip-htp').css('opacity', '100%');
+            });
+            $("#helpButton").mouseleave(function(){
+                $('#tooltip-htp').css('opacity', '0');
+            });
+
+            $("#chat").on("click", function(){
+                if(!toggleUp){
+                    $('#chat').height($(window).height() / 1.3);
+                    $('#chat').css('width', "22vw");
+                    $('#chatBody').height($(window).height() / 1.256 - $('#chat').height())
+                    $('#chatBody').css('width', "22vw");
+                    $('#chat').css('cursor', 'default');
+                    $('#chat').css('cursor', 'pointer');
+
+                    $(".chat-heading").empty();
+                    $(".chat-heading").append(
+                        $("<img/>", {"class":"profile-icon-header"})
+                    )
+                    .append(
+                            $("<div/>", {"class":"current-username", text:"@everyone"}).append(
+                                $("<div/>", {"class":"username-list"}).append(
+                                    $("<p/>", {text:"@user_1"})
+                                    .append(
+                                        $("<p/>", {text:"@user_2"})
+                                    )
+                                )
+                            )
+                    )
+                    .append(
+                        $("<button/>", {id:"chat-minimize", text:"x"})
+                    )        
+                    toggleUp = true;
+                }
+            });
+
+        });
+    </script>
+
+    <div class="text-center pageHeading">
         <h1>Feed</h1>
-        <h2>create, play, explore</h2>
+        <h2>Create, Play, Explore!</h2>
     </div>
 
     <div class="container filter-bar">
@@ -79,17 +346,32 @@
     
     <a href="#"><button id="chat">
         <div class="container text-center">
-            <div class="row justify-content-between">
-                <div id="chatHeading">
-                    chat
+                <div class="chat-heading">
+                    <div> Chat </div>
                 </div>
-                <div class="col-4 pl-5" id="exitChat">
-                    <span id="clickToExit">x</span>
-                </div>
-            </div>
         </div>
     </button><a>
     <div id="chatBody">
+        <div class="messages-container">
+            <div class="messages">
+                        <!-- All preloaded messages from the database -->
+                        {% for message in visible_messages %}
+                            <script>
+                                create_message("{{message['type']}}", 
+                                                "{{message['text']}}", 
+                                                "{{message['time']}}")
+                            </script>
+                        {% endfor %}
+                        <!--Messages are added here by the JS function createMessage() -->
+            </div>
+            <div class="msg-bottom input-group">
+                <input type="text" class="form-control" placeholder="Send a message...">
+                <button type="submit" class="message-submit"> 
+
+                    Send
+                </button>
+            </div>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -106,31 +388,6 @@
             $("#helpButton").mouseleave(function(){
                 $('#tooltip-htp').css('display', 'none');
                 $('#tooltop-htp').css('z-index', '0');
-            });
-            $("#chat").on("click", function(){
-                if(!toggleUp){
-                    $('#chat').height($(window).height() / 1.5);
-                    $('#chat').css('width', "40vw");
-                    $('#chatBody').height($(window).height() / 1.5 - $('#chat').height())
-                    $('#chatBody').css('width', "40vw");
-                    $('#chatHeading').css('font-size', '180%');
-                    $('#exitChat').css('font-size', '180%');
-                    $('#chat').css('cursor', 'default');
-                    $('#chatHeading').addClass('col-4 pr-5');
-                    toggleUp = true;
-                }
-            });
-            $("#clickToExit").on("click", function(){
-                event.stopPropagation();
-                $('#chat').height('');
-                $('#chat').css('width', '');
-                $('#chatBody').height('');
-                $('#chatBody').css('width', '');
-                $('#chatHeading').css('font-size', '');
-                $('#chat').css('cursor', 'pointer');
-                $('#chatHeading').removeClass('col-4 pr-5')
-                $('#exitChat').css('font-size', '');
-                toggleUp = false;
             });
             $('.game-card').mouseenter(function(){
                     $(this).find('.category-name').hide();
@@ -229,7 +486,6 @@
         .pageHeading h1{
             font-size: 3vw;
             font-family: "Indie Flower", sans-serif;
-            font-weight: 500;
             color: #ebd834;
             margin-top: 120px;
         }
@@ -237,7 +493,6 @@
         .pageHeading h2{
             color:black;
             font-family: "Indie Flower", sans-serif;
-            font-weight: bold;
             font-size:2vw;
         }
 
@@ -267,10 +522,9 @@
                 font-size:1.6vw;
             }
             border-radius:50%;
-            background-color:#ebd834;
+            background-color:#fff3ae;
             color:black;
             font-family: "Indie Flower", sans-serif;
-            font-weight:bold;
             pointer-events:none;
         }
 
@@ -327,62 +581,266 @@
         #chat{
             @media screen and (max-width: 600px) {
                 height:5vw;
-                width:14vw;
-                font-size:3vw;
+                width:12vw;
+                font-size:5vw;
             }
             @media screen and (min-width: 601px) {
                 height:2.5vw;
-                width:16vw;
-                font-size:1.5vw;
+                width:12vw;
+                font-size:1.5vw
             }
-            background-color: #ebd834;
-            border-bottom:none;
-            border-top-left-radius:10px;
-            border-top-right-radius:10px;
-            transition:0.5s ease;
+            z-index: 0;
+            border-radius: 3px;
+            border-style: solid;
+            border-width: 2px;
+            transition:0.6s ease;
             position:fixed;
+            color: #000000;
             bottom:0%;
-            right: 10%;
+            right: 7%;
             display: inline-flex;
             justify-content:center;
-            z-index: 10;
-        }
-
-        #chatHeading{
-            transition: 0.5s ease;
-            font-family: "Indie Flower", sans-serif;
-            font-weight:bold;
-        }
-
-        #exitChat{
-            font-size: 0;
-            font-family: "Indie Flower", sans-serif;
-            font-weight:bold;
-        }
-
-        #clickToExit{
-            cursor: pointer;
-            z-index: 3;
+            background-color: #4267B2;
+            box-shadow: 2px 5px 4px rgba(0,0,0,0.3); 
         }
 
         #chatBody{
             @media screen and (max-width: 600px) {
                 height:5vw;
                 width:14vw;
-                font-size:3vw;
+                font-size:5vw;
             }
             @media screen and (min-width: 601px) {
                 height:2.5vw;
-                width:16vw;
-                font-size:1.5vw;
+                width:12vw;
+                font-size:3vw;
             }
-            background-color:white;
+            z-index: 0;
+            font-family: sans-serif;
+            background-color:rgb(255, 255, 255);
             border-bottom:none;
-            transition:0.5s ease;
+            transition:0.6s ease;
             position:fixed;
-            bottom:-6%;
-            right: 10%;
-            border: solid 2px black;
+            bottom:-5%;
+            right: 7%;
+            margin:auto;
+            letter-spacing: 0.3px;
+        }
+
+        /* Chat styling */
+
+        .chat-heading {
+            transition: 0.6s ease;
+            text-align:justify; 
+            padding: 0;
+            color: #fff;
+            font-size: 25px;
+            display: flex;
+            flex-direction: row;
+        }
+
+        #chat-minimize {
+            vertical-align:top;
+            float: right;
+            font-size: 25px;
+            font-weight:bolder;
+            color: #fff;
+            border: none;
+            background: none;
+        }
+
+            
+        img {
+            width: 100%;
+            height: auto;
+            position: relative;
+        }
+
+        .messages-container {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+        }
+
+        .messages {
+            z-index: 0;
+            width: 100%;
+            height: 82%;
+            flex-direction: column; 
+            display: flex;
+            align-items: baseline;
+            justify-content: start; /* Aligns children to the start of the container */
+            padding-top: 0px;
+            padding-bottom: 1px;
+            color: white;
+            margin-top: 0px;
+            border-bottom: 5px solid white;
+            border-top: 5px solid white;
+
+            /* Used example from 
+            https://jsfiddle.net/3wjs84ce/
+            to enable scrolling without showing a scrollbar
+            */
+            overflow-y: scroll;
+            overflow: scroll;
+            scrollbar-width: none; 
+
+            position: relative;
+            transition:0.6s ease;
+        }
+
+        .received-message, .sent-message {
+            margin-bottom: 20px;
+            display:flex;
+            position: relative;
+            height: 50px;
+        }
+
+        .received-textbox, .sent-textbox {
+            border-radius: 9px;
+            font-size: 16px;
+            padding: 8px;
+            word-wrap: break-word;
+            align-items:center;
+            background-color:#ff9ac8;
+            color: rgba(0, 0, 0, 0.848);
+            box-shadow: 2px 5px 4px rgba(0,0,0,0.3); 
+        }
+
+        .received-message, .received-textbox {
+            text-align: left;
+            float: left;
+            margin-left: 10px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .sent-message, .sent-textbox {
+            text-align: left;
+            margin-left: auto;
+            margin-right: 10px;
+            display: flex;
+            align-items: flex-start;
+            flex-direction: row-reverse;
+        }
+
+        .sent-textbox {
+            background-color:#feff9c;
+        }
+
+        .received-text, .sent-text {
+            min-width: 50px;
+            padding-bottom: 10px;
+            height: 20px;
+            line-height: 20px;    
+        }
+
+        /* Clear floats (Plural?) */
+        .received-textbox:after, .sent-textbox:after { 
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .input-group .form-control {
+            margin-left: 10px;
+            border-radius: 20px !important; 
+            background-color:rgb(225, 225, 225);
+            color: #000000; 
+            border: 1px solid #eeefef; 
+            margin-top: 20px;
+            font-size: 18px;    
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* To remove the border focus color */
+        .input-group .form-control:focus {
+            border-color: #8084a2; 
+        }
+
+        /* Send button */
+        .message-submit {
+            z-index: 3;
+            right: 18px;
+            font-size: 18px;
+            border: none;
+            margin-top: 20px;
+            margin-right: 10px;
+            padding-left: 20px;
+            padding-right: 20px;
+            background-color: #4267B2;
+            border-radius: 20px;
+            color: rgb(255, 255, 255);
+            outline: none !important;
+        }
+
+        .message-submit:hover {
+            box-shadow: 0 0px 3px rgba(9, 7, 31, 0.852);  
+        }
+
+        .profile-icon-header {
+            width: 40px; /* Adjust size as needed */
+            height: 40px;
+            margin-top: 0.5vw;
+            margin-left: 4.5px;
+            background-color: lightgray;/* Placeholder color, use actual image */
+            border-radius: 70%;
+            border-style: solid;
+            border-color:lightgrey;
+        }
+        .sent-profile-icon, .received-profile-icon{
+            width: 40px; /* Adjust size as needed */
+            height: 40px;
+            background-color: lightgray;/* Placeholder color, use actual image */
+            border-radius: 70%;
+            border-style: solid;
+            border-color:lightgrey;
+        }
+
+        .received-profile-icon {
+            float: left;
+        }
+
+        .sent-profile-icon {
+            float: right;
+        }
+
+        .received-time, .sent-time {
+            width: 80px;
+            font-size: 15px;
+            color: #171212cb;
+            position:absolute;
+            padding-top: 30px;
+        }
+
+        .username-list {
+            display: none;
+            font-size: 25px; 
+            color: #ffffff;
+            background-color:#ffffff;
+            width:8vw;
+            padding-top: 10px;
+            padding-right: 80px;
+        }
+
+        .current-username {
+            z-index: 20;
+            color: #eff6ff;
+            margin-top: 0.5vw;
+            padding-left: 1vw;
+            padding-right: 75%;
+            width: 3vw;
+        }
+
+        .current-username:hover {
+            color: #ffffff;
+            font-size: 26px;
+            transition:0.3s ease;
+        }
+
+        .username-list  p:hover {
+            color:#fb4999;
+
         }
 
         .game-card {

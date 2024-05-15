@@ -47,13 +47,19 @@ class Item(db.Model):
 
 class Message(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
-    sender_id = db.Column(db.Integer(), primary_key=True)
-    receiver_id = db.Column(db.Integer(), primary_key=True)
-    time = db.Column(db.Integer(), primary_key=True)
-    text = db.Column(db.String(length=200),nullable=False,unique=True)
+    sender_id = db.Column(db.Integer())
+    receiver_id = db.Column(db.Integer())
+    time = db.Column(db.Integer())
+    text = db.Column(db.String(length=200))
+    for_all = db.Column(db.NUMERIC)
     
     def __reprr__(self):
-        return f'Message: {self.text}'
+        return f"""sender_id={self.sender_id},
+                   receiver_id={self.receiver_id},
+                   time={self.time},
+                   text={self.text},
+                   for_all={self.for_all}
+                """
     
 # Game association table
 # 1 user [plays] M games M [made by] 1 user
