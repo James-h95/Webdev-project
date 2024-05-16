@@ -7,7 +7,6 @@
 
     <script>
 
-
         var UPDATE_INTERVAL = 1000; /* Time before requesting and
                                  new messages (milliseconds) */ 
 
@@ -190,6 +189,10 @@
             if(toggleUp){
                     $('#chat').height('');
                     $('#chat').css('width', '');
+                    $('#chatSidebar').height('');
+                    $('#chatSidebar').css('width', '');
+                    $('#chatSidebar').css('display', "none");
+                    $('#chatSidebar').css("bottom", "-5%");
                     $('#chatBody').height('');
                     $('#chatBody').css('width', '');
                     $('#chat').css('cursor', 'pointer');
@@ -199,29 +202,24 @@
                 } 
         });
 
-        // $(document).on("click",".current-username", function() {
-        //     if (!username_list_open) {
-        //         $(".username-list").css("z-index", "10");
-        //         $(".username-list").css("position", "overflow");
-        //         $(".username-list").css("display", "block");
-        //         $(".username-list").css("left", "-100vw");
-        //         $(".username-list").css("overflow", "scroll");
-        //         $(".username-list").css("scrollbar-width", "none");
-        //         username_list_open = true;
-        //     }
-        //     else {
-        //         $(".username-list").css("color", "#ffffff");
-        //         $(".username-list").css("display", "none");
-        //         $(".username-list").css("font-size", "25px");
-        //         $(".username-list").css("background-color", "#ffffff;");
-        //         $(".username-list").css("width", "6vw");
-        //         $(".username-list").css("padding-top", "10px");
-        //         $(".username-list").css("padding-right", "80px");     
-        //         username_list_open = false;
-        //     }
-        // });
-
-
+        $(document).on("click",".current-username", function() {
+            if (!username_list_open) {
+                $('#chatSidebar').css("transition", "0s ease");
+                $('#chatSidebar').css("display", "inline");
+                $('#chatSidebar').css("width", "7vw");
+                $('#chatSidebar').css("overflow", "scroll");
+                $('#chatSidebar').css("scrollbar-width", "none");
+                $('#chatSidebar').css("bottom", "-1%");
+                $('#chatSidebar').css("border-left", "none");
+                username_list_open = true;
+            }
+            else {
+                $('#chatSidebar').css('width', "0vw");
+                $('#chatSidebar').css('display', "none");
+                $('#chatSidebar').css("bottom", "-5%");
+                username_list_open = false;
+            }
+        });
 
         $(document).ready(function () {
 
@@ -230,6 +228,13 @@
             https://stackoverflow.com/a/2664878 was used to understand
             how to index a div to find its scroll height */
             $(".messages").scrollTop($(".messages")[0].scrollHeight);
+
+            // Emojis
+            $(".received-textbox").on("click", function(){
+            $(this).append(
+                $("<i/>", {"class":"bi bi-emoji-smile"})
+            )
+            });
 
             $("#helpButton").mouseenter(function(){
                 $('#tooltip-htp').css('opacity', '100%');
@@ -241,9 +246,24 @@
             $("#chat").on("click", function(){
                 if(!toggleUp){
                     $('#chat').height($(window).height() / 1.31);
-                    $('#chat').css('width', "22vw");
+                    $('#chat').css('width', "20vw");
+                    $('#chatSidebar').height($(window).height() / 1.29);
+
+                    $('#chatSidebar').append($("<div/>", {"class":"username-list"})
+                                    .append($("<p/>", {text:"@user_2"}))
+                                    .append($("<p/>", {text:"@user_3"}))
+                                    .append($("<p/>", {text:"@user_4"}))
+                                    .append($("<p/>", {text:"@user_2"}))
+                                    .append($("<p/>", {text:"@user_3"}))
+                                    .append($("<p/>", {text:"@user_4"}))
+                                    .append($("<p/>", {text:"@user_2"}))
+                                    .append($("<p/>", {text:"@user_3"}))
+                                    )
+                                
+
+
                     $('#chatBody').height($(window).height() / 1.256 - $('#chat').height())
-                    $('#chatBody').css('width', "22vw");
+                    $('#chatBody').css('width', "20vw");
                     $('#chat').css('cursor', 'default');
                     $('#chat').css('cursor', 'pointer');
 
@@ -252,15 +272,9 @@
                         $("<img/>", {"class":"profile-icon-header"})
                     )
                     .append(
-                            $("<div/>", {"class":"current-username", text:"@everyone"}).append(
-                                $("<div/>", {"class":"username-list"}).append(
-                                    $("<p/>", {text:"@user_1"})
-                                    .append(
-                                        $("<p/>", {text:"@user_2"})
-                                    )
-                                )
-                            )
+                            $("<div/>", {"class":"current-username", text:"@everyone"})
                     )
+                    
                     .append(
                         $("<button/>", {"id":"chat-minimize"}).append(
                             $("<div/>", {"class":"chat-minimize-symbol", text:"x"})
@@ -347,6 +361,9 @@
 
     
     <a href="#"><button id="chat">
+        <div id="chatSidebar">
+
+        </div>
         <div class="heading-container">
                 <div class="chat-heading">
                     <div> Chat </div>
@@ -589,7 +606,7 @@
                 font-size:1.5vw
             }
             font-family: sans-serif;
-            z-index: 0;
+            z-index: 4;
             border-radius: 7px;
             border-style: solid;
             border-width: 2px;
@@ -597,7 +614,7 @@
             position:fixed;
             color: #000000;
             bottom:0%;
-            right: 7%;
+            right: 5%;
             display: inline-flex;
             justify-content:center;
             background-color: #4267B2;
@@ -615,21 +632,52 @@
                 width:12vw;
                 font-size:3vw;
             }
-            z-index: 0;
+            z-index: 5;
             font-family: sans-serif;
             background-color:rgb(255, 255, 255);
             border-bottom:none;
             transition:0.6s ease;
             position:fixed;
             bottom:-5%;
-            right: 7%;
+            right: 5%;
             margin:auto;
             letter-spacing: 0.3px;
+        }
+
+        #chatSidebar {
+            @media screen and (max-width: 600px) {
+                height:5vw;
+                width:14vw;
+                font-size:5vw;
+            }
+            @media screen and (min-width: 601px) {
+                height:2.5vw;
+                width:12vw;
+                font-size:3vw;
+            }
+            display: none;
+            font-family: sans-serif;
+            z-index: -5;
+            width: 0vw;
+            border-radius: 7px;
+            border-style: solid;
+            border-width: 2px;
+            border-right:none;
+            border-color: #ffffff;
+            transition:0.6s ease;
+            position:fixed;
+            margin:auto;
+            bottom:-1%;
+            right: 25.1%;
+            justify-content:left;
+            background-color:rgb(255, 255, 255);
+            box-shadow: 1px 6px 4px 3px rgba(0,0,0,0.4); 
         }
 
         /* Chat styling */
 
         .chat-heading {
+            z-index: 0;
             transition: 0.6s ease;
             text-align:justify; 
             margin-bottom: 10px;
@@ -649,8 +697,12 @@
         .chat-minimize-text {
             vertical-align:top;
             float: right;
-            top: 100vw;
             font-size: 25px;
+        }
+
+        button#chat-minimize:hover {
+            transition: 0.3s ease;
+            font-size: 30px;
         }
 
         img {
@@ -714,6 +766,14 @@
             background-color:#ff9ac8;
             color: rgba(0, 0, 0, 0.848);
             box-shadow: 2px 5px 4px rgba(0,0,0,0.3); 
+        }
+
+
+        .received-textbox:hover, .sent-textbox:hover {
+            transition: 0.3s ease;
+            font-size: 18.1px;
+            padding: 8px;
+            box-shadow: 2px 5px 6px rgba(0, 0, 0, 0.726); 
         }
 
         .received-message, .received-textbox {
@@ -784,7 +844,9 @@
         }
 
         .message-submit:hover {
-            box-shadow: 0 0px 3px rgba(9, 7, 31, 0.852);  
+            transition: 0.2s ease;
+            font-size: 18px;
+            box-shadow: 2px 5px 6px rgba(0, 0, 0, 0.746); 
         }
 
         .profile-icon-header {
@@ -823,13 +885,12 @@
         }
 
         .username-list {
-            display: none;
-            font-size: 25px; 
-            color: #ffffff;
+            z-index: -1;
+            font-size: 20px; 
+            color: #171212cb;
             background-color:#ffffff;
-            width:8vw;
-            padding-top: 10px;
-            padding-right: 80px;
+            width:7vw;
+            justify-items: left;
         }
 
         .current-username {
@@ -847,8 +908,14 @@
             transition:0.3s ease;
         }
 
+        p {
+            width: 100%;
+            height: 60px;
+        }
+
         .username-list  p:hover {
-            color:#fb4999;
+            background-color:#4267B2;
+            color: #ffffff;
 
         }
 
