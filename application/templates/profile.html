@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% block title %}
+    Profile Page
+{% endblock %}
+
+{% block content %}
+
+        <body>
+          <div class="container">
+            <div class="box">
+              <div class="banner">
+                <img class = profile-image src="https://i.pinimg.com/564x/89/4a/6d/894a6d78197a52987694b7925be3c518.jpg" alt="profileImage">
+                <h1  class= "user-info" id ="username"> @{{user.username}}</h1>
+              </div>
+              <div class="user-stats">
+                <div class="col-3 stat-box">
+                  <h4 id="stat-title">Games Created <i class="bi bi-puzzle"></i>
+                  </h4>
+                  <p id="stat-value"> {{games_created}} </p>
+                </div>
+                <div class="col-3 stat-box">
+                  <h4 id="stat-title">Wins <i class="bi bi-trophy"></i></h4>
+                  <p id="stat-value"> {{games_created}} </p>
+                </div>
+                <div class="col-3 stat-box">
+                  <h4 id="stat-title">Fav Category <i class="bi bi-star"></i>
+                  </h4>
+                  <p id="stat-value"> Sports </p>
+                </div>
+                
+
+              </div>
+            </div>
+          </div>            
+        </body>
+        
+
+        <style>
+          *{
+            font-family: "Indie Flower", sans-serif;
+          }
+          .container{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            
+
+          }
+          .box {
+            width: 100%;
+            height: 65%;
+            align-items: center;
+            border: 4px solid #FFD33B;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 15vw;
+          }
+          .banner{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+          }
+          .profile-image{
+            position: fixed;
+            width: 15vw;
+            height: 15vw;
+            border-radius: 50%;
+            object-fit: cover;          
+            border: 2px solid black;
+            background-color: white;
+           }
+          .user-info{
+            color: rgb(0, 0, 0);
+            width: 100%;
+            z-index: 1000;
+            margin-top: 16vw;
+            font-weight: 900;
+          }
+
+          .stat-box{
+            width: 35vw;
+            height: 20vw;
+            margin: 9vw 1vw 0vw 0vw;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-image: url("https://pngimg.com/d/sticky_note_PNG18964.png");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            
+          }
+          .user-stats{
+            display:inline-flex;
+            justify-content:center;
+            margin: 1vw 1vw 2vw 1vw;
+            padding: 0%;
+            text-align: center;
+            color: black;
+            flex-wrap: wrap;    
+          }
+          #stat-title{
+            margin: 2vw 1vw 0vw 0vw;
+            font-weight:bolder ;
+            font-size: 1.5vw;
+          }
+          #stat-value {
+              font-size: 3vw;
+              font-weight: bold;
+              justify-content: center;
+              align-items: center;
+          }
+          .profile-image:hover {
+            transform: scale(1.1);
+            transition: 0.3s;
+          }
+          .stat-box:hover{
+            transform: scale(1.2);
+            transition: 0.3s;
+          }
+
+        </style>
+
+
+{% endblock %}
