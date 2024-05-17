@@ -1,7 +1,5 @@
 from application import app,db
-from flask import render_template, redirect, url_for, flash, get_flashed_messages, request, jsonify
-from operator import attrgetter
-import json
+from flask import render_template, redirect, url_for, flash, get_flashed_messages
 from application.models import Item, User, Message, Game
 from application.forms import RegisterForm, CreateGameForm,LoginForm
 from flask_login import login_user, logout_user, login_required, current_user
@@ -110,6 +108,12 @@ def play_page():
     messages = Message.query.all()
     return render_template('chat.html')
 
+@app.route('/feed', methods=['GET'])
+@login_required
+def feed_page():
+    games = Game.query.all()
+    return render_template('feed.html', games=games)
+
 @app.route('/hangman')
 def hangman_page():
     return render_template('hangman.html')
@@ -175,4 +179,5 @@ def logout_page():
 def profile_page():
     user = current_user
     games_created = Game.query.filter_by(creator_id = user.id).count()
+    game_success = Game.query.filter_by
     return render_template('profile.html', user = user, games_created = games_created)
