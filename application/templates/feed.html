@@ -17,7 +17,8 @@
         var global_time_string = null;
 
         var target_user_id = 0; /* User id of 0 indicates that 
-                                @Everyone is the target */
+                                   all users (i.e. ALL) is the target */
+        var all_users_username = "all"
 
         /**
          * Returns a string describing the current time e.g. "2:30 pm"
@@ -221,6 +222,32 @@
             }
         });
 
+        /* Switching target username */
+        $(document).on("click", function(e){
+            if (e.target.className == "username") {
+                var prev_username = $(".current-username").html()
+                $(".current-username").text(e.target.id) 
+                $(e.target).remove()
+
+                // Ensuring that the "all" username remains at the top of the list  
+                // Add to top of list
+                console.log(prev_username, all_users_username)
+                if (prev_username == all_users_username) {
+                    
+                    $(".username-list:first-child").prepend(
+                        $("<button/>", {"class":"username","id":prev_username ,text:prev_username})
+                    )
+                }
+                // Else add second from the top
+                else {
+                    $(".username-list:first-child").append(
+                        $("<button/>", {"class":"username","id":prev_username,text:prev_username})
+                    )
+                }
+            }
+        });
+
+
         $(document).ready(function () {
 
         /* Ensuring that msg-page div is scrolled all the way down 
@@ -250,12 +277,11 @@
                     $('#chatSidebar').height($(window).height() / 1.29);
 
                     $('#chatSidebar').append($("<div/>", {"class":"username-list"})
-                                    .append($("<button/>", {"class":"username","id":"@user_1",text:"@user_1"}))
-                                    .append($("<button/>", {"class":"username","id":"@user_2",text:"@user_2"}))
-                                    .append($("<button/>", {"class":"username","id":"@user_3",text:"@user_3"}))
-                                    .append($("<button/>", {"class":"username","id":"@user_4",text:"@user_4"}))
-                                    .append($("<button/>", {"class":"username","id":"@user_5",text:"@user_5"}))
-                                    .append($("<button/>", {"class":"username","id":"@user_6",text:"@user_6"}))
+                                    .append($("<button/>", {"class":"username","id":"user_2",text:"user_2"}))
+                                    .append($("<button/>", {"class":"username","id":"user_3",text:"user_3"}))
+                                    .append($("<button/>", {"class":"username","id":"user_4",text:"user_4"}))
+                                    .append($("<button/>", {"class":"username","id":"user_5",text:"user_5"}))
+                                    .append($("<button/>", {"class":"username","id":"user_6",text:"user_6"}))
                                     )
 
                     $('#chatBody').height($(window).height() / 1.256 - $('#chat').height())
@@ -268,7 +294,7 @@
                         $("<img/>", {"class":"profile-icon-header"})
                     )
                     .append(
-                            $("<div/>", {"class":"current-username", text:"@everyone"})
+                            $("<div/>", {"class":"current-username", text:"all"})
                     )
                     
                     .append(
@@ -277,16 +303,6 @@
                         )
                     )        
                     toggleUp = true;
-
-                    /* Switching target username */
-                    $(".username").on("click", function(e){
-                        e.stopPropagation()
-                        var prev_username = $(".current-username").html()
-                        $(".current-username").text(this.id) 
-                        $(this).prop("id", prev_username)
-                        $(this).text(prev_username)
-      
-                    });
                 }
             });
 
