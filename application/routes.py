@@ -108,11 +108,6 @@ def play_page():
     messages = Message.query.all()
     return render_template('chat.html')
 
-@app.route('/feed', methods=['GET'])
-@login_required
-def feed_page():
-    games = Game.query.all()
-    return render_template('feed.html', games=games)
 
 @app.route('/hangman')
 def hangman_page():
