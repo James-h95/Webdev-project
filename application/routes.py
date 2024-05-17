@@ -1,12 +1,9 @@
 from application import app,db
-from flask import render_template, redirect, url_for, flash, get_flashed_messages, request, jsonify
-from operator import attrgetter
-import json
+from flask import render_template, redirect, url_for, flash, get_flashed_messages
 from application.models import Item, User, Message, Game
 from application.forms import RegisterForm, CreateGameForm,LoginForm
 from flask_login import login_user, logout_user, login_required, current_user
 import datetime
-from flask import request
 
 NUM_VISIBLE_MESSAGES = 50
 
@@ -111,6 +108,7 @@ def play_page():
     messages = Message.query.all()
     return render_template('chat.html')
 
+
 @app.route('/hangman')
 def hangman_page():
     return render_template('hangman.html')
@@ -169,3 +167,12 @@ def logout_page():
     logout_user()
     flash("You have logged out!",category='info')
     return redirect(url_for("home_page"))
+
+# profile page
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile_page():
+    user = current_user
+    games_created = Game.query.filter_by(creator_id = user.id).count()
+    game_success = Game.query.filter_by
+    return render_template('profile.html', user = user, games_created = games_created)
