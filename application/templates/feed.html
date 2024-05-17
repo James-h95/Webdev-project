@@ -226,12 +226,12 @@
         /* Ensuring that msg-page div is scrolled all the way down 
             to the most recent message when the page is loaded  
             https://stackoverflow.com/a/2664878 was used to understand
-            how to index a div to find its scroll height */
+            how to index a div to find its scroll height  */
             $(".messages").scrollTop($(".messages")[0].scrollHeight);
 
-            // Emojis
+            /* Emojis */
             $(".received-textbox").on("click", function(){
-            $(this).append(
+                $(this).append(
                 $("<i/>", {"class":"bi bi-emoji-smile"})
             )
             });
@@ -250,17 +250,13 @@
                     $('#chatSidebar').height($(window).height() / 1.29);
 
                     $('#chatSidebar').append($("<div/>", {"class":"username-list"})
-                                    .append($("<p/>", {text:"@user_2"}))
-                                    .append($("<p/>", {text:"@user_3"}))
-                                    .append($("<p/>", {text:"@user_4"}))
-                                    .append($("<p/>", {text:"@user_2"}))
-                                    .append($("<p/>", {text:"@user_3"}))
-                                    .append($("<p/>", {text:"@user_4"}))
-                                    .append($("<p/>", {text:"@user_2"}))
-                                    .append($("<p/>", {text:"@user_3"}))
+                                    .append($("<button/>", {"class":"username","id":"@user_1",text:"@user_1"}))
+                                    .append($("<button/>", {"class":"username","id":"@user_2",text:"@user_2"}))
+                                    .append($("<button/>", {"class":"username","id":"@user_3",text:"@user_3"}))
+                                    .append($("<button/>", {"class":"username","id":"@user_4",text:"@user_4"}))
+                                    .append($("<button/>", {"class":"username","id":"@user_5",text:"@user_5"}))
+                                    .append($("<button/>", {"class":"username","id":"@user_6",text:"@user_6"}))
                                     )
-                                
-
 
                     $('#chatBody').height($(window).height() / 1.256 - $('#chat').height())
                     $('#chatBody').css('width', "20vw");
@@ -281,6 +277,16 @@
                         )
                     )        
                     toggleUp = true;
+
+                    /* Switching target username */
+                    $(".username").on("click", function(e){
+                        e.stopPropagation()
+                        var prev_username = $(".current-username").html()
+                        $(".current-username").text(this.id) 
+                        $(this).prop("id", prev_username)
+                        $(this).text(prev_username)
+      
+                    });
                 }
             });
 
@@ -667,11 +673,11 @@
             transition:0.6s ease;
             position:fixed;
             margin:auto;
-            bottom:-1%;
+            bottom:0%;
             right: 25.1%;
             justify-content:left;
             background-color:rgb(255, 255, 255);
-            box-shadow: 1px 6px 4px 3px rgba(0,0,0,0.4); 
+            box-shadow: 1px 3px 4px 3px rgba(0,0,0,0.4); 
         }
 
         /* Chat styling */
@@ -903,20 +909,23 @@
         }
 
         .current-username:hover {
-            color: #ffffff;
             font-size: 26px;
             transition:0.3s ease;
         }
 
-        p {
+        .username-list  button {
             width: 100%;
-            height: 60px;
+            height: 40px;
+            border: none;
+            background: none;
+            background-color: #fff;
+
         }
 
-        .username-list  p:hover {
+        .username-list  button:hover {
+            transition: 0.31s ease;
             background-color:#4267B2;
             color: #ffffff;
-
         }
 
         .game-card {
