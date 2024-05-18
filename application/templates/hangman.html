@@ -12,7 +12,7 @@
       <div class="modal-content">
         <h2>Time's Up!</h2>
         <p>Your time for this game has expired.</p>
-        <a href="{{ url_for('feed_page') }}"><button class="backToFeed">Return to feed</button></a>
+        <a href="{{ url_for('main.feed_page') }}"><button class="backToFeed">Return to feed</button></a>
       </div>
     </div>
 
@@ -21,7 +21,7 @@
       <div class="modal-content">
         <h2>Failed!</h2>
         <p>You've run out of attempts. Better luck next time!</p>
-        <a href="{{ url_for('feed_page') }}"><button class="backToFeed">Return to feed</button></a>
+        <a href="{{ url_for('main.feed_page') }}"><button class="backToFeed">Return to feed</button></a>
       </div>
     </div>
 
@@ -30,7 +30,7 @@
       <div class="modal-content">
         <h2>Success!</h2>
         <p>Congratulations! You have successully completed the game.</p>
-        <a href="{{ url_for('feed_page') }}"><button class="backToFeed">Return to feed</button></a>
+        <a href="{{ url_for('main.feed_page') }}"><button class="backToFeed">Return to feed</button></a>
       </div>
     </div>
 
