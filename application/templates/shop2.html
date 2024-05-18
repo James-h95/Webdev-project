@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% block title %}
+    Shop
+{% endblock %}
+
+{% block content %}
+
+    <div class="pageHeading" style="padding-left: 10px;">
+        <h1>Shop</h1>
+        <!--<h2>elevate your game and style</h2>-->
+    </div>
+
+    <!-- Iterate over list provided in app.py-->
+    <!--Use temporary bootatrap table to display the items in our 'Shop'-->
+  <div class="container">
+    {% for item in items %}
+        <div class="row mb-3" style="background-color: #FAFAF5;">
+            <div class="itemImg col-3" style="background-color:#f3f3f0;">
+                <!-- Placeholder for item image-->
+                <img src="https://pngimg.com/d/sticky_note_PNG18964.png" style="height:100px;width:auto;" alt="logo">
+            </div>
+            <div class="center col-3">
+                {{ item.name }}
+            </div>
+            <div class="center col-3">
+                ${{ item.price }}
+            </div>
+            <div class="center col-3" style="font-family: Verdana, Geneva, Tahoma, sans-serif;">
+                {% if item.name in purchased_items %}
+                <form method="POST" action="#">
+                    {{ form.hidden_tag() }}
+                    <input type="hidden" name="equip_item" value="{{ item.name }}">
+                    <button type="submit" class="btn button-equip btn-block">Equip</button>
+                </form>
+                {% else %}
+                    <form method="POST" class="purchase-form">
+                        {{ form.hidden_tag() }}
+                        <input type="hidden" name="purchased_item" value="{{ item.name }}">
+                        <button type="submit" class="btn btn-success btn-block">Purchase</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+  </div>
+
+     <style>
+        .pageHeading h1{
+            font-size: 5vw;
+            font-family: "Indie Flower", sans-serif;
+            font-weight: 550;
+            /*color: #ebd834;*/
+            color: black;
+            margin-top: 100px;
+            padding-bottom: 10px;
+        }
+
+        .pageHeading h2{
+            color:black;
+            font-family: "Indie Flower", sans-serif;
+            font-weight: bold;
+            font-size:2vw;
+        }
+
+        .row{
+            border-radius: 11px;
+            border-bottom: solid 2px #cecbcb;
+            font-family: "Indie Flower", sans-serif;
+            font-size: 2.2rem;
+            font-weight: 500;
+            color: black;
+        }
+
+        .itemImg{
+            border-right: solid 2px #e9e9e6;;
+        }
+
+        .purchase{
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+        .center{
+            margin: auto;
+            text-align:center;
+        }
+
+        .button-equip{
+            background-color: rgb(231, 141, 24);
+            color: #fff;
+            border-color:  rgb(231, 141, 24);;
+
+        }
+
+        .button-equip:hover{
+            background-color:rgb(167, 114, 44);
+            border-color: rgb(167, 114, 44);
+            color: #b7b7b7;
+        }
+
+        .btn-success{
+            background-color: rgb(18, 149, 18);
+        }
+
+        .btn-success:hover{
+            background-color: rgb(17, 93, 17);
+            color: #b7b7b7;
+        }
+        /*
+        .btn-outline-success {
+            color: #daa520; 
+            border-color: #daa520; 
+        }*/
+        /*
+        .btn-outline-success:hover {
+            color: #fff; 
+            background-color: #daa520; 
+            border-color: #daa520; 
+        }*/
+
+        /* Want to change button on click, but only after purchase was validated/successful. go to route maybe?
+        JS conditional needs to be used
+        */
+    </style>
+    <script>
+        /*
+        document.addEventListener('DOMContentLoaded',function() {
+            // Access all elements with class="purchase-form"
+            const purchaseForms = document.querySelectorAll('.purchase-form');
+            purchaseForms.forEach(form =>{
+                form.addEventListener('submit',function(event){
+                    event.preventDefault();
+                    console.log('Form submitted');
+                    handleFormSubmit(form);
+                });
+            });
+
+        });
+
+        function handleFormSubmit(form){
+            const formData = new FormData(form);
+            const action = form.action;
+            
+            fetch(action, {
+                method:'POST',
+                body:formData,
+                //No need CSRF
+            
+            })
+            
+            .then(response => response.json())
+            .then(data =>{
+                console.log('Form submitted',data);
+                if(data.success){
+                    updateButton(form.querySelector('button[type="submit"]'))
+                    updateBalance(data.new_balance)
+                    displayFlashMessage(data.message, 'success');
+                }
+                
+                else{
+                    displayFlashMessage(data.message, 'danger');
+                }
+            })
+
+            .catch(error =>{
+                console.error('Error:',error)
+                displayFlashMessage('An error occurred. Please try again.', 'danger'); //DEBUG
+            });
+        }
+
+        function updateButton(button){
+            console.log('Updating button')
+            button.textContent = 'Equip';
+            button.classList.remove('btn-outline-success');
+            button.classList.add('button-equip');
+        }
+        
+        
+        function updateBalance(newBalance) {
+            console.log('Updating balance');
+            const balanceElement = document.querySelector('.nav-link i.fas.fa-coins');
+            if (balanceElement) {
+                balanceElement.textContent = newBalance;
+            }
+        }
+
+        function displayFlashMessage(message, category) {
+            const flashMessageContainer = document.getElementsByID('fl-messages');
+            if (flashMessageContainer) {
+                const flashMessage = document.createElement('div');
+                flashMessage.className = `alert alert-${category}`;
+                flashMessage.textContent = message;
+                flashMessageContainer.appendChild(flashMessage);
+                setTimeout(() => {
+                    flashMessageContainer.removeChild(flashMessage);
+                }, 5000);
+            }
+        }*/
+    </script>
+
+ 
+
+{% endblock %}

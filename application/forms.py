@@ -32,8 +32,9 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Log in')
     
-
     
+class PurchaseItemForm(FlaskForm):
+    submit = SubmitField(label="Purchase")
     
 class CreateGameForm(FlaskForm):
     category = SelectField('Category:',choices=[("media", "Media"), ("books", "Books"), ("history", "History"), ("sports", "Sports"), ("music", "Music"), ("games", "Games"), ("places", "Places"), ("food", "Food"), ("misc", "Misc.")], validators=[DataRequired()])

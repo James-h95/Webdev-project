@@ -32,13 +32,24 @@ class User(db.Model, UserMixin):
     
     def check_password(self,given_password):
         return bcrypt.check_password_hash(self._password, given_password)
+    
+    def can_purchase(self,item_obj):
+        return self.balance >= item_obj.price
 
 class Item(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(length=30),nullable=False,unique=True)
     price = db.Column(db.Integer(),nullable=False)
-    rarity = db.Column(db.String(length=30),nullable=False)
+    #rarity = db.Column(db.String(length=30))
     users = db.relationship('User',secondary=users_items, back_populates="items",lazy='dynamic')
+    
+    def buy(self,user_obj):
+        self.users.append(user_obj) # Assign ownership to user who buys
+        user_obj.balance -= self.price
+        db.session.add(user_obj)
+        db.session.add(self)
+        db.session.commit()
+        print(f"User {user_obj.username} bought item {self.name}")
     
     #def __repr__(self):
         #return f'Item {self.name}'
