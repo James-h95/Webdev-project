@@ -1,7 +1,8 @@
 Instructions to create db entries thru SQLAlchemy for easier testing of our db:
 
 from application.models import db, Item, User, Game, Message, UserGames
-from application import app
+from application import create_app
+app = create_app()
 with app.app_context():
     db.drop_all() 
     db.create_all()
