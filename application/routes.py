@@ -1,6 +1,7 @@
 from application import app,db
 from flask import render_template, redirect, url_for, flash, get_flashed_messages, request, jsonify
-from application.models import Item, User, Message, Game
+from sqlalchemy import desc, func
+from application.models import Item, User, Message, Game, UserGames
 from application.forms import RegisterForm, CreateGameForm,LoginForm
 from operator import attrgetter
 from flask_login import login_user, logout_user, login_required, current_user
@@ -30,10 +31,11 @@ def shop_page():
 @app.route('/feed', methods=['GET', 'POST'])
 @login_required
 def feed_page():
+    already_played = [user_game.game_id for user_game in current_user.games_played]
 
     user_id = current_user.get_id()
-    games = Game.query.all()
-
+    games = Game.query.filter(~Game.id.in_(already_played)).order_by(desc(Game.created)).all()
+    
     # Handling all GET requests. Tasks common to all GET
     # requests are handled first, and then the request 
     # arguments are checked to determine which specific actions
@@ -110,16 +112,11 @@ def feed_page():
 
         # Informing the client that adding the new message was successful 
         return jsonify("success")
-    
+
 @app.route('/chat')
 def play_page():
     messages = Message.query.all()
     return render_template('chat.html')
-
-
-@app.route('/hangman')
-def hangman_page():
-    return render_template('hangman.html')
 
 @app.route('/create', methods=['GET', 'POST'])
 def create_page():
@@ -133,9 +130,33 @@ def create_page():
         return redirect(url_for('feed_page'))
     return render_template('create.html', form=form)
 
-@app.route('/leaderboard')
+@app.route('/hangman/<int:game_id>', methods=['GET'])
+def hangman_page(game_id):
+    current_game = Game.query.get(game_id)
+    user = User.query.get(current_user.id)
+    return render_template('hangman.html', current_game=current_game, user=user)
+
+@app.route('/save', methods=['POST'])
+def save_play():
+    data = request.json
+    uid = data.get('user_id')
+    gid = data.get('game_id')
+    ss = data.get('success')
+    playInstance = UserGames(user_id=uid, game_id=gid, success=ss)
+    if ss == True:
+        user = User.query.get(current_user.id)
+        user.balance += 10
+
+    db.session.add(playInstance)
+    db.session.commit()
+    
+    return jsonify({"message": "Success"})
+
+@app.route('/leaderboard', methods=['GET'])
 def leaderboard_page():
-    return render_template('leaderboard.html')
+    successes = func.sum(UserGames.success)
+    ordered_table = db.session.query(User.username.label('Username'), successes.label('Successes')).join(UserGames, User.id == UserGames.user_id).group_by(User.username).order_by(successes.desc()).all()
+    return render_template('leaderboard.html', ordered_table=ordered_table)
 
 @app.route('/register', methods=['GET','POST'])
 def register_page():
