@@ -361,7 +361,7 @@
                 <!-- For each gamebox-->
                 {% for game in games %}
                     <div class="col-4 mt-4" >
-                        <a href="{{ url_for('hangman_page', game_id=game.id) }}" class="{{'disabled' if game.creator.username == current_user.username }}"><button class="{{'disabled' if game.creator.username == current_user.username }} mb-5 card game-card {{ game.category|lower|replace('.', '')}}" data-category="{{ game.category|lower }}" data-time = "{{ game.timeLimit }}">
+                        <a href="{{ url_for('main.hangman_page', game_id=game.id) }}" class="{{'disabled' if game.creator.username == current_user.username }}"><button class="{{'disabled' if game.creator.username == current_user.username }} mb-5 card game-card {{ game.category|lower|replace('.', '')}}" data-category="{{ game.category|lower }}" data-time = "{{ game.timeLimit }}">
                             <div class="card-body">
                                 <img class="profile-image" src="https://img.freepik.com/premium-vector/stick-figure-man-isolated-vector_566661-759.jpg"></img>
                                     <div class="category-name">
@@ -400,7 +400,7 @@
     </div>
 
     <div id="createButton">
-        <a href="{{ url_for('create_page') }}"><button id="create">create</button><a>
+        <a href="{{ url_for('main.create_page') }}"><button id="create">create</button><a>
     </div>
 
     

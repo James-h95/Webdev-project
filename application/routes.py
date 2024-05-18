@@ -1,4 +1,5 @@
-from application import app,db
+from flask import Blueprint
+from application import models, routes, db
 from flask import render_template, redirect, url_for, flash, get_flashed_messages, request, jsonify
 from sqlalchemy import desc, func
 from application.models import Item, User, Message, Game, UserGames
@@ -8,16 +9,17 @@ from flask_login import login_user, logout_user, login_required, current_user
 import datetime
 import json
 
+main = Blueprint('main', __name__)
+
 NUM_VISIBLE_MESSAGES = 50
 
-
-@app.route('/')
-@app.route('/home')
+@main.route('/')
+@main.route('/home')
 def home_page():
     return render_template('home.html')
 
 # Flask APP initialisation. Our Python package
-@app.route('/shop')
+@main.route('/shop')
 @login_required
 def shop_page():
     # Example dictionaries to use
@@ -28,7 +30,7 @@ def shop_page():
     items = Item.query.all()
     return render_template('shop.html',items=items)
 
-@app.route('/feed', methods=['GET', 'POST'])
+@main.route('/feed', methods=['GET', 'POST'])
 @login_required
 def feed_page():
     already_played = [user_game.game_id for user_game in current_user.games_played]
@@ -113,12 +115,12 @@ def feed_page():
         # Informing the client that adding the new message was successful 
         return jsonify("success")
 
-@app.route('/chat')
+@main.route('/chat')
 def play_page():
     messages = Message.query.all()
     return render_template('chat.html')
 
-@app.route('/create', methods=['GET', 'POST'])
+@main.route('/create', methods=['GET', 'POST'])
 def create_page():
     form = CreateGameForm()
     if form.validate_on_submit():
@@ -127,16 +129,16 @@ def create_page():
         db.session.add(new_game)
         db.session.commit()
         flash("Game is now live!",category="success")
-        return redirect(url_for('feed_page'))
+        return redirect(url_for('main.feed_page'))
     return render_template('create.html', form=form)
 
-@app.route('/hangman/<int:game_id>', methods=['GET'])
+@main.route('/hangman/<int:game_id>', methods=['GET'])
 def hangman_page(game_id):
     current_game = Game.query.get(game_id)
     user = User.query.get(current_user.id)
     return render_template('hangman.html', current_game=current_game, user=user)
 
-@app.route('/save', methods=['POST'])
+@main.route('/save', methods=['POST'])
 def save_play():
     data = request.json
     uid = data.get('user_id')
@@ -152,13 +154,13 @@ def save_play():
     
     return jsonify({"message": "Success"})
 
-@app.route('/leaderboard', methods=['GET'])
+@main.route('/leaderboard', methods=['GET'])
 def leaderboard_page():
     successes = func.sum(UserGames.success)
     ordered_table = db.session.query(User.username.label('Username'), successes.label('Successes')).join(UserGames, User.id == UserGames.user_id).group_by(User.username).order_by(successes.desc()).all()
     return render_template('leaderboard.html', ordered_table=ordered_table)
 
-@app.route('/register', methods=['GET','POST'])
+@main.route('/register', methods=['GET','POST'])
 def register_page():
     form = RegisterForm()
     if form.validate_on_submit():
@@ -168,7 +170,7 @@ def register_page():
         login_user(new_user)
         flash(f"Account created! Welcome, {new_user.username}",category='success')
         
-        return redirect(url_for('shop_page'))
+        return redirect(url_for('main.shop_page'))
     
     #Check if any validations fail
     if form.errors != {}:
@@ -176,7 +178,7 @@ def register_page():
            flash(f'There was an error with creating a user: {err_msg}',category='danger') 
     return render_template('register.html',form=form)
 
-@app.route('/login',methods=['GET','POST'])
+@main.route('/login',methods=['GET','POST'])
 def login_page():
     form = LoginForm()
     if form.validate_on_submit():
@@ -185,20 +187,20 @@ def login_page():
         if user and user.check_password(given_password=form.password.data):
             login_user(user)
             flash(f"You have logged in! Welcome back, {user.username}",category='success')
-            return redirect(url_for('shop_page'))
+            return redirect(url_for('main.shop_page'))
         # If user or password none
         else:
             flash('Invalid username or password. Try again',category='danger')
     return render_template('login.html',form=form)
 
-@app.route('/logout')
+@main.route('/logout')
 def logout_page():
     logout_user()
     flash("You have logged out!",category='info')
-    return redirect(url_for("home_page"))
+    return redirect(url_for("main.home_page"))
 
 # profile page
-@app.route('/profile', methods=['GET', 'POST'])
+@main.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile_page():
     user = current_user

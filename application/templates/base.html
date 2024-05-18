@@ -22,7 +22,7 @@
 <!-- NAVBAR HERE-->
   <nav id="navWide" class="shadow-lg navbar navbar-expand-md navbar-dark fixed-top">
     <!--<div class="container-fluid">-->
-        <a class="navbar-brand kanit-regular" style="color: #ffffffdd; font-size: 1.4rem;"  href="{{ url_for('home_page') }}">
+        <a class="navbar-brand kanit-regular" style="color: #ffffffdd; font-size: 1.4rem;"  href="{{ url_for('main.home_page') }}">
             <img src="https://pngimg.com/d/sticky_note_PNG18964.png" style="height:50px;width:auto;" alt="logo">
         </a>
         <div class="collapse navbar-collapse kanit-light" id="navbarNav">
@@ -32,16 +32,16 @@
                     <a class="nav-link mr-3" style="color: #ffffffdd; font-size: 1.4rem;" href="#">Tic-Tac-Twist</a>
                 </li>-->
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="{{ url_for('home_page') }}">home</a>
+                    <a class="nav-link" aria-current="page" href="{{ url_for('main.home_page') }}">home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('feed_page') }}">feed</a>
+                    <a class="nav-link" href="{{ url_for('main.feed_page') }}">feed</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('shop_page') }}">shop</a>
+                    <a class="nav-link" href="{{ url_for('main.shop_page') }}">shop</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('leaderboard_page') }}">leaderboard</a>
+                    <a class="nav-link" href="{{ url_for('main.leaderboard_page') }}">leaderboard</a>
                 </li>
             </ul>
 
@@ -56,20 +56,20 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="{{ url_for('profile_page') }}">profile</a>
+                  <a class="nav-link" href="{{ url_for('main.profile_page') }}">profile</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('logout_page') }}">logout</a>
+                    <a class="nav-link" href="{{ url_for('main.logout_page') }}">logout</a>
                 </li>
             </ul>
             {% else %}
             <!-- if not logged in/registered-->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('login_page') }}">login</a>
+                    <a class="nav-link" href="{{ url_for('main.login_page') }}">login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('register_page') }}">register</a>
+                    <a class="nav-link" href="{{ url_for('main.register_page') }}">register</a>
                 </li>
             </ul>
             {% endif%}
@@ -83,15 +83,15 @@
     <!--<a class="sidebar-brand" style="color: #ffffffdd; font-size: 1.4rem;" href="#">Tic-Tac-Twist</a>-->
     <a class="sidebar-toggler">&times;</a>
     <div class="mt-3">
-        <a class='ml-3' href="{{ url_for('home_page') }}">
+        <a class='ml-3' href="{{ url_for('main.home_page') }}">
             <img class='mb-4' src="https://pngimg.com/d/sticky_note_PNG18964.png" style="height:70px;width:auto;" alt="logo">
         </a>
-        <a class="nav-link" aria-current="page" href="{{ url_for('home_page') }}">home</a>
-        <a class="nav-link" href="{{ url_for('feed_page') }}">feed</a>
-        <a class="nav-link" href="{{ url_for('shop_page') }}">shop</a>
-        <a class="nav-link mb-5" href="{{ url_for('leaderboard_page') }}">leaderboard</a>
+        <a class="nav-link" aria-current="page" href="{{ url_for('main.home_page') }}">home</a>
+        <a class="nav-link" href="{{ url_for('main.feed_page') }}">feed</a>
+        <a class="nav-link" href="{{ url_for('main.shop_page') }}">shop</a>
+        <a class="nav-link mb-5" href="{{ url_for('main.leaderboard_page') }}">leaderboard</a>
         <a class="nav-link mt-5" href="#">login</a>
-        <a class="nav-link" href="{{ url_for('register_page') }}">register</a>
+        <a class="nav-link" href="{{ url_for('main.register_page') }}">register</a>
     </div>
   </div>
 
