@@ -44,11 +44,11 @@
 
     <div class="mt-5 mb-5 d-flex justify-content-center" id="leaderboardTable">
         <table>
+            {% set rank = namespace(value=1) %}
             <tr><th>rank</th><th>user</th><th>points</th>
-            {% set rank = 1 %}
-            {% for user in ordered_table %}
-                <tr><td>{{ rank }}</td><td>{{ user.Username }}</td><td>{{ user.Successes }}</td></tr>
-                {% set rank = rank+1 %}
+            {% for user in ordered_table if rank.value != 21 %}
+                <tr><td>{{ rank.value }}</td><td>{{ user.Username }}</td><td>{{ user.Successes }}</td></tr>
+                {% set rank.value = rank.value + 1 %}
             {% endfor %}
         </table>
     </div>
