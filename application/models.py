@@ -12,7 +12,6 @@ users_items = db.Table('users_items',
     db.Column('item_id',db.Integer(),db.ForeignKey('item.id')),                
 )
 
-
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer(), primary_key=True)
     username =db.Column(db.String(length=30),nullable=False,unique=True)
@@ -21,6 +20,7 @@ class User(db.Model, UserMixin):
     balance = db.Column(db.Integer(),nullable=False,default=10)
     items = db.relationship('Item',secondary=users_items, back_populates='users',lazy='dynamic')
     games_created = db.relationship('Game', back_populates='creator')
+    games_played = db.relationship('UserGames', back_populates='user')
 
     @property
     #GETTER
@@ -65,11 +65,6 @@ class Message(db.Model):
 # 1 user [plays] M games M [made by] 1 user
 # 1 game [made by] 1 user
 
-class UserGames(db.Model):
-    user_id = db.Column(db.Integer(),db.ForeignKey('user.id')),
-    game_id = db.Column(db.Integer(),db.ForeignKey('game.id')),
-    success = db.Column(db.Boolean())
-
 class Game(db.Model):
      id = db.Column(db.Integer(), primary_key=True)
      phrase = db.Column(db.String(length=250),nullable=False)
@@ -81,6 +76,17 @@ class Game(db.Model):
      successes = db.Column(db.Integer())
      creator_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
      creator = db.relationship('User', back_populates='games_created')
+     users_played = db.relationship('UserGames', back_populates='game')
+    
+    
+class UserGames(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    user_id = db.Column(db.Integer(),db.ForeignKey('user.id'),nullable=False)
+    game_id = db.Column(db.Integer(),db.ForeignKey('game.id'),nullable=False)
+    success = db.Column(db.Boolean(),nullable=False)
+    
+    user = db.relationship('User', back_populates='games_played')
+    game = db.relationship('Game', back_populates='users_played')
      
     
      

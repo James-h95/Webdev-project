@@ -130,25 +130,21 @@ def create_page():
 @app.route('/hangman/<int:game_id>', methods=['GET'])
 def hangman_page(game_id):
     current_game = Game.query.get(game_id)
-    user = User.query.filter(id=current_user.id).first()
+    user = User.query.get(current_user.id)
     return render_template('hangman.html', current_game=current_game, user=user)
 
 @app.route('/save', methods=['POST'])
-def save_page():
-    data = request.get_json()
-    user_id = data.get('user_id')
-    game_id = data.get('game_id')
-    success = data.get('success')
-    UserGame = UserGames()
+def save_play():
+    data = request.json
+    uid = data.get('user_id')
+    gid = data.get('game_id')
+    ss = data.get('success')
+    playInstance = UserGames(user_id=uid, game_id=gid, success=ss)
     
-    UserGame.user_id = int(user_id)
-    UserGame.game_id = int(game_id)
-    UserGame.success = success
-    
-    db.session.add(UserGame)
+    db.session.add(playInstance)
     db.session.commit()
     
-    return jsonify("Success")
+    return jsonify({"message": "Success"})
 
 @app.route('/leaderboard')
 def leaderboard_page():

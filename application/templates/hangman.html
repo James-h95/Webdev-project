@@ -54,6 +54,7 @@
         </div>
       </div>
   </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </body>
 
   <style> 
@@ -417,8 +418,7 @@
         goesLeftSpace.appendChild(goesCounter);
         
     };
-
-
+    
     function makeGuess(guess){
         let correctGuesses = 0;
 
@@ -479,11 +479,6 @@
 
     modal.style.display = "block";
 
-    span.onclick = function() {
-        modal.style.display = "none";
-        location.reload();
-    }
-
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
@@ -494,14 +489,18 @@
 
       function saveResult(success){
         $.ajax({
-          url: "{{ url_for('save_page') }}"
+          url: "{{ url_for('save_play') }}",
           type: 'POST',
           contentType: 'application/json',
-          data: JSON.stringify({
-            user_id: user.id
-            game_id: current_game.id
-            success: true;
-          });
+          data: JSON.stringify({user_id: {{ user.id }},
+            game_id: {{ current_game.id }},
+            success: success}),
+          success: function(data) {
+            console.log(data.message); // Debugging line
+          },
+          error: function(xhr, status, error) {
+            console.error("Error:", error); // Debugging line
+          }
         });
       }
 
