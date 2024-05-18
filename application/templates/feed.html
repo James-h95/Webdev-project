@@ -16,13 +16,8 @@
         var global_time_counter = 0;
         var global_time_string = null;
 
-        var target_user_id = 0; /* User id of 0 indicates that 
-                                   all users (i.e. ALL) is the target */
-        var all_users_username = "all"
-
-        var friend_ids = null;
-        var friend_names = null;
-
+        var target_username = null;
+        var all_users_username = "all";
 
         /**
          * Returns a string describing the current time e.g. "2:30 pm"
@@ -95,7 +90,6 @@
                             ) 
                             .append($("<span/>", {"class":msg_type + "-time", text:time_string}))   
                         )
-                        
                     )
         };
 
@@ -232,8 +226,14 @@
         $(document).on("click", function(e){
             if (e.target.className == "username") {
                 var prev_username = $(".current-username").html()
-                $(".current-username").text(e.target.id) 
+
+                new_target_username = e.target.id
+                target_username = new_target_username 
+
+                $(".current-username").text(new_target_username) 
                 $(e.target).remove()
+
+                console.log(target_username)
 
                 // Ensuring that the "all" username remains at the top of the list  
                 // Add to top of list
@@ -315,21 +315,21 @@
 
                 success: function (data) {
 
-                    friend_ids = data.friend_ids
                     friend_names = data.friend_names
 
                     // Creating all friend entries in the chat sidebar
-                    for (i = 0; i < data.friend_ids.length; i++) {
+                    for (i = 0; i < friend_names.length; i++) {
                         $(".username-list").append(
-                            $("<button/>", {"class":"username","id":data.friend_names[i],text:friend_names[i]})
+                            $("<button/>", {"class":"username","id":friend_names[i],text:friend_names[i]})
+                        
                         )
                     }
                 }
+                
             });
-
-            console
-
         });
+
+
     </script>
 
     <div class="text-center pageHeading">
@@ -478,7 +478,7 @@
                 }
             });
         }
-            
+
     </script>
 
     <style>

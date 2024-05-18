@@ -31,10 +31,6 @@ def shop_page():
 @login_required
 def feed_page():
 
-    # Note: will need to restrict this to only friends
-    friend_ids = [user.id for user in User.query.all()]
-    friend_names = [user.username for user in User.query.all()]
-
     user_id = current_user.get_id()
     games = Game.query.all()
 
@@ -84,10 +80,11 @@ def feed_page():
                     "update_required":update_required,
                     "visible_messages":visible_messages}
         
-        # Returning all friend ids and names
-        if request.args.get("request_type") == "get_friends":
-            return {"friend_ids":friend_ids, 
-                    "friend_names":friend_names}
+        # Returning all friend names.
+        # Note: will need to restrict this to only friends
+        elif request.args.get("request_type") == "get_friends":
+            friend_names = [user.username for user in User.query.all()]
+            return {"friend_names":friend_names}
         
         else:
             # Loading the page
