@@ -20,6 +20,10 @@
                                    all users (i.e. ALL) is the target */
         var all_users_username = "all"
 
+        var friend_ids = null;
+        var friend_names = null;
+
+
         /**
          * Returns a string describing the current time e.g. "2:30 pm"
          * Takes the argument "time" to be the number of milliseconds 
@@ -143,6 +147,8 @@
                 upload_message(text, time, "{{user_id}}", target_user_id, for_all);
             }
         };
+
+
         /**
          * Triggers handle_input() if the submit button is clicked 
          */
@@ -250,7 +256,7 @@
 
         $(document).ready(function () {
 
-        /* Ensuring that msg-page div is scrolled all the way down 
+            /* Ensuring that msg-page div is scrolled all the way down 
             to the most recent message when the page is loaded  
             https://stackoverflow.com/a/2664878 was used to understand
             how to index a div to find its scroll height  */
@@ -276,13 +282,7 @@
                     $('#chat').css('width', "20vw");
                     $('#chatSidebar').height($(window).height() / 1.29);
 
-                    $('#chatSidebar').append($("<div/>", {"class":"username-list"})
-                                    .append($("<button/>", {"class":"username","id":"user_2",text:"user_2"}))
-                                    .append($("<button/>", {"class":"username","id":"user_3",text:"user_3"}))
-                                    .append($("<button/>", {"class":"username","id":"user_4",text:"user_4"}))
-                                    .append($("<button/>", {"class":"username","id":"user_5",text:"user_5"}))
-                                    .append($("<button/>", {"class":"username","id":"user_6",text:"user_6"}))
-                                    )
+                    $('#chatSidebar').append($("<div/>", {"class":"username-list"}))
 
                     $('#chatBody').height($(window).height() / 1.256 - $('#chat').height())
                     $('#chatBody').css('width', "20vw");
@@ -301,10 +301,33 @@
                         $("<button/>", {"id":"chat-minimize"}).append(
                             $("<div/>", {"class":"chat-minimize-symbol", text:"x"})
                         )
-                    )        
+                    )       
                     toggleUp = true;
                 }
             });
+
+
+            // Loading all friend names into the chat sidebar
+            $.ajax({
+                type: "GET",
+                url: "/feed",
+                data: {"request_type":"get_friends"},
+
+                success: function (data) {
+
+                    friend_ids = data.friend_ids
+                    friend_names = data.friend_names
+
+                    // Creating all friend entries in the chat sidebar
+                    for (i = 0; i < data.friend_ids.length; i++) {
+                        $(".username-list").append(
+                            $("<button/>", {"class":"username","id":data.friend_names[i],text:friend_names[i]})
+                        )
+                    }
+                }
+            });
+
+            console
 
         });
     </script>
@@ -384,6 +407,7 @@
     
     <a href="#"><button id="chat">
         <div id="chatSidebar">
+            <div class="username-list"></div>
 
         </div>
         <div class="heading-container">
