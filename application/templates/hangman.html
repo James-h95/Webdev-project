@@ -347,7 +347,7 @@
       if (timerValue === 0) {
         clearInterval(timerInterval);
         showModal("timeUpModal");
-        saveResult(false);
+        saveResult(0);
       } else {
         timerValue--;
       }
@@ -453,13 +453,13 @@
         if (allWordsGuessed) {
           stopTimer();
           showModal("winModal");
-          saveResult(true);
+          saveResult(1);
         }
 
         if(goesLeft == 0){
           stopTimer();
           showModal("failedModal");
-          saveResult(false);
+          saveResult(0);
         }
     }
 

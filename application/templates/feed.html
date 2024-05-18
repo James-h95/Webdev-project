@@ -301,13 +301,13 @@
                 <!-- For each gamebox-->
                 {% for game in games %}
                     <div class="col-4 mt-4" >
-                        <a href="{{ url_for('hangman_page', game_id=game.id) }}"><button class="mb-5 card game-card {{ game.category|lower|replace('.', '')}}" data-category="{{ game.category|lower }}" data-time = "{{ game.timeLimit }}">
+                        <a href="{{ url_for('hangman_page', game_id=game.id) }}" class="{{'disabled' if game.creator.username == current_user.username }}"><button class="{{'disabled' if game.creator.username == current_user.username }} mb-5 card game-card {{ game.category|lower|replace('.', '')}}" data-category="{{ game.category|lower }}" data-time = "{{ game.timeLimit }}">
                             <div class="card-body">
                                 <img class="profile-image" src="https://img.freepik.com/premium-vector/stick-figure-man-isolated-vector_566661-759.jpg"></img>
                                     <div class="category-name">
                                         {{ game.category }}
                                     </div>
-                                    <div class="start-game">Start game!</div>
+                                    <div class="start-game">Play now!</div>
                                     <div class="user-info">
                                         @{{ game.creator.username }} - {{ game.caption }}
                                     </div>
@@ -403,6 +403,7 @@
             const gameCards = document.querySelectorAll('.game-card');
             gameCards.forEach(card => {
                 const gameCategory = card.getAttribute('data-category').toLowerCase();
+                console.log(gameCategory);
                 const cardParent = card.parentNode;
 
                 if (categoryFilter === '' || gameCategory === categoryFilter){
@@ -866,6 +867,13 @@
             z-index:0;
             border: 2px solid black;
         }
+
+        .disabled{
+            pointer-events:none;
+            color:black;
+            opacity:60%;
+        }
+
         .game-card::before, .game-card::after {
             content: '';
             position: absolute;

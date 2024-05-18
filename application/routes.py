@@ -2,6 +2,7 @@ from application import app,db
 from flask import render_template, redirect, url_for, flash, get_flashed_messages, request, jsonify
 from operator import attrgetter
 import json
+from sqlalchemy import desc, func
 from application.models import Item, User, Message, Game, UserGames
 from application.forms import RegisterForm, CreateGameForm,LoginForm
 from flask_login import login_user, logout_user, login_required, current_user
@@ -37,8 +38,9 @@ def shop_page():
 @app.route('/feed', methods=['GET', 'POST'])
 @login_required
 def feed_page():
-    games = Game.query.all()
-
+    already_played = [user_game.game_id for user_game in current_user.games_played]
+    games = Game.query.filter(~Game.id.in_(already_played)).order_by(desc(Game.created)).all()
+    
     # Handling all GET requests. Tasks common to all GET
     # requests are handled first, and then the request 
     # arguments are checked to determine which specific actions
@@ -140,15 +142,20 @@ def save_play():
     gid = data.get('game_id')
     ss = data.get('success')
     playInstance = UserGames(user_id=uid, game_id=gid, success=ss)
-    
+    if ss == True:
+        user = User.query.get(current_user.id)
+        user.balance += 10
+
     db.session.add(playInstance)
     db.session.commit()
     
     return jsonify({"message": "Success"})
 
-@app.route('/leaderboard')
+@app.route('/leaderboard', methods=['GET'])
 def leaderboard_page():
-    return render_template('leaderboard.html')
+    successes = func.sum(UserGames.success)
+    ordered_table = db.session.query(User.username.label('Username'), successes.label('Successes')).join(UserGames, User.id == UserGames.user_id).group_by(User.username).order_by(successes.desc()).all()
+    return render_template('leaderboard.html', ordered_table=ordered_table)
 
 @app.route('/register', methods=['GET','POST'])
 def register_page():

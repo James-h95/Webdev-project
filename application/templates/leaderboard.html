@@ -43,6 +43,14 @@
     </div>
 
     <div class="mt-5 mb-5 d-flex justify-content-center" id="leaderboardTable">
+        <table>
+            <tr><th>rank</th><th>user</th><th>points</th>
+            {% set rank = 1 %}
+            {% for user in ordered_table %}
+                <tr><td>{{ rank }}</td><td>{{ user.Username }}</td><td>{{ user.Successes }}</td></tr>
+                {% set rank = rank+1 %}
+            {% endfor %}
+        </table>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -54,21 +62,6 @@
             buttons.css('height', '3vw');
             buttons.css('font-size', '0.9vw');
         });
-    </script>
-    <script>
-        function createTable(){
-            let tableSpace = document.getElementById('leaderboardTable');
-            let tableCode = '<table>';
-            tableCode += '<tr><th>rank</th><th>user</th><th>points</th>';
-            for(let i = 1; i<=20; i++){
-                let tableRow = `<tr><td>${i}</td><td>user${i}</td><td>${1000-i}</td></tr>`;
-                tableCode += tableRow;
-            };
-            tableCode += '</table>';
-            tableSpace.innerHTML = tableCode;
-        };
-
-        createTable();
     </script>
 
     <style>
@@ -150,11 +143,14 @@
             border-bottom: 3px solid #ebd834;
             font-size:2vw;
             padding:1em;
+            text-align:center;
         }
 
         td{
             border-right:3px solid #ebd834;
             border-left:3px solid #ebd834;
+            padding-left:2vw;
+            padding-right:2vw;
             text-align:center;
             font-size:1.8vw;
         }
