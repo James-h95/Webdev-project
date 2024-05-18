@@ -51,7 +51,8 @@ def shop_page():
             flash("Item not found!", category='danger')
         #return jsonify(response)
     items = Item.query.all()
-    return render_template('shop2.html',items=items)
+    purchased_items = [item.name for item in current_user.items]
+    return render_template('shop2.html',items=items, form=form,purchased_items=purchased_items)
 
 @main.route('/feed', methods=['GET', 'POST'])
 @login_required
