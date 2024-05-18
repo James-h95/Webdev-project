@@ -54,6 +54,21 @@ def shop_page():
     purchased_items = [item.name for item in current_user.items]
     return render_template('shop2.html',items=items, form=form,purchased_items=purchased_items)
 
+
+@main.route('/equip_avatar', methods=['POST'])
+@login_required
+def equip_avatar():
+    equip_item = request.form.get('equip_item')
+    item = Item.query.filter_by(name=equip_item).first()
+    if item and item in current_user.items:
+        # Logic to equip the item as the user's avatar
+        current_user.set_avatar(item.image_url)
+        flash(f"{item.name} has been equipped as your avatar!", category='success')
+    else:
+        flash("Item not found or not owned by the user.", category='danger')
+    return redirect(url_for('main.shop_page'))
+
+
 @main.route('/feed', methods=['GET', 'POST'])
 @login_required
 def feed_page():

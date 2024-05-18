@@ -1,8 +1,10 @@
-Instructions to create db entries thru SQLAlchemy for easier testing of our db:
+Instructions to rerun the db
 
+ENSURE U HAVE THESE 3 LINES FIRST (3-6)
 from application.models import db, Item, User, Game, Message, UserGames
 from application import create_app
 app = create_app()
+
 with app.app_context():
     db.drop_all() 
     db.create_all()
@@ -12,8 +14,15 @@ with app.app_context():
 
 Adding data to the tables
 
+Creating an Item example
+with app.app_context():
+    item1 = Item(name='Cool Hat', price=50, image_url='https://example.com/images/cool_hat.png')
+    item2 = Item(name='Fancy Shirt', price=75, image_url='https://example.com/images/fancy_shirt.png')
+    db.session.add(item1)
+    db.session.add(item2)
+    db.session.commit()
 
-Example assigning item object to user object:
+Example assigning item object to user object: (only for debug)
 >>> with app.app_context():
 ...     db.session.add(item1)
 ...     db.session.add(user1)

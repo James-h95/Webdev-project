@@ -17,7 +17,7 @@
         <div class="row mb-3" style="background-color: #FAFAF5;">
             <div class="itemImg col-3" style="background-color:#f3f3f0;">
                 <!-- Placeholder for item image-->
-                <img src="https://pngimg.com/d/sticky_note_PNG18964.png" style="height:100px;width:auto;" alt="logo">
+                <img src="{{ item.image_url }}" style="height:100px;width:auto;" alt="logo">
             </div>
             <div class="center col-3">
                 {{ item.name }}
@@ -27,7 +27,7 @@
             </div>
             <div class="center col-3" style="font-family: Verdana, Geneva, Tahoma, sans-serif;">
                 {% if item.name in purchased_items %}
-                <form method="POST" action="#">
+                <form method="POST" action="{{ url_for('main.equip_avatar') }}">
                     {{ form.hidden_tag() }}
                     <input type="hidden" name="equip_item" value="{{ item.name }}">
                     <button type="submit" class="btn button-equip btn-block">Equip</button>
