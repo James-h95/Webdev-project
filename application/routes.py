@@ -203,5 +203,8 @@ def logout_page():
 def profile_page():
     user = current_user
     games_created = Game.query.filter_by(creator_id = user.id).count()
-    game_success = Game.query.filter_by
-    return render_template('profile.html', user = user, games_created = games_created)
+    successes = func.sum(UserGames.success)
+    game_success = db.session.query(successes).filter(UserGames.user_id == user.id).scalar() or 0
+    category_made_counts = db.session.query(Game.category, func.count(UserGames.game_id)).join(UserGames, Game.id == UserGames.game_id).filter(UserGames.user_id == user.id).group_by(Game.category).all()
+    favourite_category = max(category_made_counts, key=lambda x: x[1])[0] if category_made_counts else "TBD!"
+    return render_template('profile.html', user = user, games_created = games_created, game_success=game_success, favourite_category=favourite_category)
