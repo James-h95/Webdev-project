@@ -2,7 +2,7 @@ from application import app,db
 from flask import render_template, redirect, url_for, flash, get_flashed_messages, request, jsonify
 from operator import attrgetter
 import json
-from application.models import Item, User, Message, Game
+from application.models import Item, User, Message, Game, UserGames
 from application.forms import RegisterForm, CreateGameForm,LoginForm
 from flask_login import login_user, logout_user, login_required, current_user
 import datetime
@@ -35,7 +35,7 @@ def shop_page():
     return render_template('shop.html',items=items)
 
 @app.route('/feed', methods=['GET', 'POST'])
-#@login_required
+@login_required
 def feed_page():
     games = Game.query.all()
 
@@ -109,15 +109,11 @@ def feed_page():
 
         # Informing the client that adding the new message was successful 
         return jsonify("success")
-    
+
 @app.route('/chat')
 def play_page():
     messages = Message.query.all()
     return render_template('chat.html')
-
-@app.route('/hangman')
-def hangman_page():
-    return render_template('hangman.html')
 
 @app.route('/create', methods=['GET', 'POST'])
 def create_page():
@@ -130,6 +126,29 @@ def create_page():
         flash("Game is now live!",category="success")
         return redirect(url_for('feed_page'))
     return render_template('create.html', form=form)
+
+@app.route('/hangman/<int:game_id>', methods=['GET'])
+def hangman_page(game_id):
+    current_game = Game.query.get(game_id)
+    user = User.query.filter(id=current_user.id).first()
+    return render_template('hangman.html', current_game=current_game, user=user)
+
+@app.route('/save', methods=['POST'])
+def save_page():
+    data = request.get_json()
+    user_id = data.get('user_id')
+    game_id = data.get('game_id')
+    success = data.get('success')
+    UserGame = UserGames()
+    
+    UserGame.user_id = int(user_id)
+    UserGame.game_id = int(game_id)
+    UserGame.success = success
+    
+    db.session.add(UserGame)
+    db.session.commit()
+    
+    return jsonify("Success")
 
 @app.route('/leaderboard')
 def leaderboard_page():

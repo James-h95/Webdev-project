@@ -1,36 +1,36 @@
 <!DOCTYPE html>
 <html lang="en"> 
   <head> 
-    <title>Hang Man Game</title>
+    <title>Play</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
   </head>
   <body> 
     <!-- Time Up Modal -->
-    <div id="timeUpModal" class="modal">
+    <div id="timeUpModal" class="modal justify-content-center">
       <div class="modal-content">
-        <span class="close">&times;</span>
         <h2>Time's Up!</h2>
         <p>Your time for this game has expired.</p>
+        <a href="{{ url_for('feed_page') }}"><button class="backToFeed">Return to feed</button></a>
       </div>
     </div>
 
     <!-- Failed Modal -->
-    <div id="failedModal" class="modal">
+    <div id="failedModal" class="modal justify-content-center">
       <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>You Failed!</h2>
+        <h2>Failed!</h2>
         <p>You've run out of attempts. Better luck next time!</p>
+        <a href="{{ url_for('feed_page') }}"><button class="backToFeed">Return to feed</button></a>
       </div>
     </div>
 
     <!-- Win  Modal -->
-    <div id="winModal" class="modal">
+    <div id="winModal" class="modal justify-content-center">
       <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>You Won!</h2>
-        <p> Woohooo!!! You Won !</p>
+        <h2>Success!</h2>
+        <p>Congratulations! You have successully completed the game.</p>
+        <a href="{{ url_for('feed_page') }}"><button class="backToFeed">Return to feed</button></a>
       </div>
     </div>
 
@@ -40,9 +40,9 @@
           <div class="theme">Theme:
             <span id="ThemeType">Movies </span> 
           </div>
-          <div id="timer">Time Remaining: <span id="timerValue">3:00</span></div>
+          <div id="timer">Time Remaining: <span id="timerValue">{{ (current_game.timeLimit/60)|int }}:{{ current_game.timeLimit%60 }}</span></div>
         </div>
-        <img src="http://127.0.0.1:5501/application/static/deliverables/hangmanGameImages/hangman.1.svg" alt="hangman-img">
+        <img src="/static/deliverables/hangmanGameImages/hangman.1.svg" alt="hangman-img">
       </div>
       <div class="game-box "> 
         <div id="hangmanSentence">
@@ -89,6 +89,7 @@
     position: absolute;
     border: #eacd11 solid 5px;
   }
+
   .header{
     font-size: 1vw;
     display:flex;
@@ -98,6 +99,7 @@
     width: 226.10%;
     margin-top: 0px;
   }
+
   .modal{
     border: 2px outset black;
     border-radius: 5px;
@@ -106,6 +108,7 @@
     background-color: rgb(241, 241, 134);
     margin: 15px 15px;
   }
+
   .theme{
     font-weight: bold;
     color: #000000;
@@ -114,6 +117,15 @@
     padding: 9px;
     margin: 0px;
     background-color: rgb(241, 241, 134);
+  }
+
+  .backToFeed{
+    background-color:white;
+    font-weight:bold;
+    margin-top:2vw;
+    padding:1vw;
+    cursor:pointer;
+    border: 1px solid black;
   }
 
   #timer{
@@ -205,6 +217,7 @@
     }
 
   .modal-content {
+    text-align:center;
     background-color: #ffffff;
     margin: 15% auto;
     padding: 30px;
@@ -269,16 +282,13 @@
 
   }
 
-
-
-
   </style>
   <script>
-    let hangmanTarget = "Tennis's is very cool's"; /* word to be guessed*/ 
+    let hangmanTarget = "{{ current_game.phrase }}"; /* word to be guessed*/ 
     let goesLeft = 7; /* number of attempts allowed*/ 
-    let timerValue = 120; /* timer in seconds*/ 
+    let timerValue = {{ current_game.timeLimit }}; /* timer in seconds*/ 
     let timerInterval;
-    let theme = "sports"; /* theme/topic of the word to be guessed*/ 
+    let theme = "{{ current_game.category }}"; /* theme/topic of the word to be guessed*/ 
 
     document.getElementById("ThemeType").textContent = theme
 
@@ -292,7 +302,7 @@
       games: "Tomato",
       places: "#53fcfc",
       food: "#fc0303",
-      miscellanous: "#c0ff2b",
+      misc: "#c0ff2b",
       all: "rgb(230, 235, 235)"
     };
 
@@ -313,6 +323,10 @@
         document.querySelectorAll('.modal p').forEach(p => {
           p.style.backgroundColor = color;
         });
+        const backButton = document.querySelectorAll('.backToFeed');
+        backButton.forEach(bb => {
+          bb.style.backgroundColor = color;
+        });
       }
 
       // Call setTheme function with the current theme
@@ -332,24 +346,27 @@
       if (timerValue === 0) {
         clearInterval(timerInterval);
         showModal("timeUpModal");
+        saveResult(false);
       } else {
         timerValue--;
       }
     }
 
+    function stopTimer(){
+        clearInterval(timerInterval);
+    }
+
     /* array of hangman Images*/   
     const hangmanImages = [ 
-    'application/static/deliverables/hangmanGameImages/hangman.1.svg',
-    'http://127.0.0.1:5501/application/static/deliverables/hangmanGameImages/hangman.2.svg',
-    'http://127.0.0.1:5501/application/static/deliverables/hangmanGameImages/hangman.3.svg',
-    'http://127.0.0.1:5501/application/static/deliverables/hangmanGameImages/hangman.4.svg',
-    'http://127.0.0.1:5501/application/static/deliverables/hangmanGameImages/hangman.5.svg',
-    'http://127.0.0.1:5501/application/static/deliverables/hangmanGameImages/hangman.6.svg',
-    'http://127.0.0.1:5501/application/static/deliverables/hangmanGameImages/hangman.7.svg',
+    '/static/deliverables/hangmanGameImages/hangman.1.svg',
+    '/static/deliverables/hangmanGameImages/hangman.2.svg',
+    '/static/deliverables/hangmanGameImages/hangman.3.svg',
+    '/static/deliverables/hangmanGameImages/hangman.4.svg',
+    '/static/deliverables/hangmanGameImages/hangman.5.svg',
+    '/static/deliverables/hangmanGameImages/hangman.6.svg',
+    '/static/deliverables/hangmanGameImages/hangman.7.svg',
+    ];
 
-
-
-];
     let currentImageIndex = 0
 
     /* estiablish game function*/ 
@@ -434,12 +451,15 @@
         }
 
         if (allWordsGuessed) {
+          stopTimer();
           showModal("winModal");
+          saveResult(true);
         }
 
         if(goesLeft == 0){
+          stopTimer();
           showModal("failedModal");
-
+          saveResult(false);
         }
     }
 
@@ -456,7 +476,6 @@
     /* show modal  / popup function*/ 
     function showModal(modalId) {
     const modal = document.getElementById(modalId);
-    const span = modal.querySelector(".close");
 
     modal.style.display = "block";
 
@@ -471,6 +490,19 @@
             location.reload();
           }
         }
+      }
+
+      function saveResult(success){
+        $.ajax({
+          url: "{{ url_for('save_page') }}"
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({
+            user_id: user.id
+            game_id: current_game.id
+            success: true;
+          });
+        });
       }
 
     establishGame(hangmanTarget);

@@ -10,7 +10,7 @@ def load_user(user_id):
 users_items = db.Table('users_items',
     db.Column('user_id',db.Integer(),db.ForeignKey('user.id')),
     db.Column('item_id',db.Integer(),db.ForeignKey('item.id')),                
-    )
+)
 
 
 class User(db.Model, UserMixin):
@@ -65,14 +65,10 @@ class Message(db.Model):
 # 1 user [plays] M games M [made by] 1 user
 # 1 game [made by] 1 user
 
-'''
-users_games = db.Table('users_games_played', 
-    db.Column('user_id', db.Integer(),db.ForeignKey('user.id')),
-    db.Column('game_id', db.Integer(),db.ForeignKey('game.id')),
-    db.Column('time', db.Integer()),
-    db.Column('comment', db.String(length=200))
-    )    
-'''
+class UserGames(db.Model):
+    user_id = db.Column(db.Integer(),db.ForeignKey('user.id')),
+    game_id = db.Column(db.Integer(),db.ForeignKey('game.id')),
+    success = db.Column(db.Boolean())
 
 class Game(db.Model):
      id = db.Column(db.Integer(), primary_key=True)
