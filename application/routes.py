@@ -11,50 +11,39 @@ import json
 
 main = Blueprint('main', __name__)
 
+# Number of messages to be shown in chat
 NUM_VISIBLE_MESSAGES = 50
 
+# Landing page route
 @main.route('/')
 @main.route('/home')
 def home_page():
     return render_template('home.html')
 
-# Flask APP initialisation. Our Python package
+# Shop route, queries items in DB and displays them
+# Includes form for purchase and keeps track of items user has already purchased
 @main.route('/shop,',methods=['GET','POST'])
 @login_required
 def shop_page():
-    # Example dictionaries to use
-    '''items=[{'id':1,'name':'Simple badge','price':60, 'rarity':"Common"},
-        {'id':2,'name':'Black Judo belt','price':150, 'rarity':"Rare"},
-        {'id':3,'name':'Shiny star','price':300, 'rarity':"Legendary"}
-        ]'''
     form = PurchaseItemForm()
     if request.method == "POST":
         # Purchase Item logic
         purchased_item = request.form.get('purchased_item')
         p_item_object = Item.query.filter_by(name=purchased_item).first()
         if p_item_object: # if not null, apply ownership
-            if current_user.can_purchase(p_item_object): # Verify curr user can afford it
+            if current_user.can_purchase(p_item_object): # Verify current user can afford it
                 p_item_object.buy(current_user)
-                #response['success'] = True
-                #response['new_balance'] = current_user.balance  # Include new balance
-                #response['message'] = f"Congratulations, you purchased {p_item_object.name} for ${p_item_object.price}!"
-                #flash(response['message'], category='success')
-                #print("Purchase successful")  # Debugging statement
                 flash(f"Congratulations, you purchased {p_item_object.name} for ${p_item_object.price}!",category='success')
             else:
-                #response['message'] = f"Unfortunately, you don't have enough money to purchase the {p_item_object.name}!"
-                #flash(response['message'], category='danger')
                 flash(f"Unfortunately, you don't have enough money to purchase the {p_item_object.name}!",category='danger')
-                #print("Insufficient balance")  # Debugging statement
         else:
             print("Item not found")
             flash("Item not found!", category='danger')
-        #return jsonify(response)
     items = Item.query.all()
     purchased_items = [item.name for item in current_user.items]
     return render_template('shop2.html',items=items, form=form,purchased_items=purchased_items)
 
-
+# Equip avatar route
 @main.route('/equip_avatar', methods=['POST'])
 @login_required
 def equip_avatar():
@@ -69,9 +58,11 @@ def equip_avatar():
     return redirect(url_for('main.shop_page'))
 
 
+# GET games and POST messages to feed page
 @main.route('/feed', methods=['GET', 'POST'])
 @login_required
 def feed_page():
+    # Tracks games users have already played so they can't cheat and play again
     already_played = [user_game for user_game in current_user.games_played]
 
     user_id = current_user.get_id()
@@ -213,6 +204,7 @@ def feed_page():
         # Informing the client that adding the new message was successful 
         return jsonify("success")
 
+# Generate the past plays for a particular game by ID
 @main.route('/gameHistory/<int:game_id>')
 def get_history(game_id):
     game_history = UserGames.query.filter_by(game_id=game_id).all()
@@ -225,6 +217,7 @@ def play_page():
     messages = Message.query.all()
     return render_template('chat.html')
 
+# Fill in form to create a game and save to database
 @main.route('/create', methods=['GET', 'POST'])
 def create_page():
     form = CreateGameForm()
@@ -237,12 +230,15 @@ def create_page():
         return redirect(url_for('main.feed_page'))
     return render_template('create.html', form=form)
 
+# Return game user wants to play to extract gameplay information
 @main.route('/hangman/<int:game_id>', methods=['GET'])
 def hangman_page(game_id):
     current_game = Game.query.get(game_id)
     user = User.query.get(current_user.id)
     return render_template('hangman.html', current_game=current_game, user=user)
 
+# When user finishes game, save their status to user and games association table
+# This keeps track of wins and losses for leaderboard, game history, and stats
 @main.route('/save', methods=['POST'])
 def save_play():
     data = request.json
@@ -253,6 +249,7 @@ def save_play():
     playInstance = UserGames(user_id=uid, game_id=gid, success=ss)
     if ss == True:
         user = User.query.get(current_user.id)
+        # Games award 10 coins upon success
         user.balance += 10
         game.successes += 1
     game.times_played += 1
@@ -262,12 +259,14 @@ def save_play():
     
     return jsonify({"message": "Success"})
 
+# Count successes for each user per game played, return in descending order to populate leaderboard
 @main.route('/leaderboard', methods=['GET'])
 def leaderboard_page():
     successes = func.sum(UserGames.success)
     ordered_table = db.session.query(User.username.label('Username'), successes.label('Successes')).join(UserGames, User.id == UserGames.user_id).group_by(User.username).order_by(successes.desc()).all()
     return render_template('leaderboard.html', ordered_table=ordered_table)
 
+# Registers a new user with the site
 @main.route('/register', methods=['GET','POST'])
 def register_page():
     form = RegisterForm()
@@ -280,12 +279,13 @@ def register_page():
         
         return redirect(url_for('main.shop_page'))
     
-    #Check if any validations fail
+    # Check if any validations fail
     if form.errors != {}:
         for err_msg in form.errors.values():
            flash(f'There was an error with creating a user: {err_msg}',category='danger') 
     return render_template('register.html',form=form)
 
+# Check user is valid and log them in
 @main.route('/login',methods=['GET','POST'])
 def login_page():
     form = LoginForm()
@@ -301,13 +301,14 @@ def login_page():
             flash('Invalid username or password. Try again',category='danger')
     return render_template('login.html',form=form)
 
+# Log a user out from the site
 @main.route('/logout')
 def logout_page():
     logout_user()
     flash("You have logged out!",category='info')
     return redirect(url_for("main.home_page"))
 
-# profile page
+# Profile page, returns queries for personal stats
 @main.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile_page():

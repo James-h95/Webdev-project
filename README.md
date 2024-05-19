@@ -1,11 +1,11 @@
 # CITS3403 Project - Let's Hang!
 ## Group members: 
-| Name          | Student Number | Github User |   |   |
-|---------------|----------------|-------------|---|---|
-| Aaminah Irfan | 23642166       | aaminah06   |   |   |
-| Carly Scott   | 23359926       | carlymayyy  |   |   |
-| Joshua Mance  | 23420013       | Josh Mance  |   |   |
-| James Hudibyo | 23452945       | James-h95   |   |   |
+| Name          | Student Number | Github User |
+|---------------|----------------|-------------|
+| Aaminah Irfan | 23642166       | aaminah06   |
+| Carly Scott   | 23359926       | carlymayyy  |
+| Joshua Mance  | 23420013       | Josh Mance  |
+| James Hudibyo | 23452945       | James-h95   |
 
 ## Project Rundown
 Let's Hang© is a dynamic site that brings to life the paper-and-pen game of hangman! Users have the opportunity to create their own games, play games created by other users, and compete for the top spot on the coveted leaderboard. Games award coins which can be used to purchase cool, upgraded avatars, incentivising continued gameplay. Users also have access to a chat feature to talk with fellow players between games. The main features of the site include:
@@ -46,7 +46,7 @@ Tests are divided into **unit tests** and **web-based tests** using Selenium Web
 Our unit tests are written in Python using the unittest framework. These tests cover the basic functionalities of the models and routes within the application.
 
 To run the unit tests, navigate to the project directory in your terminal and execute the following command:
-````
+```
 python -m unittest discover -s application/test -p "unit.py"
 ```
 **Running Web Tests with Selenium WebDriver**
@@ -75,7 +75,7 @@ Notes
 
 ## Image references:
 - Sticky note: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGnsBpXkmSbxYJWYUvxJqnFrrYbst8AETf8NpJDz3W5w&s
-- 
+- Profile images: https://i.pinimg.com/564x/f2/7a/80/f27a80460711f70cb2e7b94acec253ee.jpg
 
 
 

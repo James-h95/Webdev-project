@@ -6,16 +6,16 @@ from flask_login import UserMixin
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-#Association table for many-to many relationship
+#Association table for many-to many relationship with users and items
 users_items = db.Table('users_items',
     db.Column('user_id',db.Integer(),db.ForeignKey('user.id')),
     db.Column('item_id',db.Integer(),db.ForeignKey('item.id')),                
 )
 
+# User database
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer(), primary_key=True)
     username =db.Column(db.String(length=30),nullable=False,unique=True)
-    email_address = db.Column(db.String(length=50),nullable=True,unique=True)
     _password = db.Column(db.String(length=60), nullable=False) #avoid naming confusion
     balance = db.Column(db.Integer(),nullable=False,default=10)
     items = db.relationship('Item',secondary=users_items, back_populates='users',lazy='dynamic')
@@ -44,13 +44,11 @@ class User(db.Model, UserMixin):
         self.avatar_url = avatar_url
         db.session.commit()
         
-    
-
+# Stores items, price, and URL to assign avatars to users 
 class Item(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(length=30),nullable=False,unique=True)
     price = db.Column(db.Integer(),nullable=False)
-    #rarity = db.Column(db.String(length=30))
     image_url = db.Column(db.String(200), nullable=False)
     users = db.relationship('User',secondary=users_items, back_populates="items",lazy='dynamic')
     
@@ -62,12 +60,9 @@ class Item(db.Model):
         db.session.add(self)
         db.session.commit()
         print(f"User {user_obj.username} bought item {self.name}")
-    
-    #def __repr__(self):
-        #return f'Item {self.name}'
         
-
-#Utility function
+# Utility function
+# Items we have set to be sold in shop, will update over time
 def create_items():
     items = [{'name':'Book worm','price':5,'image_url':'https://i.pinimg.com/originals/54/ba/4b/54ba4b946c7866fec64f7221324ce4b9.jpg'},
              {'name':'Demon','price':4,'image_url':'https://i.pinimg.com/originals/5b/0a/9b/5b0a9b71f215c5032fefb6ddcf15129f.jpg'}
@@ -81,6 +76,7 @@ def create_items():
     
     db.session.commit()
 
+# Stores instance of message in DB and whether the message was direct or global
 class Message(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     sender_id = db.Column(db.Integer())
@@ -96,11 +92,9 @@ class Message(db.Model):
                    text={self.text},
                    for_all={self.for_all}
                 """
-    
-# Game association table
-# 1 user [plays] M games M [made by] 1 user
-# 1 game [made by] 1 user
 
+# Stores game in DB with relevant stats which could be implemented
+# Links to user via creator and users that have played the game
 class Game(db.Model):
      id = db.Column(db.Integer(), primary_key=True)
      phrase = db.Column(db.String(length=250),nullable=False)
@@ -114,7 +108,9 @@ class Game(db.Model):
      creator = db.relationship('User', back_populates='games_created')
      users_played = db.relationship('UserGames', back_populates='game')
     
-    
+# Relational table for users who have played games, saves their result
+# 1 = solved puzzle
+# 0 = failed puzzle  
 class UserGames(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     user_id = db.Column(db.Integer(),db.ForeignKey('user.id'),nullable=False)

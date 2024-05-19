@@ -3,7 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 
+# import url_for for route redirection
 from flask import url_for
+
 # import config file:
 from .config import Config
 
