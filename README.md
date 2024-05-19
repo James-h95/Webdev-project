@@ -28,7 +28,6 @@ The following python code should be run in the terminal to set up the database:
 py // establishes python terminal
 from application.models import db, Item, User, Game, Message, UserGames
 from application import create_app
-app = create_app()
 with app.app_context():
     db.drop_all()
     db.create_all()
@@ -39,7 +38,7 @@ py run.py
 
 Users and posts can then be created via the website using register/login. The chat is fully interactive and can be examined simultaneously from separate ports. 
 
-## Testing instructions:s
+## Testing instructions:
   
 ## Code references: 
 - ChatGPT
