@@ -16,7 +16,7 @@ from application import routes
 
 def create_app(config=Config):
   app = Flask(__name__)
-  app.config.from_object(Config)
+  app.config.from_object(config)
   db.init_app(app)
   bcrypt.init_app(app)
   login.init_app(app)
