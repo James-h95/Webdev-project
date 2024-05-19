@@ -44,61 +44,114 @@ def feed_page():
     # should be performed, as well as what the output will be.
     if request.method == "GET":
 
-        # load the previous messages in order of their timestamp value
-        all_messages = Message.query.all()
-        all_messages.sort(reverse = True, key=attrgetter("time"))
-        
-        visible_messages = []
-        # iterating through all messages, filling the visible messages list
-        # with only messages to or for the the current user
-        for row in all_messages:
-                if  (len(visible_messages) >= NUM_VISIBLE_MESSAGES):
-                    break
-                elif row is not None:
-                    message = {}
-                    # If the message was sent by the user
-                    if (row.sender_id == user_id):
-                        message["type"] = "sent"
-                        
-                    # Else if the message was sent to @all chat
-                    # by a different user
-                    elif (row.for_all == True):
-                         message["type"] = "received"
+        # Info requests 
 
-                    # If either of the two above conditions are met
-                    if len(message) != 0:
-                        message["text"] = row.text
-                        message["time"] = row.time
-                        visible_messages.append(message)
-
-        # Showing oldest messages first
-        visible_messages.reverse()
-
-        # Used example from https://www.geeksforgeeks.org/flask-http-method/
-        # to understand request arguments    
-        
-        # Returning most recent messages
-        if request.args.get("request_type") == "update_query":
-            update_required = (len(visible_messages) > 0)
-            return {"user_id":user_id,
-                    "update_required":update_required,
-                    "visible_messages":visible_messages}
-        
         # Returning all friend names.
         # Note: will need to restrict this to only friends
-        elif request.args.get("request_type") == "get_friends":
+        if request.args.get("request_type") == "get_friends":
             friend_names = [user.username for user in User.query.all()]
             return {"friend_names":friend_names}
         
+        if request.args.get("request_type") == "get_friend_id":
+            username = request.args.get("username")
+            for user in User.query.all():
+                if user.username == username:
+                    return {"id":user.id+1}
+
+
         else:
-            # Loading the page
-            return render_template('feed.html', user_id = user_id,
-                                visible_messages = visible_messages,
-                                games=games)
+
+            # If the GET request is the page loading, then the default 
+            # target user id is 0, i.e. the "all" chat
+            returned_target_id_val = request.args.get("target_user_id")
+            if returned_target_id_val  == None:
+                target_user_id = 0
+            else:
+                target_user_id = int(returned_target_id_val)
+
+
+
+            # load the previous messages in order of their timestamp value
+            all_messages = Message.query.all()
+            all_messages.sort(reverse = True, key=attrgetter("time"))
+            
+            visible_messages = []
+            # iterating through all messages, filling the visible messages list
+            # with only messages to or for the the current user
+            for row in all_messages:
+                    if  (len(visible_messages) >= NUM_VISIBLE_MESSAGES):
+                        break
+                    elif row is not None:
+                        message = {}
+
+                        # If the user is sending to the "all" chat
+                        if target_user_id == 0:
+
+                            # If the message was sent by the user
+                            print(user_id, row.sender_id, row.text)
+                            if (int(row.sender_id) == int(user_id)):
+                                message["type"] = "sent"
+                                
+                                message["text"] = row.text
+                                message["time"] = row.time
+                                visible_messages.append(message)
+                                
+                            # Else if the message was sent to @all chat
+                            # by a different user
+
+            
+                            elif (int(row.for_all) == 1):
+                                message["type"] = "received"
+                                
+                                message["text"] = row.text
+                                message["time"] = row.time
+                                visible_messages.append(message)
+
+                        # Otherwise, if the user is sending to a single user
+                        else:
+                            # If the message was sent by the user
+                            if (int(row.sender_id) == int(user_id)):
+                                if (int(row.receiver_id) == int(target_user_id)):
+                                    message["type"] = "sent"
+                                    
+                                    message["text"] = row.text
+                                    message["time"] = row.time
+                                    visible_messages.append(message)
+                                
+                            # Else if the target user sent the message to the user
+                            elif (int(row.receiver_id) == int(user_id)):
+                                if (int(row.sender_id) == int(target_user_id)):
+                                    message["type"] = "received"
+                                    
+                                    message["text"] = row.text
+                                    message["time"] = row.time
+                                    visible_messages.append(message)
+                                    
+            # Showing oldest messages first
+            visible_messages.reverse()
+
+            # Used example from https://www.geeksforgeeks.org/flask-http-method/
+            # to understand request arguments    
+            
+            # Returning most recent messages
+            if request.args.get("request_type") == "update_query":
+                update_required = (len(visible_messages) > 0)
+                return {"user_id":user_id,
+                        "update_required":update_required,
+                        "visible_messages":visible_messages}
+            
+            else:
+                # Loading the page
+                return render_template('feed.html', user_id = user_id,
+                                    visible_messages = visible_messages,
+                                    games=games)
 
     # If a post request is received, adding the new message to the database
     elif request.method == "POST":
+
         data = request.form
+
+        print(data)
         message = Message()
 
         # Setting the variables of a new message object

@@ -15,7 +15,7 @@
         var global_time_counter = 0;
         var global_time_string = null;
 
-        var target_username = null;
+        var target_user_id = 0;
         var all_users_username = "all";
 
         /**
@@ -104,6 +104,7 @@
          * variable "receiver_id" will effectively be ignored.
          */
         function upload_message(text, time, sender_id, receiver_id, for_all) {
+            console.log("Here")
             $.ajax({
                 type: "POST",
                 url: "/feed",
@@ -133,8 +134,8 @@
                 // Scrolling the feed down to the most recent message
                 // Used https://stackoverflow.com/a/2664878 to figure
                 // out how to index the div to find its scroll height
-                $(".messages").scrollTop($(".messages")[0].scrollHeight);
-                $(".form-control").val("");
+                // $(".messages").scrollTop($(".messages")[0].scrollHeight);
+                // $(".form-control").val("");
                 
                 var for_all = (target_user_id == 0)
                 upload_message(text, time, "{{user_id}}", target_user_id, for_all);
@@ -166,7 +167,8 @@
             $.ajax({
                 type: "GET",
                 url: "/feed",
-                data: {"request_type":"update_query"},
+                data: {"request_type":"update_query", 
+                        "target_user_id":target_user_id},
                 success: function (data) {
                     if (data["update_required"]) {
                         var messages = data["visible_messages"];
@@ -226,13 +228,26 @@
             if (e.target.className == "username") {
                 var prev_username = $(".current-username").html()
 
-                new_target_username = e.target.id
-                target_username = new_target_username 
+                target_username = e.target.id
 
-                $(".current-username").text(new_target_username) 
+                $(".current-username").text(target_username) 
                 $(e.target).remove()
 
-                console.log(target_username)
+                $.ajax({
+                    type: "GET",
+                    url: "/feed",
+                    data: {"request_type":"get_friend_id", 
+                            "username":target_username},
+                    success: function (data) {
+                        target_user_id = data.id
+
+                    }
+                });
+
+                global_time_counter = 0;
+                console.log("Here!", target_user_id)
+                $(".messages").remove()
+                
 
                 // Ensuring that the "all" username remains at the top of the list  
                 // Add to top of list
@@ -653,7 +668,7 @@
                 font-size:1.5vw
             }
             font-family: sans-serif;
-            z-index: 4;
+            z-index: 0;
             border-radius: 7px;
             border-style: solid;
             border-width: 2px;
@@ -680,7 +695,7 @@
                 width:25vw;
                 font-size:3vw;
             }
-            z-index: 0;
+            z-index: 3;
             font-family: sans-serif;
             background-color:rgb(255, 255, 255);
             border-bottom:none;
@@ -719,7 +734,7 @@
             right: 25.1%;
             justify-content:left;
             background-color:rgb(255, 255, 255);
-            box-shadow: 1px 3px 4px 3px rgba(0,0,0,0.4); 
+            box-shadow: -1px 3px 4px 3px rgba(0,0,0,0.4); 
         }
 
         /* Chat styling */
@@ -764,7 +779,7 @@
 
         .heading-container {
             width: 100%;
-            height: 100%;
+            height: 40px;
             padding-top: 0;
         }
 
@@ -775,7 +790,7 @@
         }
 
         .messages {
-            z-index: 0;
+            z-index: 5;
             width: 100%;
             height: 82%;
             flex-direction: column; 
@@ -868,7 +883,6 @@
             border-radius: 20px !important; 
             color: #000000; 
             border: 1px solid #eeefef; 
-            margin-bottom:0.5vw;
             font-size: 1vw;    
             box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
         }
@@ -884,14 +898,13 @@
             right: 18px;
             font-size: 1vw;
             border: none;
-            margin-bottom:0.5vw;
             margin-left: 1vw;
             margin-right: 1vw;
             padding-left: 1.5vw;
             padding-right: 1.5vw;
-            background-color: #4267B2;
+            background-color: #ebd834;
             border-radius: 20px;
-            color: rgb(255, 255, 255);
+            color: rgb(56, 56, 38);
             outline: none !important;
         }
 
@@ -930,7 +943,7 @@
 
         .received-time, .sent-time {
             width: 80px;
-            font-size: 1vw;
+            font-size: 15px;
             color: #171212cb;
             position:absolute;
             padding-top: 30px;
@@ -939,7 +952,7 @@
         .username-list {
             z-index: -1;
             font-size: 20px; 
-            color: #171212cb;
+            color: #1c1b12cb;
             background-color:#ffffff;
             width:7vw;
             justify-items: left;
@@ -947,7 +960,7 @@
 
         .current-username {
             z-index: 20;
-            color: #eff6ff;
+            color: #000000;
             margin-top: 0.5vw;
             padding-left: 1vw;
             padding-right: 75%;
@@ -955,8 +968,8 @@
         }
 
         .current-username:hover {
-            color: #ffffff;
-            font-size: 120%;
+            color: rgb(62, 62, 50);
+            font-size: 110%;
             transition:0.3s ease;
         }
 
@@ -971,8 +984,8 @@
 
         .username-list  button:hover {
             transition: 0.31s ease;
-            background-color:#4267B2;
-            color: #ffffff;
+            background-color:#ebd834;
+            color: rgb(69, 69, 48);
         }
 
         .game-card {
