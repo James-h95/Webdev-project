@@ -19,7 +19,7 @@
                 <!-- Placeholder for item image-->
                 <img src="{{ item.image_url }}" style="height:100px;width:auto;" alt="logo">
             </div>
-            <div class="center col-3">
+            <div class="cent&registerer col-3">
                 {{ item.name }}
             </div>
             <div class="center col-3">
@@ -27,11 +27,19 @@
             </div>
             <div class="center col-3" style="font-family: Verdana, Geneva, Tahoma, sans-serif;">
                 {% if item.name in purchased_items %}
-                <form method="POST" action="{{ url_for('main.equip_avatar') }}">
-                    {{ form.hidden_tag() }}
-                    <input type="hidden" name="equip_item" value="{{ item.name }}">
-                    <button type="submit" class="btn button-equip btn-block">Equip</button>
-                </form>
+                    {% if item.image_url == current_user.avatar_url %}
+                        <form method="POST" action="{{ url_for('main.unequip_avatar') }}">
+                            {{ form.hidden_tag() }}
+                            <input type="hidden" name="unequip_item" value="{{ item.name }}">
+                            <button type="submit" class="btn button-unequip btn-block">Unequip</button>
+                        </form>
+                    {% else %}
+                        <form method="POST" action="{{ url_for('main.equip_avatar') }}">
+                            {{ form.hidden_tag() }}
+                            <input type="hidden" name="equip_item" value="{{ item.name }}">
+                            <button type="submit" class="btn button-equip btn-block">Equip</button>
+                        </form>
+                    {% endif %}
                 {% else %}
                     <form method="POST" class="purchase-form">
                         {{ form.hidden_tag() }}
@@ -94,6 +102,24 @@
             background-color:rgb(167, 114, 44);
             border-color: rgb(167, 114, 44);
             color: #b7b7b7;
+        }
+
+        .button-equip:active{
+            background-color:rgb(167, 114, 44);
+            border-color: rgb(167, 114, 44);
+            color: #b7b7b7;
+        }
+
+        .button-unequip{
+            background-color:rgb(167, 114, 44);
+            border-color: rgb(167, 114, 44);
+            color: #b7b7b7;
+        }
+
+        .button-unequip:hover{
+            background-color: rgb(231, 141, 24);
+            color: #fff;
+            border-color:  rgb(231, 141, 24);
         }
 
         .btn-success{

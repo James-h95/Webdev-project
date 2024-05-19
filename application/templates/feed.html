@@ -49,6 +49,14 @@
             var time_string = hours + ":" + mins + " " + am_pm;
             return time_string;
         }
+        
+        function scrollToBottom() {
+            var messagesContainer = document.querySelector('.messages');
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+
+
 
         /**
          * Appends the html for a single message. 
@@ -57,12 +65,11 @@
          * "sent", then it is on the right side.
          * The variable "time" is the number of milliseconds since the epoch
          */
-        function create_message(message_type, text, time) {
+        function create_message(message_type, text, time,profile_image_url) {
             
             if (time > global_time_counter) {
                 global_time_counter = time;
             }
-
 
             // If the time string is new (i.e. different from the global
             // time string) then the global time string is updated. Otherwise 
@@ -79,7 +86,7 @@
             msg_type = String(message_type)
             $(".messages").append(
                 $("<div/>", {"class":msg_type+"-message"}).append( 
-                            $("<img/>", {"class":msg_type + "-profile-icon"})
+                            $("<img/>", {"class":msg_type + "-profile-icon","src":profile_image_url})
                         )
                         .append(
                             // Adding the message text and timestamp
@@ -90,6 +97,7 @@
                             .append($("<span/>", {"class":msg_type + "-time", text:time_string}))   
                         )
                     )
+            scrollToBottom();   
         };
 
         /**
@@ -117,6 +125,9 @@
             });
         };
 
+
+  
+
         /**
          * Main input handling function. When triggered,
          * the contents of the input form are added to the
@@ -129,8 +140,8 @@
             // Not proceeding if no next is found
             if (text != "") {
                 var time = Date.now();
-                create_message("sent", text, time); 
-                
+                create_message("sent", text, time, "{{ current_user.avatar_url }}"); 
+                $(".form-control").val("");
                 // Scrolling the feed down to the most recent message
                 // Used https://stackoverflow.com/a/2664878 to figure
                 // out how to index the div to find its scroll height
@@ -177,10 +188,12 @@
                             if (messages[i]["time"] > global_time_counter) {
                                 create_message(messages[i]["type"],
                                             messages[i]["text"],
-                                            messages[i]["time"]);
+                                            messages[i]["time"],
+                                            messages[i]["profile_image_url"]);
                             }
                             i++;
                         } 
+                        scrollToBottom();
                     }
                 }
             });
@@ -393,7 +406,7 @@
                     <div class="col-4 mt-4 mb-5" >
                         <button onclick="showModal(event, '{{ game.id }}')" class="{{'owned' if game.creator.username == current_user.username }}{% for ap in already_played %}{% if ap.game_id == game.id %}played{% endif %}{% endfor %} mb-5 card game-card {{ game.category|lower|replace('.', '')}}" data-category="{{ game.category|lower }}" data-time = "{{ game.timeLimit }}">
                             <div class="card-body">
-                                <img class="profile-image" src="https://img.freepik.com/premium-vector/stick-figure-man-isolated-vector_566661-759.jpg"></img>
+                                <img class="profile-image" src="{{ current_user.avatar_url }}" img>
                                     <div class="category-name">
                                         {{ game.category }}
                                     </div>
@@ -435,10 +448,10 @@
 
     
     <a href="#"><button id="chat">
-        <div id="chatSidebar">
+        <!--<div id="chatSidebar">
             <div class="username-list"></div>
 
-        </div>
+        </div>-->
         <div class="heading-container">
                 <div class="chat-heading">
                     <div> Chat </div>
