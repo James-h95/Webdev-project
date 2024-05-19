@@ -40,6 +40,31 @@ py run.py
 Users and posts can then be created via the website using register/login. The chat is fully interactive and can be examined simultaneously from separate ports. 
 
 ## Testing instructions:s
+
+Tests are divided into **unit tests** and **web-based tests** using Selenium WebDriver.
+
+**Running Unit Tests**
+Our unit tests are written in Python using the unittest framework. These tests cover the basic functionalities of the models and routes within the application.
+
+To run the unit tests, navigate to the project directory in your terminal and execute the following command:
+````
+python -m unittest discover -s application/test -p "unit.py"
+```
+**Running Web Tests with Selenium WebDriver**
+The web tests use Selenium WebDriver to simulate user interactions with the web application. Before running these tests, ensure you have the necessary browser drivers installed and the selenium package added to your project.
+
+To run the Selenium WebDriver tests, use the following command:
+```
+python -m unittest discover -s test -p "test_web.py"
+```
+**Prerequisites for Selenium Tests:**
+Ensure you have selenium installed:
+
+ pip install selenium
+
+Notes
+- It's recommended to run the tests in a development or staging environment as they can modify the database state.
+- For Selenium tests, ensure your application server is running if it's not set up to start within the test scripts.
   
 ## Code references: 
 - ChatGPT
