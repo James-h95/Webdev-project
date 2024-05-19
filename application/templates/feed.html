@@ -368,15 +368,30 @@
         </div>
     </div>
 
-
-    <div class="container mt-5">
+    <div class="container mt-5 mb-5">
         <!-- Each row-->
         <div class="row mt-2 justify-content-start">
                 {% set cols = 3 %}
                 <!-- For each gamebox-->
                 {% for game in games %}
-                    <div class="col-4 mt-4" >
-                        <a href="{{ url_for('main.hangman_page', game_id=game.id) }}" class="{{'disabled' if game.creator.username == current_user.username }}"><button class="{{'disabled' if game.creator.username == current_user.username }} mb-5 card game-card {{ game.category|lower|replace('.', '')}}" data-category="{{ game.category|lower }}" data-time = "{{ game.timeLimit }}">
+                
+                <div id="gameModal" class="modal justify-content-center">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header text-center">
+                                <a id="takeMeToGame" href=""><button id="playNow"><span id="buttonText"></span></button></a>
+                                <span class="close">&times;</span>
+                            </div>
+                            <div class="modal-body justify-content-center flex">
+                                <h2>Game History</h2>
+                                <table id="gamehistoryTable">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <div class="col-4 mt-4 mb-5" >
+                        <button onclick="showModal(event, '{{ game.id }}')" class="{{'owned' if game.creator.username == current_user.username }}{% for ap in already_played %}{% if ap.game_id == game.id %}played{% endif %}{% endfor %} mb-5 card game-card {{ game.category|lower|replace('.', '')}}" data-category="{{ game.category|lower }}" data-time = "{{ game.timeLimit }}">
                             <div class="card-body">
                                 <img class="profile-image" src="https://img.freepik.com/premium-vector/stick-figure-man-isolated-vector_566661-759.jpg"></img>
                                     <div class="category-name">
@@ -389,7 +404,7 @@
                             </div>
                             <img class="hand right-hand" src="{{ url_for('static', filename='deliverables/gameFeed/hand-2.svg') }}"></img>
                             <img class="hand left-hand" src="{{ url_for('static', filename='deliverables/gameFeed/hand1.svg') }}"></img>
-                        </button></a>
+                        </button>
                     </div>
 
                     {% if loop.index % cols == 0 and not loop.last %}
@@ -477,6 +492,7 @@
                     $(this).find('.hand').hide();
             });
         }); 
+
         function filterGames() {
             const categoryFilter = document.getElementById('categoryFilter').value.toLowerCase();
             const gameCards = document.querySelectorAll('.game-card');
@@ -493,11 +509,57 @@
             });
         }
 
+        function displayHistory(gid) {
+            const gamehistoryTable = $('#gamehistoryTable');
+        
+            $.ajax({
+                url: `gameHistory/${gid}`,
+                type: 'GET',
+                success: function(data){
+                    gamehistoryTable.empty();
+                    gamehistoryTable.append('<th>user</th><th>result</th>');
+                    data.game_history.forEach(history => {
+                        gamehistoryTable.append(`<tr><td>${history.username}</td><td>${history.success ? 'Solved!' : 'Failed!'}</td></tr>`);
+                    })
+                }
+            });
+        }
+
+        function showModal(event, gid) {
+            const modal = document.getElementById('gameModal');
+            const span = modal.querySelector(".close");
+            const gameLink = document.getElementById('takeMeToGame');
+            const playButton = document.getElementById('playNow');
+            const buttonText = document.getElementById('buttonText');
+
+            if(event.currentTarget.classList.contains('owned')){
+                playButton.innerText = "This is your game!";
+                playButton.classList.add('disabled');
+                gameLink.classList.add('disabled');
+            }
+            else if(event.currentTarget.classList.contains('played')){
+                playButton.innerText = "Already played!";
+                playButton.classList.add('disabled');
+                gameLink.classList.add('disabled');
+            }
+            else{
+                playButton.innerText = "Play now!";
+                playButton.classList.remove('disabled');
+                gameLink.classList.remove('disabled');
+                gameLink.href = "{{ url_for('main.hangman_page', game_id=0) }}".replace('0', gid);
+            }
+
+            displayHistory(gid);
+        
+            modal.style.display = "block";
+        
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+        }
     </script>
 
     <style>
-
-
         .filter-bar{
             padding: 1vh;
 
@@ -988,6 +1050,94 @@
             color: rgb(69, 69, 48);
         }
 
+        #gameModal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-dialog{
+            top:10%;
+            max-height:60vh;
+        }
+
+        .modal-body {
+          text-align:center;
+          background-color: #ffffff;
+        }
+
+        .modal h2{
+          padding-bottom: 2vw;
+          color:black;
+          font-family: "Indie Flower", sans-serif;
+          font-size:3vw;
+          font-weight:bold;
+        }
+
+        table{
+            text-align:center;
+            color:black;
+            margin:auto;
+        }
+
+        th{
+            border-right:3px solid #ebd834;
+            border-left:3px solid #ebd834;
+            border-bottom: 3px solid #ebd834;
+            font-size:2vw;
+            padding:1em;
+            text-align:center;
+        }
+
+        td{
+            border-right:3px solid #ebd834;
+            border-left:3px solid #ebd834;
+            text-align:center;
+            font-size:1.3vw;
+        }
+
+        tr:hover{
+            background-color: #e8e8e8;
+        }
+
+        .close {
+            color: #151515;
+            float: inline-end;
+            font-size: 40px;
+            font-weight: bold;
+          }
+        
+          .close:hover, .close:focus {
+            color: rgb(255, 237, 145);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #playNow{
+            background-color:#ebd834;
+            font-weight:bold;
+            margin-left:2vw;
+            margin-top:1vw;
+            padding:1vw;
+            cursor:pointer;
+            border: 2px solid black;
+            border-radius:50px;
+            font-family: "Indie Flower", sans-serif;
+            font-size:1.5vw;
+          }
+
+        .disabled{
+            pointer-events:none;
+            color:black;
+            opacity:60%;
+            cursor:default;!important
+        }
+
+
         .game-card {
             width: 10vw; 
             height: 10vw;
@@ -998,12 +1148,6 @@
             transition: transform 0.3s ease; 
             z-index:0;
             border: 2px solid black;
-        }
-
-        .disabled{
-            pointer-events:none;
-            color:black;
-            opacity:60%;
         }
 
         .game-card::before, .game-card::after {

@@ -90,9 +90,15 @@
         <a class="nav-link" href="{{ url_for('main.feed_page') }}">feed</a>
         <a class="nav-link" href="{{ url_for('main.shop_page') }}">shop</a>
         <a class="nav-link mb-5" href="{{ url_for('main.leaderboard_page') }}">leaderboard</a>
-        <a class="nav-link mt-5" href="#">login</a>
+        {% if current_user.is_authenticated %}
+        <i class="fas fa-coins mt-5 ml-3" style="color: rgb(59, 53, 7);" >{{ current_user.balance }}</i>
+        <a class="nav-link" href="{{ url_for('main.profile_page') }}">profile</a>
+        <a class="nav-link" href="{{ url_for('main.logout_page') }}">logout</a>
+        {% else %}
+        <a class="nav-link mt-5" href="{{ url_for('main.login_page') }}">login</a>
         <a class="nav-link" href="{{ url_for('main.register_page') }}">register</a>
-    </div>
+        {% endif %}
+      </div>
   </div>
 
   <a class="ml-3" id="toggleBar">☰</a>
