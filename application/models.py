@@ -65,6 +65,21 @@ class Item(db.Model):
     
     #def __repr__(self):
         #return f'Item {self.name}'
+        
+
+#Utility function
+def create_items():
+    items = [{'name':'Book worm','price':5,'image_url':'https://i.pinimg.com/originals/54/ba/4b/54ba4b946c7866fec64f7221324ce4b9.jpg'},
+             {'name':'Demon','price':4,'image_url':'https://i.pinimg.com/originals/5b/0a/9b/5b0a9b71f215c5032fefb6ddcf15129f.jpg'}
+             ]
+    
+    for x in items:
+        item = Item.query.filter_by(name=x['name']).first() #check if exists
+        if not item:
+            new_item = Item(name=x['name'],price=x['price'],image_url=x['image_url'])
+            db.session.add(new_item)
+    
+    db.session.commit()
 
 class Message(db.Model):
     id = db.Column(db.Integer(), primary_key=True)

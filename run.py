@@ -1,13 +1,15 @@
-from application import create_app
-from application.models import db,Item,User,Game
+from application import create_app, db
+from application.models import Item, users_items,User,Game,UserGames,Message, create_items
 
 app = create_app()
 
-from application.models import db,Item,User,Game
+
+
 with app.app_context():
-    db.drop_all() 
-    db.create_all()
-    db.session.commit()
+    db.create_all() # ensure all tables created
+    create_items()
+
+
 
 
 
