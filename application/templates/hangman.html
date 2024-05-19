@@ -346,6 +346,7 @@
 
       if (timerValue === 0) {
         clearInterval(timerInterval);
+        alert("The word was " + hangmanTarget.toUpperCase() + "!");
         showModal("timeUpModal");
         saveResult(0);
       } else {
@@ -458,6 +459,7 @@
 
         if(goesLeft == 0){
           stopTimer();
+          alert("The word was " + hangmanTarget.toUpperCase() + "!");
           showModal("failedModal");
           saveResult(0);
         }
