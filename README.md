@@ -23,7 +23,7 @@ Let's Hang© is a dynamic site that brings to life the paper-and-pen game of han
 . The leaderboard page keeps track of site-wide activity and ranks users by their numbers of successes as they vie for a top-20 spot.
   
 ## Instructions to run: 
-The following python code should be run in the terminal to set up the database:
+Ensure all necessary packages are installed according to requirements.txt. The following python code should be run in the terminal to set up the database:
 
 py // establishes python terminal
 from application.models import db, Item, User, Game, Message, UserGames

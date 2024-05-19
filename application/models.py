@@ -65,7 +65,13 @@ class Item(db.Model):
 # Items we have set to be sold in shop, will update over time
 def create_items():
     items = [{'name':'Book worm','price':5,'image_url':'https://i.pinimg.com/originals/54/ba/4b/54ba4b946c7866fec64f7221324ce4b9.jpg'},
-             {'name':'Demon','price':4,'image_url':'https://i.pinimg.com/originals/5b/0a/9b/5b0a9b71f215c5032fefb6ddcf15129f.jpg'}
+             {'name':'Demon','price':4,'image_url':'https://i.pinimg.com/originals/5b/0a/9b/5b0a9b71f215c5032fefb6ddcf15129f.jpg'},
+             {'name':'Rainbow', 'price':20,'image_url':'https://i.pinimg.com/236x/80/bf/f3/80bff3773b35680ea28d918909dcc3c7.jpg'},
+             {'name': 'Pink swag', 'price':100,'image_url':'https://i.pinimg.com/564x/2c/0e/36/2c0e3682a3e9535debd8a688f133b9ed.jpg'},
+             {'name': 'Icecream', 'price':120,'image_url':'https://i.pinimg.com/564x/c9/1f/02/c91f0272ffef7f49e380bb9caf19b2b6.jpg'},
+             {'name': 'Tunes', 'price':150, 'image_url':'https://i.pinimg.com/564x/91/7a/bf/917abf179cada8fae95f6e73e12c515a.jpg'},
+             {'name': 'Chef gourmet','price':200,'image_url':'https://i.pinimg.com/564x/8c/62/62/8c6262e9ade593eb4150c950df508d73.jpg'},
+             {'name': 'Zzzzzz', 'price':500,'image_url':'https://i.pinimg.com/564x/70/2c/bf/702cbf852e9e39da5609e5e2887daa83.jpg'}
              ]
     
     for x in items:
