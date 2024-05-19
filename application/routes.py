@@ -69,6 +69,20 @@ def equip_avatar():
     return redirect(url_for('main.shop_page'))
 
 
+@main.route('/unequip_avatar', methods=['POST'])
+@login_required
+def unequip_avatar():
+    unequip_item = request.form.get('unequip_item')
+    item = Item.query.filter_by(name=unequip_item).first()
+    if item and item.image_url == current_user.avatar_url:
+        # Logic to unequip the item as the user's avatar
+        current_user.set_avatar('https://i.pinimg.com/originals/f2/7a/80/f27a80460711f70cb2e7b94acec253ee.jpg') #our default avatar
+        flash(f"{item.name} has been unequipped as your avatar!", category='success')
+    else:
+        flash("Item not found or not owned by the user.", category='danger')
+    return redirect(url_for('main.shop_page'))
+
+
 @main.route('/feed', methods=['GET', 'POST'])
 @login_required
 def feed_page():
