@@ -21,6 +21,8 @@ class User(db.Model, UserMixin):
     items = db.relationship('Item',secondary=users_items, back_populates='users',lazy='dynamic')
     games_created = db.relationship('Game', back_populates='creator')
     games_played = db.relationship('UserGames', back_populates='user')
+    # Default avatar upon registration
+    avatar_url = db.Column(db.String(200), default='https://i.pinimg.com/originals/e8/61/d4/e861d4843751b4daf463aa78a356bab1.jpg')
 
     @property
     #GETTER
@@ -34,13 +36,32 @@ class User(db.Model, UserMixin):
     
     def check_password(self,given_password):
         return bcrypt.check_password_hash(self._password, given_password)
+    
+    def can_purchase(self,item_obj):
+        return self.balance >= item_obj.price
+    
+    def set_avatar(self, avatar_url):
+        self.avatar_url = avatar_url
+        db.session.commit()
+        
+    
 
 class Item(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(length=30),nullable=False,unique=True)
     price = db.Column(db.Integer(),nullable=False)
-    rarity = db.Column(db.String(length=30),nullable=False)
+    #rarity = db.Column(db.String(length=30))
+    image_url = db.Column(db.String(200), nullable=False)
     users = db.relationship('User',secondary=users_items, back_populates="items",lazy='dynamic')
+    
+    
+    def buy(self,user_obj):
+        self.users.append(user_obj) # Assign ownership to user who buys
+        user_obj.balance -= self.price
+        db.session.add(user_obj)
+        db.session.add(self)
+        db.session.commit()
+        print(f"User {user_obj.username} bought item {self.name}")
     
     #def __repr__(self):
         #return f'Item {self.name}'

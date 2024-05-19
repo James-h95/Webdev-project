@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="text-center pageHeading">
+    <div class="pageHeading" style="padding-left: 10px;">
         <h1>Shop</h1>
         <h2>elevate your game and style</h2>
     </div>
@@ -15,7 +15,7 @@
         <thead>
             <tr>
                 <!-- Our columns-->
-                <th scope="col">ID</th>
+                <!-- <th scope="col">ID</th> -->
                 <th scope="col">Name</th>
                 <th scope="col">Price</th>
                 <th scope="col">Rarity</th>
@@ -25,10 +25,10 @@
             <!-- Our rows-->
             {% for item in items %}
                 <tr>
-                    <td>{{ item.id }}</td>
+                    <!--<td>{{ item.id }}</td>-->
                     <td>{{ item.name }}</td>
                     <td>${{ item.price }}</td>
-                    <td>{{ item.rarity }}</td>
+                    <!--<td>{{ item.rarity }}</td>-->
                     <td>
                         <button class="btn btn-outline btn-info">More info</button>
                         <button class="btn btn-outline btn-success">Purchase</button>
@@ -44,7 +44,7 @@
             font-family: "Indie Flower", sans-serif;
             font-weight: 500;
             color: #ebd834;
-            margin-top: 80px;
+            margin-top: 100px;
         }
 
         .pageHeading h2{

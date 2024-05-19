@@ -1,11 +1,11 @@
 from flask import Blueprint
 from application import models, routes, db
-from flask import render_template, redirect, url_for, flash, get_flashed_messages, request, jsonify
+from flask import render_template, redirect, url_for, flash, request,jsonify
 from sqlalchemy import desc, func
 from application.models import Item, User, Message, Game, UserGames
-from application.forms import RegisterForm, CreateGameForm,LoginForm
+from application.forms import RegisterForm, CreateGameForm,LoginForm, PurchaseItemForm
 from operator import attrgetter
-from flask_login import login_user, logout_user, login_required, current_user
+from flask_login import login_user, logout_user, login_required,current_user
 import datetime
 import json
 
@@ -19,7 +19,7 @@ def home_page():
     return render_template('home.html')
 
 # Flask APP initialisation. Our Python package
-@main.route('/shop')
+@main.route('/shop,',methods=['GET','POST'])
 @login_required
 def shop_page():
     # Example dictionaries to use
@@ -27,8 +27,47 @@ def shop_page():
         {'id':2,'name':'Black Judo belt','price':150, 'rarity':"Rare"},
         {'id':3,'name':'Shiny star','price':300, 'rarity':"Legendary"}
         ]'''
+    form = PurchaseItemForm()
+    if request.method == "POST":
+        # Purchase Item logic
+        purchased_item = request.form.get('purchased_item')
+        p_item_object = Item.query.filter_by(name=purchased_item).first()
+        if p_item_object: # if not null, apply ownership
+            if current_user.can_purchase(p_item_object): # Verify curr user can afford it
+                p_item_object.buy(current_user)
+                #response['success'] = True
+                #response['new_balance'] = current_user.balance  # Include new balance
+                #response['message'] = f"Congratulations, you purchased {p_item_object.name} for ${p_item_object.price}!"
+                #flash(response['message'], category='success')
+                #print("Purchase successful")  # Debugging statement
+                flash(f"Congratulations, you purchased {p_item_object.name} for ${p_item_object.price}!",category='success')
+            else:
+                #response['message'] = f"Unfortunately, you don't have enough money to purchase the {p_item_object.name}!"
+                #flash(response['message'], category='danger')
+                flash(f"Unfortunately, you don't have enough money to purchase the {p_item_object.name}!",category='danger')
+                #print("Insufficient balance")  # Debugging statement
+        else:
+            print("Item not found")
+            flash("Item not found!", category='danger')
+        #return jsonify(response)
     items = Item.query.all()
-    return render_template('shop.html',items=items)
+    purchased_items = [item.name for item in current_user.items]
+    return render_template('shop2.html',items=items, form=form,purchased_items=purchased_items)
+
+
+@main.route('/equip_avatar', methods=['POST'])
+@login_required
+def equip_avatar():
+    equip_item = request.form.get('equip_item')
+    item = Item.query.filter_by(name=equip_item).first()
+    if item and item in current_user.items:
+        # Logic to equip the item as the user's avatar
+        current_user.set_avatar(item.image_url)
+        flash(f"{item.name} has been equipped as your avatar!", category='success')
+    else:
+        flash("Item not found or not owned by the user.", category='danger')
+    return redirect(url_for('main.shop_page'))
+
 
 @main.route('/feed', methods=['GET', 'POST'])
 @login_required

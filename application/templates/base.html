@@ -50,8 +50,8 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                   <a class="nav-link">
-                      <i class="fas fa-coins" style="color: rgb(154, 152, 42);" >
-                        {{ current_user.balance }}
+                      <i class="fas fa-coins" id="user-balance" style="color: rgb(154, 152, 42);" >
+                        ${{ current_user.balance }}
                       </i>
                   </a>
                 </li>
@@ -113,12 +113,12 @@
   </script>
   
   <!-- Flash messages container, make it respct navbar spacing-->
-  <div class="flash-messages">
+  <div class="flash-messages"> 
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
       {% for category, message in messages %}
-      <div class="alert alert-{{ category }} alert-dismissable fade show">
-        <button type="button" class="m1-2 mb-1 close" data-dismiss="alert" aria-label="Close">
+      <div class="alert alert-{{ category }} alert-dismissable fade show fade-in">
+        <button type="button" class="m1-2 mb-1 close btn-close" data-dismiss="alert" data-bs-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
         {{ message }}
@@ -141,6 +141,30 @@
 
 
 
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                let flashMessages = document.querySelectorAll('.flash-messages');
+                flashMessages.forEach(function(flashMessage) {
+                    flashMessage.classList.add('fade');
+                    flashMessage.addEventListener('transitionend', function() {
+                        flashMessage.remove();
+                    });
+                });
+            }, 3000); // Adjust the delay as needed (5000ms = 5 seconds)
+        });
+        
+        setTimeout(function() {
+                flashMessages.forEach(function(flashMessage) {
+                    flashMessage.classList.remove('show');
+                    flashMessage.addEventListener('transitionend', function() {
+                        flashMessage.remove();
+                    });
+                });
+            }, 5000); // Adjust the delay as needed (5000ms = 5 seconds)
+
+    
+</script>
 
 
 <style>
@@ -164,6 +188,15 @@
     z-index: 1050;
   }
   
+  .fade-in {
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
+  }
+
+  .fade-in.show {
+      opacity: 1;
+  }
+
   .navbar{
     backdrop-filter: blur(10px);
   }
@@ -366,4 +399,5 @@
   }
 
 </style>
+
 </html>
