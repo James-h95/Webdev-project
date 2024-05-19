@@ -33,10 +33,10 @@ def shop_page():
 @main.route('/feed', methods=['GET', 'POST'])
 @login_required
 def feed_page():
-    already_played = [user_game.game_id for user_game in current_user.games_played]
+    already_played = [user_game for user_game in current_user.games_played]
 
     user_id = current_user.get_id()
-    games = Game.query.filter(~Game.id.in_(already_played)).order_by(desc(Game.created)).all()
+    games = Game.query.order_by(desc(Game.created)).all()
     
     # Handling all GET requests. Tasks common to all GET
     # requests are handled first, and then the request 
@@ -94,7 +94,7 @@ def feed_page():
             # Loading the page
             return render_template('feed.html', user_id = user_id,
                                 visible_messages = visible_messages,
-                                games=games)
+                                games=games, already_played=already_played)
 
     # If a post request is received, adding the new message to the database
     elif request.method == "POST":
@@ -114,6 +114,13 @@ def feed_page():
 
         # Informing the client that adding the new message was successful 
         return jsonify("success")
+
+@main.route('/gameHistory/<int:game_id>')
+def get_history(game_id):
+    game_history = UserGames.query.filter_by(game_id=game_id).all()
+    return jsonify(game_history=[{
+        'username':gameHist.user.username,
+        'success': gameHist.success} for gameHist in game_history])
 
 @main.route('/chat')
 def play_page():
@@ -144,10 +151,13 @@ def save_play():
     uid = data.get('user_id')
     gid = data.get('game_id')
     ss = data.get('success')
+    game = Game.query.get(gid)
     playInstance = UserGames(user_id=uid, game_id=gid, success=ss)
     if ss == True:
         user = User.query.get(current_user.id)
         user.balance += 10
+        game.successes += 1
+    game.times_played += 1
 
     db.session.add(playInstance)
     db.session.commit()

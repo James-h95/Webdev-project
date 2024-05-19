@@ -1,15 +1,27 @@
-# Webdev-project
-CITS3403 Group Project
-
-_The General main idea:_
-- Main idea is the game hangman (logic will be implemented via javascript)
-- Users create and post games which other users can try solving for money which can buy avatars, cool hangman animations, letter designs, etc.
-- Navbar contains: Home, location to play (maybe a feed type thing), a shop to buy customisations and a leaderboard.
-
-_Sub ideas:_
-- Players could use money to get hints, will win less but at least retain some in-game currency. The faster it is solved, the more you get back.
-- Global chat and/or chats between individuals within feed and between friends.
-- Their will be a shop with customisations etc (Just for aesthetic?) they can buy with in-game currency
-- Ranking system? With each win get rank points? Certain rank points will make ur name appear in dif colours? (to signify ur level)  Or to make simple, could make each profile have a line in bottom half signifying colour of their ranking?
+# CITS3403 Project - Let's Hang!
+## Group members: 
+- Aaminah Irfan - 23642166
+- Carly Scott - 23359926
+- Joshua Mance - 23420013
+- James Hudibyo - 23452945
   
+## Instructions to run: 
+The following python code should be run in the terminal to set up the database:
+
+from application.models import db, Item, User, Game, Message, UserGames
+from application import app
+with app.app_context():
+    db.drop_all() 
+    db.create_all()
+
+Users and posts can then be created via the website using register/login 
+  
+## References: 
+- ChatGPT
+- Geeks4Geeks
+- Stack Overflow
+ 
+
+
+
   
